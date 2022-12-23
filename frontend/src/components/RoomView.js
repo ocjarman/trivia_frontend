@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import roomSlice, { setRoom } from "../store/roomSlice";
+import { setRoom } from "../store/roomSlice";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import io from "socket.io-client";
+import { setAllMessages } from "../store/messagesSlice";
 const socket = io.connect("http://localhost:4000");
 
 const RoomView = () => {
@@ -14,8 +15,10 @@ const RoomView = () => {
   // Messages States
   const [message, setMessage] = useState("");
   const [messageReceived, setMessageReceived] = useState("");
+  const allMessages = useSelector((state) => state.messages.messages);
   const room = useSelector((state) => state.room.room);
 
+  console.log({ allMessages });
   const joinRoom = (roomToJoin) => {
     console.log("in join room", roomToJoin);
     if (roomToJoin !== "") {
@@ -37,6 +40,7 @@ const RoomView = () => {
     socket.on("receive_message", (data) => {
       console.log(data.message, "receiving message");
       setMessageReceived(data.message);
+      dispatch(setAllMessages(data.message));
     });
   }, [socket]);
 
@@ -53,6 +57,10 @@ const RoomView = () => {
         <button onClick={sendMessage}>Send</button>
         <p>Message received: {messageReceived}</p>
         <p>message sent: {message}</p>
+        <br></br>
+        {allMessages.map((message) => (
+          <p>new message: {message}</p>
+        ))}
       </div>
     </div>
   );
