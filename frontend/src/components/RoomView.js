@@ -30,6 +30,7 @@ const RoomView = () => {
   const sendMessage = () => {
     console.log({ message }, { room });
     socket.emit("send_message", { message, room });
+    dispatch(setAllMessages(message));
   };
 
   useEffect(() => {
