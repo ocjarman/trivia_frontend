@@ -15,10 +15,6 @@ export const roomSlice = createSlice({
     setRoomJoined: (state, action) => {
       state.roomJoined = action.payload;
     },
-    setExitRoom: (state, action) => {
-      state.roomJoined = initialState;
-      state.room = initialState;
-    },
   },
 });
 
