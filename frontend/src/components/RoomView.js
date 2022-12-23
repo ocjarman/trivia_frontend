@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setRoom } from "../store/roomSlice";
+import { setRoom } from "../store/newUserSlice";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import io from "socket.io-client";
-import { setAllMessages } from "../store/messagesSlice";
+import { addMessage } from "../store/messagesSlice";
 const socket = io.connect("http://localhost:4000");
 
 const RoomView = () => {
@@ -16,32 +16,36 @@ const RoomView = () => {
   const [message, setMessage] = useState("");
   const [messageReceived, setMessageReceived] = useState("");
   const allMessages = useSelector((state) => state.messages.messages);
-  const room = useSelector((state) => state.room.room);
+  const room = useSelector((state) => state.newUser.room);
+  const name = useSelector((state) => state.newUser.name);
+  const users = useSelector((state) => state.users.users);
 
-  console.log({ allMessages });
-  const joinRoom = (roomToJoin) => {
-    console.log("in join room", roomToJoin);
-    if (roomToJoin !== "") {
-      console.log({ roomToJoin });
-      socket.emit("join_room", roomToJoin);
-    }
-  };
+  console.log(users);
+  //   const joinRoom = () => {
+  //     if (room !== "" && name !== "") {
+  //       socket.emit("join_room", { name, room });
+  //     }
+  //   };
 
   const sendMessage = () => {
     console.log({ message }, { room });
     socket.emit("send_message", { message, room });
-    dispatch(setAllMessages(message));
+    dispatch(addMessage({ message }));
   };
 
   useEffect(() => {
-    console.log("hi");
     dispatch(setRoom(roomId));
-    console.log(roomId);
-    joinRoom(roomId);
+
+    if (room !== "" && name !== "") {
+      socket.emit("join_room", { name, room }, (error) => {
+        if (error) alert(error);
+      });
+    }
+
     socket.on("receive_message", (data) => {
-      console.log(data.message, "receiving message");
-      setMessageReceived(data.message);
-      dispatch(setAllMessages(data.message));
+      console.log(data, "receiving message");
+      setMessageReceived(data);
+      dispatch(addMessage(data));
     });
   }, [socket]);
 
@@ -59,9 +63,11 @@ const RoomView = () => {
         <p>Message received: {messageReceived}</p>
         <p>message sent: {message}</p>
         <br></br>
-        {allMessages.map((message) => (
-          <p>new message: {message}</p>
-        ))}
+        {/* {allMessages.map((data) => (
+          <p key={message.id}>
+            new message: {data.user}:{data.message}
+          </p>
+        ))} */}
       </div>
     </div>
   );

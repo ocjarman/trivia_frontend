@@ -1,18 +1,32 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { setUsers } from "../store/usersSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setName, setRoom } from "../store/newUserSlice";
 import io from "socket.io-client";
 const socket = io.connect("http://localhost:4000");
 
 const Home = () => {
-  const [tempRoom, setTempRoom] = useState("");
+  //   const [room, setRoom] = useState("");
+  //   const [name, setName] = useState("");
+  const room = useSelector((state) => state.newUser.room);
+  const name = useSelector((state) => state.newUser.name);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleRoom = (event) => {
-    setTempRoom(event.target.value);
+    dispatch(setRoom(event.target.value));
+  };
+  const handleName = (event) => {
+    dispatch(setName(event.target.value));
+  };
+
+  const handleUser = () => {
+    dispatch(setUsers({ room, name }));
   };
   const navigateToRoom = () => {
-    navigate(`/room/${tempRoom}`);
+    navigate(`/room/${room}`);
   };
 
   return (
@@ -31,8 +45,11 @@ const Home = () => {
       <div className="App">
         <p>Welcome to Trivia </p>
         <form onSubmit={navigateToRoom}>
+          <input placeholder="username" onChange={handleName}></input>
           <input placeholder="room number" onChange={handleRoom}></input>
-          <button type="submit">Join Room</button>
+          <button type="submit" onClick={handleUser}>
+            Join Room
+          </button>
         </form>
       </div>
     </div>
