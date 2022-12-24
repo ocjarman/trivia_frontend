@@ -9,6 +9,7 @@ export const usersSlice = createSlice({
   initialState,
   reducers: {
     setUsers: (state, action) => {
+      console.log("payload", action.payload);
       state.users = action.payload;
     },
   },

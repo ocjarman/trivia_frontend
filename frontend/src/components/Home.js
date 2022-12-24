@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+// import { useState } from "react";
 import { setUsers } from "../store/usersSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setName, setRoom } from "../store/newUserSlice";
@@ -8,8 +8,6 @@ import io from "socket.io-client";
 const socket = io.connect("http://localhost:4000");
 
 const Home = () => {
-  //   const [room, setRoom] = useState("");
-  //   const [name, setName] = useState("");
   const room = useSelector((state) => state.newUser.room);
   const name = useSelector((state) => state.newUser.name);
   const navigate = useNavigate();
@@ -22,9 +20,9 @@ const Home = () => {
     dispatch(setName(event.target.value));
   };
 
-  const handleUser = () => {
-    dispatch(setUsers({ room, name }));
-  };
+  //   const handleUser = () => {
+  //     dispatch(setUsers({ room, name }));
+  //   };
   const navigateToRoom = () => {
     navigate(`/room/${room}`);
   };
@@ -47,9 +45,7 @@ const Home = () => {
         <form onSubmit={navigateToRoom}>
           <input placeholder="username" onChange={handleName}></input>
           <input placeholder="room number" onChange={handleRoom}></input>
-          <button type="submit" onClick={handleUser}>
-            Join Room
-          </button>
+          <button type="submit">Join Room</button>
         </form>
       </div>
     </div>
