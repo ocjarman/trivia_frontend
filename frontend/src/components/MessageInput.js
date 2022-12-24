@@ -1,18 +1,22 @@
 import React from "react";
-
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 const MessageInput = ({ setMessage, sendMessage, message }) => {
   return (
     <form className="form">
-      <input
-        className="input"
+      <TextField
         type="text"
         placeholder="Type a message..."
         value={message}
         onChange={({ target: { value } }) => setMessage(value)}
       />
-      <button className="sendButton" onClick={(e) => sendMessage(e)}>
+      <Button
+        className="sendButton"
+        variant="contained"
+        onClick={(e) => sendMessage(e)}
+      >
         Send
-      </button>
+      </Button>
     </form>
   );
 };

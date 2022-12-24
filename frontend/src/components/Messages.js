@@ -2,7 +2,6 @@ import React from "react";
 import SingleMessage from "./SingleMessage";
 
 const Messages = ({ messages, name }) => {
-  console.log("messages", messages);
   return (
     <div>
       {messages?.map((message, i) => (

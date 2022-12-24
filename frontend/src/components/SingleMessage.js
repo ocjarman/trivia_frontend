@@ -1,9 +1,11 @@
 import React from "react";
 
-const SingleMessage = ({ message: { text, user }, name }) => {
+const SingleMessage = ({ message: { text, user } }) => {
   return (
     <div>
-      <p>{text}</p>
+      <p>
+        {user.name}: {text}
+      </p>
     </div>
   );
 };

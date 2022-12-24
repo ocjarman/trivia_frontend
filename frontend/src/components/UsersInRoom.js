@@ -1,14 +1,8 @@
 import React from "react";
 
 const UsersInRoom = ({ users }) => {
-  const userBoxStyles = {
-    border: "2px solid black",
-    margin: "10px",
-  };
-
-  console.log({ users });
   return (
-    <div className="textContainer" style={userBoxStyles}>
+    <div className="textContainer">
       {users ? (
         <div>
           <h6>People currently chatting:</h6>
