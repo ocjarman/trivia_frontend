@@ -77,6 +77,18 @@ const RoomView = () => {
     }
   }, [ENDPOINT, name, room]);
 
+  //   const messageRef = useRef();
+
+  //   if (messageRef.current) {
+  //     messageRef.current.scrollIntoView({
+  //       behavior: "smooth",
+  //       block: "end",
+  //       inline: "nearest",
+  //     });
+  //   }
+
+  //   ref={messageRef}
+
   useEffect(() => {
     // Whenever messages or user data changes i.e. if any user joins or leaves
     // or any user posted a message event will be called and roomdata event will
@@ -129,11 +141,16 @@ const RoomView = () => {
             <RoomInfo room={room} />
           </Item>
         </Grid>
-        <Grid item xs={8}>
-          <Item>
+        <Grid item xs={4}>
+          <Item
+            sx={{
+              margin: "8px",
+              height: "500px",
+              overflowX: "auto",
+            }}
+          >
             <Messages messages={allMessages} name={name} />
           </Item>
-          <Item></Item>
           <MessageInput
             message={message}
             setMessage={setMessage}

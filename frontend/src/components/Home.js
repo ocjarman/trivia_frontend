@@ -4,10 +4,9 @@ import { setUsers } from "../store/usersSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setName, setRoom } from "../store/newUserSlice";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import io from "socket.io-client";
 import TextField from "@mui/material/TextField";
-import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 
 const socket = io.connect("http://localhost:4000");
 
@@ -29,57 +28,61 @@ const Home = () => {
   };
 
   return (
-    <Box
-      sx={{
+    <div
+      style={{
         display: "flex",
-        alignContent: "center",
+        flexDirection: "column",
+        alignItems: "center",
         justifyContent: "center",
-        flexWrap: "wrap",
-        "& > :not(style)": {
-          m: 1,
-          width: 500,
-          height: "auto",
-        },
+        justifyItems: "center",
+        height: "50vh",
+        margin: "20%",
       }}
     >
-      <Paper
-        elevation={3}
-        sx={{
+      <div
+        style={{
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
+          padding: "10vw",
+          boxShadow: "10px 5px 5px teal",
+          border: "1px solid black",
+          borderRadius: "5px",
         }}
       >
-        <div
-          sx={{
+        <Typography variant="h1" gutterBottom>
+          Trivia
+        </Typography>
+
+        <form
+          onSubmit={navigateToRoom}
+          style={{
             display: "flex",
             flexDirection: "column",
+            gap: 5,
           }}
         >
-          <p>Welcome to Trivia </p>
-          <form onSubmit={navigateToRoom}>
-            <TextField
-              id="outlined-basic"
-              label="username"
-              variant="outlined"
-              placeholder="username"
-              onChange={handleName}
-            />
-            <TextField
-              id="outlined-basic"
-              label="room id"
-              variant="outlined"
-              placeholder="room number"
-              onChange={handleRoom}
-            />
+          <TextField
+            id="outlined-basic"
+            label="username"
+            variant="outlined"
+            placeholder="username"
+            onChange={handleName}
+          />
+          <TextField
+            id="outlined-basic"
+            label="room id"
+            variant="outlined"
+            placeholder="room number"
+            onChange={handleRoom}
+          />
 
-            <Button type="submit" variant="contained">
-              Join Room
-            </Button>
-          </form>
-        </div>
-      </Paper>
-    </Box>
+          <Button type="submit" variant="contained">
+            Join Room
+          </Button>
+        </form>
+      </div>
+    </div>
+    // </Box>
 
     // // <div
     // //   style={{

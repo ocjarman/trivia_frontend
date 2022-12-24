@@ -3,11 +3,9 @@ import SingleMessage from "./SingleMessage";
 
 const Messages = ({ messages, name }) => {
   return (
-    <div>
+    <div style={{ padding: "1%" }}>
       {messages?.map((message, i) => (
-        <div key={i}>
-          <SingleMessage message={message} name={name} />
-        </div>
+        <SingleMessage key={i} message={message} name={name} />
       ))}
     </div>
   );
