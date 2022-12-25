@@ -107,9 +107,9 @@ const RoomView = () => {
   const sendMessage = (e) => {
     e.preventDefault();
     if (message) {
-      console.log(message);
       //if theres a message, send it back, then reset to empty
-      socket.emit("send_message", message, () => setMessage(""));
+      socket.emit("send_message", message);
+      setMessage("");
     }
   };
 
