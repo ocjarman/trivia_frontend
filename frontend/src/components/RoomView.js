@@ -14,7 +14,7 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
-
+import { useNavigate } from "react-router-dom";
 // import { makeStyles } from "@material-ui/core/styles";
 
 const connectionOptions = {
@@ -26,32 +26,12 @@ const connectionOptions = {
 
 const socket = io.connect("http://localhost:4000", connectionOptions);
 
-// const useStyles = makeStyles({
-//   table: {
-//     minWidth: 650,
-//   },
-//   chatSection: {
-//     width: "100%",
-//     height: "80vh",
-//   },
-//   headBG: {
-//     backgroundColor: "#e0e0e0",
-//   },
-//   borderRight500: {
-//     borderRight: "1px solid #e0e0e0",
-//   },
-//   messageArea: {
-//     height: "70vh",
-//     overflowY: "auto",
-//   },
-// });
-
 const RoomView = () => {
   const params = useParams("");
   const roomId = params.id;
   const dispatch = useDispatch();
   setRoom(roomId);
-  //   const classes = useStyles();
+  const navigate = useNavigate();
 
   const [message, setMessage] = useState("");
   const allMessages = useSelector((state) => state.messages.messages);
@@ -61,9 +41,18 @@ const RoomView = () => {
 
   const ENDPOINT = "localhost:4000";
 
+  window.addEventListener("beforeunload", () => {
+    return alert("no!!");
+  });
   useEffect(() => {
+    //catching the refresh -- nav to join page
+    if (room === "" || name === "") {
+      navigate("/");
+      //trigger this to 'disconnect socket'
+    }
     // if room and name are not empty, send name/room data to server to join room
     // Whenever users will access this page, join event will be called from the backend.
+
     if (room !== "" && name !== "") {
       socket.emit("join_room", { name, room }, (error) => {
         if (error) {
