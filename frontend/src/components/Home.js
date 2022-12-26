@@ -8,11 +8,8 @@ import io from "socket.io-client";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
-const socket = io.connect("http://localhost:4000");
-
 const Home = () => {
   const room = useSelector((state) => state.newUser.room);
-  const name = useSelector((state) => state.newUser.name);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

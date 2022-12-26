@@ -18,13 +18,17 @@ import { deleteUser } from "../store/usersSlice";
 import { useNavigate } from "react-router-dom";
 
 const connectionOptions = {
-  "force new connection": true,
+  //   autoConnect: false,
   reconnectionAttempts: "Infinity",
   timeout: 10000,
   transports: ["websocket"],
 };
 
 const socket = io.connect("http://localhost:4000", connectionOptions);
+
+socket.on("connect", () => {
+  console.log("connected");
+});
 
 const RoomView = () => {
   const params = useParams("");
@@ -45,6 +49,10 @@ const RoomView = () => {
     // if room and name are not empty, send name/room data to server to join room
     // Whenever users will access this page, join event will be called from the backend.
 
+    if (room === "" || name === "") {
+      navigate("/");
+    }
+
     if (room !== "" && name !== "") {
       socket.emit("join_room", { name, room }, (error) => {
         if (error) {
@@ -52,7 +60,6 @@ const RoomView = () => {
         }
       });
       return () => {
-        socket.emit("disconnect");
         socket.off();
       };
     }
@@ -86,7 +93,6 @@ const RoomView = () => {
       (user) => user.name === name && user.room === room
     );
     console.log("line 89", { user });
-    socket.emit("disconnect_user");
     socket.off();
     // handle remove user on frontend
     dispatch(deleteUser(user));
