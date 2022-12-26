@@ -14,8 +14,8 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
+import { deleteUser } from "../store/usersSlice";
 import { useNavigate } from "react-router-dom";
-// import { makeStyles } from "@material-ui/core/styles";
 
 const connectionOptions = {
   "force new connection": true,
@@ -41,15 +41,7 @@ const RoomView = () => {
 
   const ENDPOINT = "localhost:4000";
 
-  window.addEventListener("beforeunload", () => {
-    return alert("no!!");
-  });
   useEffect(() => {
-    //catching the refresh -- nav to join page
-    if (room === "" || name === "") {
-      navigate("/");
-      //trigger this to 'disconnect socket'
-    }
     // if room and name are not empty, send name/room data to server to join room
     // Whenever users will access this page, join event will be called from the backend.
 
@@ -60,23 +52,11 @@ const RoomView = () => {
         }
       });
       return () => {
-        // socket.emit("disconnect");
+        socket.emit("disconnect_user");
         socket.off();
       };
     }
   }, [ENDPOINT, name, room]);
-
-  //   const messageRef = useRef();
-
-  //   if (messageRef.current) {
-  //     messageRef.current.scrollIntoView({
-  //       behavior: "smooth",
-  //       block: "end",
-  //       inline: "nearest",
-  //     });
-  //   }
-
-  //   ref={messageRef}
 
   useEffect(() => {
     // Whenever messages or user data changes i.e. if any user joins or leaves
@@ -84,7 +64,6 @@ const RoomView = () => {
     // be called inside useeffect to show the message of user entry or leaving and
     // storing it in message array
     socket.on("message", (message) => {
-      console.log("received new msg", message);
       dispatch(addMessage(message));
     });
 
@@ -102,6 +81,17 @@ const RoomView = () => {
     }
   };
 
+  const handleExit = () => {
+    const user = users.filter(
+      (user) => user.name === name && user.room === room
+    );
+    console.log("line 89", { user });
+    socket.emit("disconnect_user");
+    socket.off();
+    // handle remove user on frontend
+    dispatch(deleteUser(user));
+  };
+
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
@@ -116,7 +106,7 @@ const RoomView = () => {
         <Grid item xs={2}>
           <Item>
             <a href="/">
-              <button>Leave</button>
+              <button onClick={handleExit}>Leave</button>
             </a>
           </Item>
         </Grid>
