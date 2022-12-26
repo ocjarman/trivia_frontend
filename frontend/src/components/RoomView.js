@@ -52,7 +52,7 @@ const RoomView = () => {
         }
       });
       return () => {
-        socket.emit("disconnect_user");
+        socket.emit("disconnect");
         socket.off();
       };
     }
@@ -90,6 +90,7 @@ const RoomView = () => {
     socket.off();
     // handle remove user on frontend
     dispatch(deleteUser(user));
+    console.log("after delete", { users });
   };
 
   const Item = styled(Paper)(({ theme }) => ({
