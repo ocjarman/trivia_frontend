@@ -7,7 +7,7 @@ const UsersInRoom = ({ users }) => {
         <div>
           <h6>People currently chatting:</h6>
           {users.map((user, i) => (
-            <p key={i}>{user.name} </p>
+            <span key={i}>{user.name} </span>
           ))}
         </div>
       ) : null}

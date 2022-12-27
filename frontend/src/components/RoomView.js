@@ -123,8 +123,6 @@ const RoomView = () => {
           <Item>
             <UsersInRoom users={users} />
           </Item>
-        </Grid>
-        <Grid item xs={4}>
           <Item sx={styles.sx.ChatBox}>
             <Messages messages={allMessages} name={name} />
           </Item>
@@ -133,6 +131,9 @@ const RoomView = () => {
             setMessage={setMessage}
             sendMessage={sendMessage}
           />
+        </Grid>
+        <Grid item xs={4}>
+          <Item sx={styles.sx.ChatBox}>Trivia Box</Item>
         </Grid>
       </Grid>
       {/* might use below grid for trivia game */}
