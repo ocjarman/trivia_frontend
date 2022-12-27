@@ -17,14 +17,13 @@ import { styled } from "@mui/material/styles";
 import { deleteUser } from "../store/usersSlice";
 import { useNavigate } from "react-router-dom";
 
-const connectionOptions = {
-  //   autoConnect: false,
-  reconnectionAttempts: "Infinity",
-  timeout: 10000,
-  transports: ["websocket"],
-};
+// const connectionOptions = {
+//   //   reconnectionAttempts: "Infinity",
+//   timeout: 10000,
+//   transports: ["websocket"],
+// };
 
-const socket = io.connect("http://localhost:4000", connectionOptions);
+const socket = io.connect("http://localhost:4000");
 
 socket.on("connect", () => {
   console.log("connected");

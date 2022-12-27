@@ -1,10 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { setUsers } from "../store/usersSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setName, setRoom } from "../store/newUserSlice";
 import Button from "@mui/material/Button";
-import io from "socket.io-client";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
