@@ -1,15 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import playersReducer from "./playersSlice";
-import chatReducer from "./chatSlice";
-import roomReducer from "./roomSlice";
-import messageReducer from "./messageSlice";
+import usersReducer from "./usersSlice";
+// import roomReducer from "./roomSlice";
+import messageReducer from "./messagesSlice";
+import newUserReducer from "./newUserSlice";
 
 const store = configureStore({
   reducer: {
-    chat: chatReducer,
-    players: playersReducer,
-    room: roomReducer,
-    message: messageReducer,
+    users: usersReducer,
+    newUser: newUserReducer,
+    // room: roomReducer,
+    messages: messageReducer,
   },
 });
 
