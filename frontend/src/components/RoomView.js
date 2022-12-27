@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setRoom } from "../store/newUserSlice";
+import { setRoomId } from "../store/newUserSlice";
 import { useParams } from "react-router-dom";
 import { setUsers } from "../store/usersSlice";
 import io from "socket.io-client";
@@ -31,14 +31,15 @@ socket.on("connect", () => {
 
 const RoomView = () => {
   const params = useParams("");
-  const roomId = params.id;
+  const roomIdFromParams = params.id;
   const dispatch = useDispatch();
-  setRoom(roomId);
+
+  setRoomId(roomIdFromParams);
   const navigate = useNavigate();
 
   const [message, setMessage] = useState("");
   const allMessages = useSelector((state) => state.messages.messages);
-  const room = useSelector((state) => state.newUser.room);
+  const roomId = useSelector((state) => state.newUser.roomId);
   const name = useSelector((state) => state.newUser.name);
   const users = useSelector((state) => state.users.users);
 
@@ -48,14 +49,14 @@ const RoomView = () => {
 
   useEffect(() => {
     // on loading page if no room or name, send back to join page
-    if (room === "" || name === "") {
+    if (roomId === "" || name === "") {
       navigate("/");
     }
 
-    // if room and name are not empty, send name/room data to server to join room
+    // if roomId and name are not empty, send name/roomId data to server to join roomId
     // Whenever users will access this page, join event will be called from the backend.
-    if (room !== "" && name !== "") {
-      socket.emit("join_room", { name, room }, (error) => {
+    if (roomId !== "" && name !== "") {
+      socket.emit("join_room", { name, roomId }, (error) => {
         if (error) {
           alert(error);
         }
@@ -68,6 +69,7 @@ const RoomView = () => {
 
   useEffect(() => {
     // on entering a room, add the admin message to the message state welcoming the user
+    // listening to message from the server with socket.on
     socket.on("message", (message) => {
       dispatch(addMessage(message));
     });
@@ -82,6 +84,7 @@ const RoomView = () => {
     e.preventDefault();
     if (message) {
       //if theres a message from a user, send it to backend, then reset to empty on frontend
+      // msg from client to server
       socket.emit("send_message", message);
       setMessage("");
     }
@@ -90,7 +93,7 @@ const RoomView = () => {
   //  if user clicks 'leave' button, filter them out on front end, and turn off socket
   const handleExit = () => {
     const user = users.filter(
-      (user) => user.name === name && user.room === room
+      (user) => user.name === name && user.roomId === roomId
     );
     socket.off();
     // handle delete user on frontend
@@ -110,7 +113,7 @@ const RoomView = () => {
       <Grid container spacing={2}>
         <Grid item xs={3}>
           <Item>
-            <RoomInfo room={room} />
+            <RoomInfo roomId={roomId} />
           </Item>
           <Item>
             <a href="/">

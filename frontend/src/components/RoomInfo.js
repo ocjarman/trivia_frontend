@@ -1,11 +1,10 @@
 import React from "react";
-import { useSelector } from "react-redux";
 
-const RoomInfo = ({ room }) => {
+const RoomInfo = ({ roomId }) => {
   return (
     <div>
       <div>
-        <h3>Room: {room}</h3>
+        <h3>Room Id: {roomId}</h3>
       </div>
     </div>
   );

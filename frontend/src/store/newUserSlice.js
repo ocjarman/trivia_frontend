@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   name: "",
-  room: "",
+  roomId: "",
 };
 
 export const newUsersSlice = createSlice({
@@ -12,11 +12,11 @@ export const newUsersSlice = createSlice({
     setName: (state, action) => {
       state.name = action.payload;
     },
-    setRoom: (state, action) => {
-      state.room = action.payload;
+    setRoomId: (state, action) => {
+      state.roomId = action.payload;
     },
   },
 });
 
-export const { setName, setRoom } = newUsersSlice.actions;
+export const { setName, setRoomId } = newUsersSlice.actions;
 export default newUsersSlice.reducer;

@@ -1,12 +1,11 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+
 const MessageInput = ({ setMessage, sendMessage, message }) => {
   const handleClearInput = (e) => {
     e.preventDefault();
     e.target.value = "";
-    console.log({ message });
-    console.log(e.target.value);
   };
 
   return (
