@@ -5,6 +5,7 @@ import { setName, setRoom } from "../store/newUserSlice";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import styles from "./Home.styles";
 
 const Home = () => {
   const room = useSelector((state) => state.newUser.room);
@@ -23,39 +24,13 @@ const Home = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        justifyItems: "center",
-        height: "50vh",
-        margin: "20%",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          padding: "10vw",
-          boxShadow: "10px 5px 5px teal",
-          border: "1px solid black",
-          borderRadius: "5px",
-        }}
-      >
+    <div style={styles.sx.HomeContainer}>
+      <div style={styles.sx.LoginContainer}>
         <Typography variant="h1" gutterBottom>
           Trivia
         </Typography>
 
-        <form
-          onSubmit={navigateToRoom}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 5,
-          }}
-        >
+        <form onSubmit={navigateToRoom} style={styles.sx.FormContainer}>
           <TextField
             id="outlined-basic"
             label="username"
@@ -77,24 +52,6 @@ const Home = () => {
         </form>
       </div>
     </div>
-    // </Box>
-
-    // // <div
-    // //   style={{
-    // //     width: "400px",
-    // //     border: "1px solid red",
-    // //     display: "flex",
-    // //     flexDirection: "column",
-    // //     justifyContent: "center",
-    // //     alignItems: "center",
-    // //     justifyItems: "center",
-    // //     alignContent: "flex-start",
-    // //   }}
-    // // >
-    //   <div className="App">
-
-    //   </div>
-    // </div>
   );
 };
 

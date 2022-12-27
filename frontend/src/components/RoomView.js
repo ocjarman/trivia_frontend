@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setRoom } from "../store/newUserSlice";
-import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { setUsers } from "../store/usersSlice";
 import io from "socket.io-client";
@@ -16,6 +15,7 @@ import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import { deleteUser } from "../store/usersSlice";
 import { useNavigate } from "react-router-dom";
+import styles from "./Room.styles";
 
 // const connectionOptions = {
 //   //   reconnectionAttempts: "Infinity",
@@ -42,16 +42,18 @@ const RoomView = () => {
   const name = useSelector((state) => state.newUser.name);
   const users = useSelector((state) => state.users.users);
 
-  const ENDPOINT = "localhost:4000";
+  //   const ENDPOINT = "localhost:4000";
+  //   originally had this in useeffect, dont think i need it
+  // ENDPOINT, name, room
 
   useEffect(() => {
-    // if room and name are not empty, send name/room data to server to join room
-    // Whenever users will access this page, join event will be called from the backend.
-
+    // on loading page if no room or name, send back to join page
     if (room === "" || name === "") {
       navigate("/");
     }
 
+    // if room and name are not empty, send name/room data to server to join room
+    // Whenever users will access this page, join event will be called from the backend.
     if (room !== "" && name !== "") {
       socket.emit("join_room", { name, room }, (error) => {
         if (error) {
@@ -62,17 +64,15 @@ const RoomView = () => {
         socket.off();
       };
     }
-  }, [ENDPOINT, name, room]);
+  }, []);
 
   useEffect(() => {
-    // Whenever messages or user data changes i.e. if any user joins or leaves
-    // or any user posted a message event will be called and roomdata event will
-    // be called inside useeffect to show the message of user entry or leaving and
-    // storing it in message array
+    // on entering a room, add the admin message to the message state welcoming the user
     socket.on("message", (message) => {
       dispatch(addMessage(message));
     });
 
+    // whenever roomData emits on backend, frontend  users state will be updated
     socket.on("roomData", ({ users }) => {
       dispatch(setUsers(users));
     });
@@ -81,25 +81,24 @@ const RoomView = () => {
   const sendMessage = (e) => {
     e.preventDefault();
     if (message) {
-      //if theres a message, send it back, then reset to empty
+      //if theres a message from a user, send it to backend, then reset to empty on frontend
       socket.emit("send_message", message);
       setMessage("");
     }
   };
 
+  //  if user clicks 'leave' button, filter them out on front end, and turn off socket
   const handleExit = () => {
     const user = users.filter(
       (user) => user.name === name && user.room === room
     );
-    console.log("line 89", { user });
     socket.off();
-    // handle remove user on frontend
+    // handle delete user on frontend
     dispatch(deleteUser(user));
-    console.log("after delete", { users });
   };
 
   const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+    backgroundColor: "aliceBlue",
     ...theme.typography.body2,
     padding: theme.spacing(1),
     textAlign: "center",
@@ -107,33 +106,23 @@ const RoomView = () => {
   }));
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={styles.sx.RoomContainer}>
       <Grid container spacing={2}>
-        <Grid item xs={2}>
+        <Grid item xs={3}>
+          <Item>
+            <RoomInfo room={room} />
+          </Item>
           <Item>
             <a href="/">
               <button onClick={handleExit}>Leave</button>
             </a>
           </Item>
-        </Grid>
-        <Grid item xs={2}>
           <Item>
             <UsersInRoom users={users} />
           </Item>
         </Grid>
-        <Grid item xs={2}>
-          <Item>
-            <RoomInfo room={room} />
-          </Item>
-        </Grid>
         <Grid item xs={4}>
-          <Item
-            sx={{
-              margin: "8px",
-              height: "500px",
-              overflowX: "auto",
-            }}
-          >
+          <Item sx={styles.sx.ChatBox}>
             <Messages messages={allMessages} name={name} />
           </Item>
           <MessageInput
@@ -143,6 +132,15 @@ const RoomView = () => {
           />
         </Grid>
       </Grid>
+      {/* might use below grid for trivia game */}
+      {/* <Grid container spacing={2}>
+        <Grid item xs={3}></Grid>
+      </Grid>
+      <br></br>
+      <Grid container spacing={2}>
+        <Grid item xs={3}></Grid>
+      </Grid>
+      <Grid container spacing={2}></Grid> */}
     </Box>
   );
 };
