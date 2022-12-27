@@ -16,6 +16,7 @@ import { styled } from "@mui/material/styles";
 import { deleteUser } from "../store/usersSlice";
 import { useNavigate } from "react-router-dom";
 import styles from "./Room.styles";
+import TriviaBox from "./TriviaBox";
 
 // const connectionOptions = {
 //   //   reconnectionAttempts: "Infinity",
@@ -133,7 +134,9 @@ const RoomView = () => {
           />
         </Grid>
         <Grid item xs={4}>
-          <Item sx={styles.sx.ChatBox}>Trivia Box</Item>
+          <Item sx={styles.sx.ChatBox}>
+            <TriviaBox />
+          </Item>
         </Grid>
       </Grid>
       {/* might use below grid for trivia game */}
