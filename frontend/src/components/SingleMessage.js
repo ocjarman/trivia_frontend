@@ -6,10 +6,17 @@ const SingleMessage = ({ message: { text, user }, name }) => {
   let sentByUser = false;
   let sentByFriend = false;
   let isAdmin = false;
+  let gameManager = false;
 
   // user sending msg determines style of text on UI
   if (user === "admin") {
     isAdmin = true;
+    sentByUser = false;
+    gameManager = false;
+  }
+  if (user === "game_manager") {
+    gameManager = true;
+    isAdmin = false;
     sentByUser = false;
   }
   if (user.name === name && isAdmin === false) {
@@ -40,6 +47,12 @@ const SingleMessage = ({ message: { text, user }, name }) => {
       {isAdmin && (
         <>
           <p style={styles.sx.AdminText}>{text}</p>
+          <p style={styles.sx.AdminTime}>{moment().format("h:mm a")}</p>
+        </>
+      )}
+      {gameManager && (
+        <>
+          <p style={styles.sx.GameManager}>{text}</p>
           <p style={styles.sx.AdminTime}>{moment().format("h:mm a")}</p>
         </>
       )}

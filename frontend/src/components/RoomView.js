@@ -37,17 +37,14 @@ const RoomView = () => {
 
   setRoomId(roomIdFromParams);
   const navigate = useNavigate();
-
+  const gameStatus = useSelector((state) => state.trivia.gameStatus);
   const [message, setMessage] = useState("");
   const allMessages = useSelector((state) => state.messages.messages);
   const roomId = useSelector((state) => state.newUser.roomId);
   const name = useSelector((state) => state.newUser.name);
   const users = useSelector((state) => state.users.users);
 
-  //   const ENDPOINT = "localhost:4000";
-  //   originally had this in useeffect, dont think i need it
-  // ENDPOINT, name, room
-
+  console.log(allMessages);
   useEffect(() => {
     // on loading page if no room or name, send back to join page
     if (roomId === "" || name === "") {
@@ -79,7 +76,27 @@ const RoomView = () => {
     socket.on("roomData", ({ users }) => {
       dispatch(setUsers(users));
     });
+
+    socket.on("gameStarted", ({ questions }) => {
+      // receive questions here
+      //   pickup here tomorrow
+      console.log(questions);
+    });
+
+    socket.on("otherPlayerStartedGame", () => {
+      alert(
+        "The game will begin in 1 minute. You will have 10 seconds to complete each question."
+      );
+    });
   }, []);
+
+  //------
+  if (gameStatus === "playing") {
+    socket.emit("startGame");
+  }
+
+  //   send questions from backend to frontend
+  //   set timer for 10 sec per question & display on UI*/
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -87,6 +104,7 @@ const RoomView = () => {
       //if theres a message from a user, send it to backend, then reset to empty on frontend
       // msg from client to server
       socket.emit("send_message", message);
+      console.log(message);
       setMessage("");
     }
   };
