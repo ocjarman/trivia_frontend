@@ -8,6 +8,11 @@ const styles = {
       height: "500px",
       overflowX: "auto",
     },
+    TriviaBox: {
+      margin: "8px",
+      height: "500px",
+      width: "550px",
+    },
   },
 };
 

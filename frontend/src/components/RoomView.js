@@ -17,6 +17,7 @@ import { deleteUser } from "../store/usersSlice";
 import { useNavigate } from "react-router-dom";
 import styles from "./Room.styles";
 import TriviaBox from "./TriviaBox";
+import { setQuestions } from "../store/triviaSlice";
 
 // const connectionOptions = {
 //   //   reconnectionAttempts: "Infinity",
@@ -78,15 +79,15 @@ const RoomView = () => {
     });
 
     socket.on("gameStarted", ({ questions }) => {
+      dispatch(setQuestions(questions));
       // receive questions here
       //   pickup here tomorrow
       console.log(questions);
     });
 
     socket.on("otherPlayerStartedGame", () => {
-      alert(
-        "The game will begin in 1 minute. You will have 10 seconds to complete each question."
-      );
+      // find way to get alert dialog to popup for other users
+      //set local state
     });
   }, []);
 
@@ -152,7 +153,7 @@ const RoomView = () => {
           />
         </Grid>
         <Grid item xs={4}>
-          <Item sx={styles.sx.ChatBox}>
+          <Item sx={styles.sx.TriviaBox}>
             <TriviaBox />
           </Item>
         </Grid>
