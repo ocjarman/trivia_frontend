@@ -17,7 +17,11 @@ import { deleteUser } from "../store/usersSlice";
 import { useNavigate } from "react-router-dom";
 import styles from "./Room.styles";
 import TriviaBox from "./TriviaBox";
-import { setPlayerNotAlone, setQuestions } from "../store/triviaSlice";
+import {
+  setGameStatus,
+  setPlayerNotAlone,
+  setQuestions,
+} from "../store/triviaSlice";
 import { setOpenStartGamePopup } from "../store/triviaSlice";
 import StartGameTimer from "./StartGameTimer";
 const socket = io.connect("http://localhost:4000");
@@ -33,12 +37,14 @@ const RoomView = () => {
 
   setRoomId(roomIdFromParams);
   const navigate = useNavigate();
-  const gameStatus = useSelector((state) => state.trivia.gameStatus);
   const [message, setMessage] = useState("");
   const allMessages = useSelector((state) => state.messages.messages);
   const roomId = useSelector((state) => state.newUser.roomId);
   const name = useSelector((state) => state.newUser.name);
   const users = useSelector((state) => state.users.users);
+  const [joinedLate, setJoinedLate] = useState(false);
+  const [pleaseWait, setPleaseWait] = useState(false);
+
   const openStartGamePopup = useSelector(
     (state) => state.trivia.openStartGamePopup
   );
@@ -78,12 +84,28 @@ const RoomView = () => {
       dispatch(setQuestions(questions));
     });
 
+    socket.on("gameStatus", ({ gameStatus }) => {
+      if (gameStatus === "in progress") {
+        setJoinedLate(true);
+        dispatch(setGameStatus("in progress"));
+      } else {
+        console.log(gameStatus);
+        setJoinedLate(false);
+        dispatch(setGameStatus("not in progress"));
+        dispatch(setPleaseWait(false));
+      }
+    });
+
     socket.on("otherPlayerStartedGame", ({ questions }) => {
       // find way to get alert dialog to popup for other users
       //set start warning and questions
-      dispatch(setPlayerNotAlone(true));
-      dispatch(setOpenStartGamePopup(true));
-      dispatch(setQuestions(questions));
+      if (!joinedLate) {
+        dispatch(setPlayerNotAlone(true));
+        dispatch(setOpenStartGamePopup(true));
+        dispatch(setQuestions(questions));
+      } else {
+        dispatch(setOpenStartGamePopup(false));
+      }
     });
   }, []);
 
@@ -92,13 +114,18 @@ const RoomView = () => {
     socket.emit("startGame");
   }
 
+  //   if a game is in progress when a new person joins, show 'please wait, a game is in progress'
+
+  socket.on("pleaseWait", () => {
+    setPleaseWait(true);
+  });
+
   const sendMessage = (e) => {
     e.preventDefault();
     if (message) {
       //if theres a message from a user, send it to backend, then reset to empty on frontend
       // msg from client to server
       socket.emit("send_message", message);
-      console.log(message);
       setMessage("");
     }
   };
@@ -147,7 +174,8 @@ const RoomView = () => {
         </Grid>
         <Grid item xs={4}>
           <Item sx={styles.sx.TriviaBox}>
-            <TriviaBox />
+            {!pleaseWait && <TriviaBox />}
+            {pleaseWait && <p>please wait! a game is in progress </p>}
           </Item>
         </Grid>
       </Grid>

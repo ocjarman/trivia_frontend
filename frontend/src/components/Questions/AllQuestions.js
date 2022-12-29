@@ -15,10 +15,14 @@ import Question3 from "./Question3";
 import Question4 from "./Question4";
 import Question5 from "./Question5";
 import SubmitAnswers from "./Question5";
-import { setGameStatus } from "../../store/triviaSlice";
+import {
+  setGameStatus,
+  setPleaseWait,
+  setOpenStartGamePopup,
+} from "../../store/triviaSlice";
 import { setScore } from "../../store/newUserSlice";
-import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
 const steps = ["0", "1", "2", "3", "4"];
 
 function getStepContent(step) {
@@ -68,18 +72,11 @@ export default function AllQuestions() {
     setActiveStep(activeStep + 1);
   };
 
-  const submitAllAnswers = async (event) => {
-    event.preventDefault();
-    try {
-      handleNext();
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const resetGame = () => {
-    dispatch(setGameStatus(""));
+    dispatch(setGameStatus("not in progress"));
+    dispatch(setPleaseWait(false));
     dispatch(setScore(0));
+    dispatch(setOpenStartGamePopup(false));
   };
 
   return (
@@ -162,16 +159,6 @@ export default function AllQuestions() {
                     >
                       {({ remainingTime }) => remainingTime}
                     </CountdownCircleTimer>
-                    {/* <Button
-                      variant="contained"
-                      onClick={handleNext}
-                      sx={{
-                        mt: 3,
-                        ml: 1,
-                      }}
-                    >
-                      Next
-                    </Button> */}
                   </>
                 )}
                 {activeStep >= steps.length - 1 && (
@@ -185,18 +172,16 @@ export default function AllQuestions() {
                       onComplete={() => {
                         // do your stuff here
                         handleNext();
-                        return { shouldRepeat: true, delay: 0.5 }; // repeat animation in 1.5 seconds
+                        resetGame();
+                        // dispatch(setGameStatus("not in progress"));
+                        // dispatch(setPleaseWait(false));
+                        // dispatch(setOpenStartGamePopup(false));
+
+                        return { shouldRepeat: false, delay: 0.5 }; // repeat animation in 1.5 seconds
                       }}
                     >
                       {({ remainingTime }) => remainingTime}
                     </CountdownCircleTimer>
-                    {/* <Button
-                      variant="contained"
-                      onClick={submitAllAnswers}
-                      sx={{ mt: 3, ml: 1 }}
-                    >
-                      Finish!
-                    </Button> */}
                   </>
                 )}
               </Box>

@@ -19,15 +19,15 @@ export default function StartGamePopup() {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users.users);
 
-  const handleClickOpen = () => {
-    dispatch(setOpenStartGamePopup(true));
+  // const handleClickOpen = () => {
+  //   dispatch(setOpenStartGamePopup(true));
 
-    if (users.length > 1) {
-      dispatch(setPlayerNotAlone(true));
-    } else {
-      dispatch(setPlayerNotAlone(false));
-    }
-  };
+  //   if (users.length > 1) {
+  //     dispatch(setPlayerNotAlone(true));
+  //   } else {
+  //     dispatch(setPlayerNotAlone(false));
+  //   }
+  // };
 
   const handleClose = () => {
     dispatch(setOpenStartGamePopup(false));
@@ -35,26 +35,21 @@ export default function StartGamePopup() {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Play Trivia!
-      </Button>
       <Dialog
         open={open}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        {playerNotAlone && (
-          <>
-            <DialogTitle id="alert-dialog-title">
-              {"Game will begin in..."}
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                <StartGameTimer />
-              </DialogContentText>
-            </DialogContent>
-          </>
-        )}
+        <>
+          <DialogTitle id="alert-dialog-title">
+            {"Game will begin in..."}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              <StartGameTimer />
+            </DialogContentText>
+          </DialogContent>
+        </>
 
         {!playerNotAlone && (
           <>
