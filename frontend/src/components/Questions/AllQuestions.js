@@ -162,7 +162,7 @@ export default function AllQuestions() {
                     >
                       {({ remainingTime }) => remainingTime}
                     </CountdownCircleTimer>
-                    <Button
+                    {/* <Button
                       variant="contained"
                       onClick={handleNext}
                       sx={{
@@ -171,7 +171,7 @@ export default function AllQuestions() {
                       }}
                     >
                       Next
-                    </Button>
+                    </Button> */}
                   </>
                 )}
                 {activeStep >= steps.length - 1 && (
