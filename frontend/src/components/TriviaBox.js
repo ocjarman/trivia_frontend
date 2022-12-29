@@ -32,7 +32,7 @@ const TriviaBox = () => {
         </>
       )}
       {/* {loadingQuestions && <p>questions loading!</p>} */}
-      {!loadingQuestions && <AllQuestions />}
+      {!loadingQuestions && gameStatus === "playing" ? <AllQuestions /> : null}
     </>
   );
 };

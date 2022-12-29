@@ -190,13 +190,13 @@ export default function AllQuestions() {
                     >
                       {({ remainingTime }) => remainingTime}
                     </CountdownCircleTimer>
-                    <Button
+                    {/* <Button
                       variant="contained"
                       onClick={submitAllAnswers}
                       sx={{ mt: 3, ml: 1 }}
                     >
                       Finish!
-                    </Button>
+                    </Button> */}
                   </>
                 )}
               </Box>
