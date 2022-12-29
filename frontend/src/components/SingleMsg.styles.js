@@ -4,6 +4,10 @@ const styles = {
       textAlign: "center",
       color: "darkGray",
     },
+    GameManager: {
+      textAlign: "center",
+      color: "red",
+    },
     AdminTime: {
       textAlign: "center",
       color: "darkGray",

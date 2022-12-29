@@ -16,13 +16,10 @@ import { styled } from "@mui/material/styles";
 import { deleteUser } from "../store/usersSlice";
 import { useNavigate } from "react-router-dom";
 import styles from "./Room.styles";
-
-// const connectionOptions = {
-//   //   reconnectionAttempts: "Infinity",
-//   timeout: 10000,
-//   transports: ["websocket"],
-// };
-
+import TriviaBox from "./TriviaBox";
+import { setPlayerNotAlone, setQuestions } from "../store/triviaSlice";
+import { setOpenStartGamePopup } from "../store/triviaSlice";
+import StartGameTimer from "./StartGameTimer";
 const socket = io.connect("http://localhost:4000");
 
 socket.on("connect", () => {
@@ -36,17 +33,15 @@ const RoomView = () => {
 
   setRoomId(roomIdFromParams);
   const navigate = useNavigate();
-
+  const gameStatus = useSelector((state) => state.trivia.gameStatus);
   const [message, setMessage] = useState("");
   const allMessages = useSelector((state) => state.messages.messages);
   const roomId = useSelector((state) => state.newUser.roomId);
   const name = useSelector((state) => state.newUser.name);
   const users = useSelector((state) => state.users.users);
-
-  //   const ENDPOINT = "localhost:4000";
-  //   originally had this in useeffect, dont think i need it
-  // ENDPOINT, name, room
-
+  const openStartGamePopup = useSelector(
+    (state) => state.trivia.openStartGamePopup
+  );
   useEffect(() => {
     // on loading page if no room or name, send back to join page
     if (roomId === "" || name === "") {
@@ -78,7 +73,24 @@ const RoomView = () => {
     socket.on("roomData", ({ users }) => {
       dispatch(setUsers(users));
     });
+
+    socket.on("gameStarted", ({ questions }) => {
+      dispatch(setQuestions(questions));
+    });
+
+    socket.on("otherPlayerStartedGame", ({ questions }) => {
+      // find way to get alert dialog to popup for other users
+      //set start warning and questions
+      dispatch(setPlayerNotAlone(true));
+      dispatch(setOpenStartGamePopup(true));
+      dispatch(setQuestions(questions));
+    });
   }, []);
+
+  //------if someone clicks 'play trivia', the game will start for all users across devices
+  if (openStartGamePopup) {
+    socket.emit("startGame");
+  }
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -86,6 +98,7 @@ const RoomView = () => {
       //if theres a message from a user, send it to backend, then reset to empty on frontend
       // msg from client to server
       socket.emit("send_message", message);
+      console.log(message);
       setMessage("");
     }
   };
@@ -133,18 +146,11 @@ const RoomView = () => {
           />
         </Grid>
         <Grid item xs={4}>
-          <Item sx={styles.sx.ChatBox}>Trivia Box</Item>
+          <Item sx={styles.sx.TriviaBox}>
+            <TriviaBox />
+          </Item>
         </Grid>
       </Grid>
-      {/* might use below grid for trivia game */}
-      {/* <Grid container spacing={2}>
-        <Grid item xs={3}></Grid>
-      </Grid>
-      <br></br>
-      <Grid container spacing={2}>
-        <Grid item xs={3}></Grid>
-      </Grid>
-      <Grid container spacing={2}></Grid> */}
     </Box>
   );
 };
