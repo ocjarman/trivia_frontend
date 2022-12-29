@@ -19,12 +19,7 @@ import styles from "./Room.styles";
 import TriviaBox from "./TriviaBox";
 import { setPlayerNotAlone, setQuestions } from "../store/triviaSlice";
 import { setOpenStartGamePopup } from "../store/triviaSlice";
-// const connectionOptions = {
-//   //   reconnectionAttempts: "Infinity",
-//   timeout: 10000,
-//   transports: ["websocket"],
-// };
-
+import StartGameTimer from "./StartGameTimer";
 const socket = io.connect("http://localhost:4000");
 
 socket.on("connect", () => {
@@ -44,7 +39,9 @@ const RoomView = () => {
   const roomId = useSelector((state) => state.newUser.roomId);
   const name = useSelector((state) => state.newUser.name);
   const users = useSelector((state) => state.users.users);
-
+  const openStartGamePopup = useSelector(
+    (state) => state.trivia.openStartGamePopup
+  );
   useEffect(() => {
     // on loading page if no room or name, send back to join page
     if (roomId === "" || name === "") {
@@ -79,9 +76,6 @@ const RoomView = () => {
 
     socket.on("gameStarted", ({ questions }) => {
       dispatch(setQuestions(questions));
-      // receive questions here
-      //   pickup here tomorrow
-      console.log(questions);
     });
 
     socket.on("otherPlayerStartedGame", ({ questions }) => {
@@ -93,13 +87,10 @@ const RoomView = () => {
     });
   }, []);
 
-  //------
-  if (gameStatus === "playing") {
+  //------if someone clicks 'play trivia', the game will start for all users across devices
+  if (openStartGamePopup) {
     socket.emit("startGame");
   }
-
-  //   send questions from backend to frontend
-  //   set timer for 10 sec per question & display on UI*/
 
   const sendMessage = (e) => {
     e.preventDefault();

@@ -1,8 +1,6 @@
 import * as React from "react";
-import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import Toolbar from "@mui/material/Toolbar";
 import Paper from "@mui/material/Paper";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -19,7 +17,9 @@ import Question5 from "./Question5";
 import SubmitAnswers from "./Question5";
 import { setGameStatus } from "../../store/triviaSlice";
 import { setScore } from "../../store/newUserSlice";
-const steps = ["0", "1", "2", "3", "4", "5"];
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
+
+const steps = ["0", "1", "2", "3", "4"];
 
 function getStepContent(step) {
   switch (step) {
@@ -96,6 +96,10 @@ export default function AllQuestions() {
           <Typography component="h1" variant="h4" align="center">
             Trivia
           </Typography>
+          <Typography component="h5" variant="h6" align="center">
+            Score: {score} / 5
+          </Typography>
+
           <Stepper
             activeStep={activeStep}
             sx={{
@@ -117,11 +121,11 @@ export default function AllQuestions() {
           {activeStep === steps.length ? (
             <React.Fragment>
               <Typography variant="h5" gutterBottom>
-                You lost/won here!
+                You scored {score} / 5
               </Typography>
               <Typography variant="subtitle1">
-                You answered {score} / 5 questions correctly. Results here by
-                user!
+                {/* You answered {score} / 5 questions correctly. Results here by
+                user! */}
               </Typography>
 
               <Button onClick={resetGame}>
@@ -143,25 +147,57 @@ export default function AllQuestions() {
               >
                 {getStepContent(activeStep)}
                 {activeStep < steps.length - 1 && (
-                  <Button
-                    variant="contained"
-                    onClick={handleNext}
-                    sx={{
-                      mt: 3,
-                      ml: 1,
-                    }}
-                  >
-                    Next
-                  </Button>
+                  <>
+                    <CountdownCircleTimer
+                      isPlaying
+                      duration={10}
+                      colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
+                      colorsTime={[7, 5, 2, 0]}
+                      size={50}
+                      onComplete={() => {
+                        // do your stuff here
+                        handleNext();
+                        return { shouldRepeat: true, delay: 0.5 }; // repeat animation in 1.5 seconds
+                      }}
+                    >
+                      {({ remainingTime }) => remainingTime}
+                    </CountdownCircleTimer>
+                    <Button
+                      variant="contained"
+                      onClick={handleNext}
+                      sx={{
+                        mt: 3,
+                        ml: 1,
+                      }}
+                    >
+                      Next
+                    </Button>
+                  </>
                 )}
                 {activeStep >= steps.length - 1 && (
-                  <Button
-                    variant="contained"
-                    onClick={submitAllAnswers}
-                    sx={{ mt: 3, ml: 1 }}
-                  >
-                    Finish!
-                  </Button>
+                  <>
+                    <CountdownCircleTimer
+                      isPlaying
+                      duration={10}
+                      colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
+                      colorsTime={[7, 5, 2, 0]}
+                      size={50}
+                      onComplete={() => {
+                        // do your stuff here
+                        handleNext();
+                        return { shouldRepeat: true, delay: 0.5 }; // repeat animation in 1.5 seconds
+                      }}
+                    >
+                      {({ remainingTime }) => remainingTime}
+                    </CountdownCircleTimer>
+                    <Button
+                      variant="contained"
+                      onClick={submitAllAnswers}
+                      sx={{ mt: 3, ml: 1 }}
+                    >
+                      Finish!
+                    </Button>
+                  </>
                 )}
               </Box>
             </React.Fragment>

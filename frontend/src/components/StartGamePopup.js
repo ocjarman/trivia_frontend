@@ -11,13 +11,17 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setOpenStartGamePopup, setPlayerNotAlone } from "../store/triviaSlice";
 import Countdown from "react-countdown";
+import StartGameTimer from "./StartGameTimer";
 
 export default function StartGamePopup() {
   const open = useSelector((state) => state.trivia.openStartGamePopup);
   const playerNotAlone = useSelector((state) => state.trivia.playerNotAlone);
   const dispatch = useDispatch();
+  const users = useSelector((state) => state.users.users);
+
   const handleClickOpen = () => {
     dispatch(setOpenStartGamePopup(true));
+
     if (users.length > 1) {
       dispatch(setPlayerNotAlone(true));
     } else {
@@ -29,12 +33,6 @@ export default function StartGamePopup() {
     dispatch(setOpenStartGamePopup(false));
   };
 
-  const users = useSelector((state) => state.users.users);
-
-  const startGame = () => {
-    dispatch(setGameStatus("playing"));
-  };
-
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
@@ -42,24 +40,19 @@ export default function StartGamePopup() {
       </Button>
       <Dialog
         open={open}
-        onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Ready to begin?"}</DialogTitle>
         {playerNotAlone && (
           <>
+            <DialogTitle id="alert-dialog-title">
+              {"Game will begin in..."}
+            </DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                You will have 10 seconds to complete each question.
+                <StartGameTimer />
               </DialogContentText>
             </DialogContent>
-            <DialogActions>
-              <Button onClick={startGame}>Lets go!</Button>
-              <Button onClick={handleClose} autoFocus>
-                I'm not ready.
-              </Button>
-            </DialogActions>
           </>
         )}
 

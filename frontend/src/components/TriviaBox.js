@@ -9,6 +9,8 @@ import { useState } from "react";
 import StartGamePopup from "./StartGamePopup";
 import AllQuestions from "./Questions/AllQuestions";
 import { setLoadingQuestions } from "../store/triviaSlice";
+import StartGameTimer from "./StartGameTimer";
+
 const TriviaBox = () => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users.users);
