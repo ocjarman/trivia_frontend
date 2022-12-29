@@ -17,8 +17,8 @@ import { deleteUser } from "../store/usersSlice";
 import { useNavigate } from "react-router-dom";
 import styles from "./Room.styles";
 import TriviaBox from "./TriviaBox";
-import { setQuestions } from "../store/triviaSlice";
-
+import { setPlayerNotAlone, setQuestions } from "../store/triviaSlice";
+import { setOpenStartGamePopup } from "../store/triviaSlice";
 // const connectionOptions = {
 //   //   reconnectionAttempts: "Infinity",
 //   timeout: 10000,
@@ -45,7 +45,6 @@ const RoomView = () => {
   const name = useSelector((state) => state.newUser.name);
   const users = useSelector((state) => state.users.users);
 
-  console.log(allMessages);
   useEffect(() => {
     // on loading page if no room or name, send back to join page
     if (roomId === "" || name === "") {
@@ -85,9 +84,12 @@ const RoomView = () => {
       console.log(questions);
     });
 
-    socket.on("otherPlayerStartedGame", () => {
+    socket.on("otherPlayerStartedGame", ({ questions }) => {
       // find way to get alert dialog to popup for other users
-      //set local state
+      //set start warning and questions
+      dispatch(setPlayerNotAlone(true));
+      dispatch(setOpenStartGamePopup(true));
+      dispatch(setQuestions(questions));
     });
   }, []);
 
@@ -158,15 +160,6 @@ const RoomView = () => {
           </Item>
         </Grid>
       </Grid>
-      {/* might use below grid for trivia game */}
-      {/* <Grid container spacing={2}>
-        <Grid item xs={3}></Grid>
-      </Grid>
-      <br></br>
-      <Grid container spacing={2}>
-        <Grid item xs={3}></Grid>
-      </Grid>
-      <Grid container spacing={2}></Grid> */}
     </Box>
   );
 };

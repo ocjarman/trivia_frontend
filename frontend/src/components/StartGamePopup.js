@@ -9,22 +9,24 @@ import { setGameStatus } from "../store/triviaSlice";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import { setOpenStartGamePopup, setPlayerNotAlone } from "../store/triviaSlice";
+import Countdown from "react-countdown";
 
 export default function StartGamePopup() {
-  const [open, setOpen] = React.useState(false);
-  const [playerNotAlone, setPlayerNotAlone] = useState(false);
+  const open = useSelector((state) => state.trivia.openStartGamePopup);
+  const playerNotAlone = useSelector((state) => state.trivia.playerNotAlone);
   const dispatch = useDispatch();
   const handleClickOpen = () => {
-    setOpen(true);
+    dispatch(setOpenStartGamePopup(true));
     if (users.length > 1) {
-      setPlayerNotAlone(true);
+      dispatch(setPlayerNotAlone(true));
     } else {
-      setPlayerNotAlone(false);
+      dispatch(setPlayerNotAlone(false));
     }
   };
 
   const handleClose = () => {
-    setOpen(false);
+    dispatch(setOpenStartGamePopup(false));
   };
 
   const users = useSelector((state) => state.users.users);
@@ -44,15 +46,12 @@ export default function StartGamePopup() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {"Use Google's location service?"}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Ready to begin?"}</DialogTitle>
         {playerNotAlone && (
           <>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                The game will begin in 1 minute. You will have 10 seconds to
-                complete each question.
+                You will have 10 seconds to complete each question.
               </DialogContentText>
             </DialogContent>
             <DialogActions>

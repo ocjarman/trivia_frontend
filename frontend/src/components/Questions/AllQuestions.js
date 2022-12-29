@@ -18,8 +18,8 @@ import Question4 from "./Question4";
 import Question5 from "./Question5";
 import SubmitAnswers from "./Question5";
 import { setGameStatus } from "../../store/triviaSlice";
-
-const steps = ["1", "2", "3", "4", "5"];
+import { setScore } from "../../store/newUserSlice";
+const steps = ["0", "1", "2", "3", "4", "5"];
 
 function getStepContent(step) {
   switch (step) {
@@ -46,15 +46,31 @@ const theme = createTheme();
 export default function AllQuestions() {
   const [activeStep, setActiveStep] = React.useState(0);
   const dispatch = useDispatch();
+  const selected = useSelector((state) => state.trivia.selectedAnswer);
+  const questions = useSelector((state) => state.trivia.questions);
+  const score = useSelector((state) => state.newUser.score);
+
+  const questionsAndAnswers = [];
+  questions.forEach((question) =>
+    questionsAndAnswers.push({
+      id: question.id,
+      correct_answer: question.correct_answer,
+    })
+  );
 
   const handleNext = () => {
+    if (selected === questions[activeStep].correct_answer) {
+      dispatch(setScore(score + 1));
+    } else {
+      dispatch(setScore(score + 0));
+    }
+
     setActiveStep(activeStep + 1);
   };
 
   const submitAllAnswers = async (event) => {
     event.preventDefault();
     try {
-      console.log("submitting answers");
       handleNext();
     } catch (err) {
       console.log(err);
@@ -63,6 +79,7 @@ export default function AllQuestions() {
 
   const resetGame = () => {
     dispatch(setGameStatus(""));
+    dispatch(setScore(0));
   };
 
   return (
@@ -103,7 +120,7 @@ export default function AllQuestions() {
                 You lost/won here!
               </Typography>
               <Typography variant="subtitle1">
-                You answered thisMany / 5 questions correctly. Results here by
+                You answered {score} / 5 questions correctly. Results here by
                 user!
               </Typography>
 
