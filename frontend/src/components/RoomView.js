@@ -47,6 +47,7 @@ const RoomView = () => {
   const openStartGamePopup = useSelector(
     (state) => state.trivia.openStartGamePopup
   );
+  const score = useSelector((state) => state.newUser.score);
 
   useEffect(() => {
     // on loading page if no room or name, send back to join page
@@ -88,7 +89,6 @@ const RoomView = () => {
       if (gameStatus === "in progress") {
         dispatch(setGameStatus("in progress"));
       } else if (gameStatus === "game results") {
-        console.log(gameStatus);
         dispatch(setGameStatus("results"));
       }
     });

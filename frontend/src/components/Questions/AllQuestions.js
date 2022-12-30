@@ -15,14 +15,9 @@ import Question3 from "./Question3";
 import Question4 from "./Question4";
 import Question5 from "./Question5";
 import SubmitAnswers from "./Question5";
-import {
-  setGameStatus,
-  setPleaseWait,
-  setOpenStartGamePopup,
-  setShowQuestions,
-} from "../../store/triviaSlice";
-import { setScore } from "../../store/newUserSlice";
-
+import { setGameStatus } from "../../store/triviaSlice";
+import { useState } from "react";
+import { useEffect } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 const steps = ["0", "1", "2", "3", "4"];
 
@@ -53,16 +48,33 @@ export default function AllQuestions({ socket }) {
   const dispatch = useDispatch();
   const selected = useSelector((state) => state.trivia.selectedAnswer);
   const questions = useSelector((state) => state.trivia.questions);
-  const score = useSelector((state) => state.newUser.score);
+  const roomId = useSelector((state) => state.newUser.roomId);
+  const name = useSelector((state) => state.newUser.name);
+  const [score, setScore] = useState(0);
+  const [results, setResults] = useState([]);
 
   const handleNext = () => {
+    const nextStep = activeStep + 1;
     if (selected === questions[activeStep].correct_answer) {
-      dispatch(setScore(score + 1));
-    } else {
-      dispatch(setScore(score + 0));
+      const oldScore = score;
+      const newScore = score + 1;
+      setScore(newScore);
+      if (nextStep === 5) {
+        socket.emit("gameResultsSent", { name, roomId, score: newScore });
+      }
     }
-    setActiveStep(activeStep + 1);
+    if (nextStep === 5 && selected !== questions[activeStep].correct_answer) {
+      socket.emit("gameResultsSent", { name, roomId, score: score });
+    }
+    setActiveStep(nextStep);
   };
+
+  useEffect(() => {
+    socket.on("allScores", ({ allScores }) => {
+      console.log(allScores);
+      setResults(allScores);
+    });
+  }, []);
 
   const resetGame = () => {
     dispatch(setGameStatus("ready"));
@@ -109,15 +121,14 @@ export default function AllQuestions({ socket }) {
             <React.Fragment>
               <Typography variant="h5" gutterBottom>
                 You scored {score} / 5
-              </Typography>
-              <Typography variant="subtitle1">
-                {/* You answered {score} / 5 questions correctly. Results here by
-                user! */}
+                {results.map((result) => (
+                  <p>
+                    {result.name}: {result.score} points
+                  </p>
+                ))}
               </Typography>
 
-              <Button onClick={resetGame}>
-                Start Over (this link needs to restart)
-              </Button>
+              <Button onClick={resetGame}>Start Over</Button>
             </React.Fragment>
           ) : (
             <React.Fragment>

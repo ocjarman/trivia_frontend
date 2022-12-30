@@ -8,8 +8,6 @@ import { setSelectedAnswer } from "../../store/triviaSlice";
 const Question4 = () => {
   const question = useSelector((state) => state.trivia.questions[3]);
   const selected = useSelector((state) => state.trivia.selectedAnswer);
-  const score = useSelector((state) => state.newUser.score);
-  console.log(score);
   const dispatch = useDispatch();
 
   const handleInput = (e) => {

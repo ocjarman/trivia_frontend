@@ -1,5 +1,5 @@
 import React from "react";
-import { setQuestions, setGameStatus } from "../store/triviaSlice";
+import { setGameStatus } from "../store/triviaSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@mui/material";
 import StartGamePopup from "./StartGamePopup";
@@ -12,7 +12,6 @@ const TriviaBox = ({ socket }) => {
   const users = useSelector((state) => state.users.users);
   const gameStatus = useSelector((state) => state.trivia.gameStatus);
   const questions = useSelector((state) => state.trivia.questions);
-  const showQuestions = useSelector((state) => state.trivia.showQuestions);
   const open = useSelector((state) => state.trivia.openStartGamePopup);
   const loadingQuestions = useSelector(
     (state) => state.trivia.loadingQuestions
@@ -43,7 +42,6 @@ const TriviaBox = ({ socket }) => {
         </>
       )}
       {open && <StartGamePopup />}
-      {/* {loadingQuestions && <p>questions loading!</p>} */}
       {!loadingQuestions && !open && gameStatus === "in progress" ? (
         <AllQuestions socket={socket} />
       ) : null}
