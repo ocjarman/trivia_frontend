@@ -19,7 +19,7 @@ import styles from "./Room.styles";
 import TriviaBox from "./TriviaBox";
 import {
   setGameStatus,
-  setPlayerNotAlone,
+  setPlayerIsAlone,
   setQuestions,
 } from "../store/triviaSlice";
 import { setOpenStartGamePopup } from "../store/triviaSlice";
@@ -42,12 +42,12 @@ const RoomView = () => {
   const roomId = useSelector((state) => state.newUser.roomId);
   const name = useSelector((state) => state.newUser.name);
   const users = useSelector((state) => state.users.users);
-  const [joinedLate, setJoinedLate] = useState(false);
+  const status = useSelector((state) => state.trivia.gameStatus);
   const [pleaseWait, setPleaseWait] = useState(false);
-
   const openStartGamePopup = useSelector(
     (state) => state.trivia.openStartGamePopup
   );
+
   useEffect(() => {
     // on loading page if no room or name, send back to join page
     if (roomId === "" || name === "") {
@@ -86,33 +86,26 @@ const RoomView = () => {
 
     socket.on("gameStatus", ({ gameStatus }) => {
       if (gameStatus === "in progress") {
-        setJoinedLate(true);
         dispatch(setGameStatus("in progress"));
-      } else {
+      } else if (gameStatus === "game results") {
         console.log(gameStatus);
-        setJoinedLate(false);
-        dispatch(setGameStatus("not in progress"));
-        dispatch(setPleaseWait(false));
+        dispatch(setGameStatus("results"));
       }
     });
 
     socket.on("otherPlayerStartedGame", ({ questions }) => {
       // find way to get alert dialog to popup for other users
       //set start warning and questions
-      if (!joinedLate) {
-        dispatch(setPlayerNotAlone(true));
-        dispatch(setOpenStartGamePopup(true));
-        dispatch(setQuestions(questions));
+      dispatch(setQuestions(questions));
+      dispatch(setOpenStartGamePopup(true));
+      dispatch(setGameStatus("in progress"));
+      if (users.length > 1) {
+        dispatch(setPlayerIsAlone(true));
       } else {
-        dispatch(setOpenStartGamePopup(false));
+        dispatch(setPlayerIsAlone(false));
       }
     });
   }, []);
-
-  //------if someone clicks 'play trivia', the game will start for all users across devices
-  if (openStartGamePopup) {
-    socket.emit("startGame");
-  }
 
   //   if a game is in progress when a new person joins, show 'please wait, a game is in progress'
 
@@ -174,7 +167,7 @@ const RoomView = () => {
         </Grid>
         <Grid item xs={4}>
           <Item sx={styles.sx.TriviaBox}>
-            {!pleaseWait && <TriviaBox />}
+            {!pleaseWait && <TriviaBox socket={socket} />}
             {pleaseWait && <p>please wait! a game is in progress </p>}
           </Item>
         </Grid>

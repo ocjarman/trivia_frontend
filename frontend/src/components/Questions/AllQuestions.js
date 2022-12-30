@@ -19,6 +19,7 @@ import {
   setGameStatus,
   setPleaseWait,
   setOpenStartGamePopup,
+  setShowQuestions,
 } from "../../store/triviaSlice";
 import { setScore } from "../../store/newUserSlice";
 
@@ -47,20 +48,12 @@ function getStepContent(step) {
 const theme = createTheme();
 
 // moves us from one component to the next in the checkout process
-export default function AllQuestions() {
+export default function AllQuestions({ socket }) {
   const [activeStep, setActiveStep] = React.useState(0);
   const dispatch = useDispatch();
   const selected = useSelector((state) => state.trivia.selectedAnswer);
   const questions = useSelector((state) => state.trivia.questions);
   const score = useSelector((state) => state.newUser.score);
-
-  const questionsAndAnswers = [];
-  questions.forEach((question) =>
-    questionsAndAnswers.push({
-      id: question.id,
-      correct_answer: question.correct_answer,
-    })
-  );
 
   const handleNext = () => {
     if (selected === questions[activeStep].correct_answer) {
@@ -68,15 +61,12 @@ export default function AllQuestions() {
     } else {
       dispatch(setScore(score + 0));
     }
-
     setActiveStep(activeStep + 1);
   };
 
   const resetGame = () => {
-    dispatch(setGameStatus("not in progress"));
-    dispatch(setPleaseWait(false));
-    dispatch(setScore(0));
-    dispatch(setOpenStartGamePopup(false));
+    dispatch(setGameStatus("ready"));
+    socket.emit("restartGame");
   };
 
   return (
@@ -147,7 +137,7 @@ export default function AllQuestions() {
                   <>
                     <CountdownCircleTimer
                       isPlaying
-                      duration={10}
+                      duration={3}
                       colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
                       colorsTime={[7, 5, 2, 0]}
                       size={50}
@@ -165,18 +155,12 @@ export default function AllQuestions() {
                   <>
                     <CountdownCircleTimer
                       isPlaying
-                      duration={10}
+                      duration={3}
                       colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
                       colorsTime={[7, 5, 2, 0]}
                       size={50}
                       onComplete={() => {
-                        // do your stuff here
                         handleNext();
-                        resetGame();
-                        // dispatch(setGameStatus("not in progress"));
-                        // dispatch(setPleaseWait(false));
-                        // dispatch(setOpenStartGamePopup(false));
-
                         return { shouldRepeat: false, delay: 0.5 }; // repeat animation in 1.5 seconds
                       }}
                     >

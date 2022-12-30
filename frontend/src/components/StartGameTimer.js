@@ -6,24 +6,23 @@ import {
   setOpenStartGamePopup,
   setShowQuestions,
 } from "../store/triviaSlice";
+
 const StartGameTimer = () => {
   const dispatch = useDispatch();
 
   const handleClose = () => {
     dispatch(setOpenStartGamePopup(false));
+    dispatch(setShowQuestions(true));
   };
   return (
     <>
       <CountdownCircleTimer
         isPlaying
-        duration={10}
+        duration={5}
         colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
         colorsTime={[7, 5, 2, 0]}
         onComplete={() => {
-          dispatch(setShowQuestions(true));
-          dispatch(setGameStatus("in progress"));
           handleClose();
-
           return { shouldRepeat: false, delay: 0.5 }; // repeat animation in 1.5 seconds
         }}
       >
