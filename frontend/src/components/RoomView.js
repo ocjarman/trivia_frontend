@@ -23,6 +23,7 @@ import {
   setQuestions,
 } from "../store/triviaSlice";
 import { setOpenStartGamePopup } from "../store/triviaSlice";
+import RoomAppBar from "./RoomAppBar";
 
 const socket = io.connect("http://localhost:4000");
 
@@ -134,34 +135,29 @@ const RoomView = () => {
 
   return (
     <Box sx={styles.sx.RoomContainer}>
-      <Grid container spacing={2}>
+      <RoomAppBar handleExit={handleExit} roomId={roomId} name={name} />
+      <Box display="flex" justifyContent="center" alignItems="center">
         <Grid item xs={3}>
-          <Item>
-            <RoomInfo roomId={roomId} />
-          </Item>
-          <Item>
-            <a href="/">
-              <button onClick={handleExit}>Leave</button>
-            </a>
-          </Item>
-          <Item>
-            <UsersInRoom users={users} />
+          <Item style={styles.sx.UsersContainer}>
+            <UsersInRoom users={users} roomId={roomId} />
           </Item>
           <Item sx={styles.sx.ChatBox}>
             <Messages messages={allMessages} name={name} />
           </Item>
+
           <MessageInput
             message={message}
             setMessage={setMessage}
             sendMessage={sendMessage}
           />
         </Grid>
-        <Grid item xs={4}>
+
+        <Grid item xs={5}>
           <Item sx={styles.sx.TriviaBox}>
             <TriviaBox socket={socket} />
           </Item>
         </Grid>
-      </Grid>
+      </Box>
     </Box>
   );
 };

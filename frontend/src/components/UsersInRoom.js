@@ -1,13 +1,15 @@
 import React from "react";
 
-const UsersInRoom = ({ users }) => {
+const UsersInRoom = ({ users, roomId }) => {
   return (
     <>
       {users ? (
         <div>
-          <h6>People currently chatting:</h6>
+          <h3>
+            {users.length} player(s) in Room {roomId}
+          </h3>
           {users.map((user, i) => (
-            <span key={i}>{user.name} </span>
+            <p key={i}>{user.name} </p>
           ))}
         </div>
       ) : null}

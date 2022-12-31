@@ -93,7 +93,7 @@ export default function AllQuestions({ socket }) {
           }}
         >
           <Typography component="h1" variant="h4" align="center">
-            Trivia
+            Coding Trivia
           </Typography>
           <Typography component="h5" variant="h6" align="center">
             Score: {score} / 5
