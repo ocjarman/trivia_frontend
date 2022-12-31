@@ -48,6 +48,7 @@ export default function AllQuestions({ socket }) {
   const dispatch = useDispatch();
   const selected = useSelector((state) => state.trivia.selectedAnswer);
   const questions = useSelector((state) => state.trivia.questions);
+  const gameResultsFE = useSelector((state) => state.trivia.gameResults);
   const roomId = useSelector((state) => state.newUser.roomId);
   const name = useSelector((state) => state.newUser.name);
   const [score, setScore] = useState(0);
@@ -71,7 +72,6 @@ export default function AllQuestions({ socket }) {
 
   useEffect(() => {
     socket.on("allScores", ({ allScores }) => {
-      console.log(allScores);
       setResults(allScores);
     });
   }, []);
@@ -121,66 +121,60 @@ export default function AllQuestions({ socket }) {
             <React.Fragment>
               <Typography variant="h5" gutterBottom>
                 You scored {score} / 5
-                {results.map((result) => (
-                  <p>
+                {results.map((result, i) => (
+                  <p key={i}>
                     {result.name}: {result.score} points
                   </p>
                 ))}
               </Typography>
 
-              <Button onClick={resetGame}>Start Over</Button>
+              <Button onClick={resetGame}>Play again!</Button>
             </React.Fragment>
           ) : (
-            <React.Fragment>
-              <Box
-                sx={{
-                  width: "auto",
-                  height: "auto",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  justifyItems: "center",
-                  alignItems: "center",
-                }}
-              >
-                {getStepContent(activeStep)}
-                {activeStep < steps.length - 1 && (
-                  <>
-                    <CountdownCircleTimer
-                      isPlaying
-                      duration={3}
-                      colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
-                      colorsTime={[7, 5, 2, 0]}
-                      size={50}
-                      onComplete={() => {
-                        // do your stuff here
-                        handleNext();
-                        return { shouldRepeat: true, delay: 0.5 }; // repeat animation in 1.5 seconds
-                      }}
-                    >
-                      {({ remainingTime }) => remainingTime}
-                    </CountdownCircleTimer>
-                  </>
-                )}
-                {activeStep >= steps.length - 1 && (
-                  <>
-                    <CountdownCircleTimer
-                      isPlaying
-                      duration={3}
-                      colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
-                      colorsTime={[7, 5, 2, 0]}
-                      size={50}
-                      onComplete={() => {
-                        handleNext();
-                        return { shouldRepeat: false, delay: 0.5 }; // repeat animation in 1.5 seconds
-                      }}
-                    >
-                      {({ remainingTime }) => remainingTime}
-                    </CountdownCircleTimer>
-                  </>
-                )}
-              </Box>
-            </React.Fragment>
+            <Box
+              sx={{
+                width: "auto",
+                height: "auto",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                justifyItems: "center",
+                alignItems: "center",
+              }}
+            >
+              {getStepContent(activeStep)}
+              {activeStep < steps.length - 1 && (
+                <CountdownCircleTimer
+                  isPlaying
+                  duration={3}
+                  colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
+                  colorsTime={[7, 5, 2, 0]}
+                  size={50}
+                  onComplete={() => {
+                    // do your stuff here
+                    handleNext();
+                    return { shouldRepeat: true, delay: 0.5 }; // repeat animation in 1.5 seconds
+                  }}
+                >
+                  {({ remainingTime }) => remainingTime}
+                </CountdownCircleTimer>
+              )}
+              {activeStep >= steps.length - 1 && (
+                <CountdownCircleTimer
+                  isPlaying
+                  duration={3}
+                  colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
+                  colorsTime={[7, 5, 2, 0]}
+                  size={50}
+                  onComplete={() => {
+                    handleNext();
+                    return { shouldRepeat: false, delay: 0.5 }; // repeat animation in 1.5 seconds
+                  }}
+                >
+                  {({ remainingTime }) => remainingTime}
+                </CountdownCircleTimer>
+              )}
+            </Box>
           )}
         </Paper>
       </Container>

@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import AnswerChoices from "./AnswerChoices";
 import { setSelectedAnswer } from "../../store/triviaSlice";
+import styles from "./Questions.styles";
 
 const Question2 = () => {
   const question = useSelector((state) => state.trivia.questions[1]);
@@ -16,17 +17,7 @@ const Question2 = () => {
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          justifyItems: "center",
-          alignContent: "center",
-          alignItems: "center",
-          width: "300px",
-        }}
-      >
+      <div style={styles.sx.QuestionContainer}>
         <p>
           <b>Category:</b> {question.category}
         </p>
@@ -37,21 +28,17 @@ const Question2 = () => {
       </div>
       <div style={{ margin: "1%", display: "flex" }}>
         {question.incorrect_answers.map((answer) => (
-          <>
-            <AnswerChoices answer={answer} handleInput={handleInput} />
-          </>
+          <AnswerChoices
+            answer={answer}
+            handleInput={handleInput}
+            key={answer}
+          />
         ))}
 
         {selected === question.correct_answer ? (
           <Button
             variant="contained"
-            style={{
-              width: "20%",
-              fontSize: "10px",
-              backgroundColor: "cadetBlue",
-              margin: "2%",
-              border: "2px solid black",
-            }}
+            style={styles.sx.SelectedAnswer}
             value={question.correct_answer}
             onClick={handleInput}
           >
@@ -60,12 +47,7 @@ const Question2 = () => {
         ) : (
           <Button
             variant="contained"
-            style={{
-              width: "20%",
-              fontSize: "10px",
-              backgroundColor: "cadetBlue",
-              margin: "2%",
-            }}
+            style={styles.sx.NonselectedAnswer}
             value={question.correct_answer}
             onClick={handleInput}
           >

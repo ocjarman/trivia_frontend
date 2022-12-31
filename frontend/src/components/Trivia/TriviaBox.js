@@ -1,11 +1,14 @@
 import React from "react";
-import { setGameStatus } from "../store/triviaSlice";
+import { setGameStatus } from "../../store/triviaSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@mui/material";
+import AllQuestions from "../Questions/AllQuestions";
+import { setLoadingQuestions } from "../../store/triviaSlice";
+import {
+  setOpenStartGamePopup,
+  setPlayerIsAlone,
+} from "../../store/triviaSlice";
 import StartGamePopup from "./StartGamePopup";
-import AllQuestions from "./Questions/AllQuestions";
-import { setLoadingQuestions } from "../store/triviaSlice";
-import { setOpenStartGamePopup, setPlayerIsAlone } from "../store/triviaSlice";
 
 const TriviaBox = ({ socket }) => {
   const dispatch = useDispatch();

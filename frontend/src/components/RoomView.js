@@ -6,8 +6,8 @@ import { setUsers } from "../store/usersSlice";
 import io from "socket.io-client";
 import { addMessage } from "../store/messagesSlice";
 import RoomInfo from "./RoomInfo";
-import Messages from "./Messages";
-import MessageInput from "./MessageInput";
+import Messages from "./ChatBox/Messages";
+import MessageInput from "./ChatBox/MessageInput";
 import UsersInRoom from "./UsersInRoom";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -16,14 +16,14 @@ import { styled } from "@mui/material/styles";
 import { deleteUser } from "../store/usersSlice";
 import { useNavigate } from "react-router-dom";
 import styles from "./Room.styles";
-import TriviaBox from "./TriviaBox";
+import TriviaBox from "./Trivia/TriviaBox";
 import {
   setGameStatus,
   setPlayerIsAlone,
   setQuestions,
 } from "../store/triviaSlice";
 import { setOpenStartGamePopup } from "../store/triviaSlice";
-import StartGameTimer from "./StartGameTimer";
+
 const socket = io.connect("http://localhost:4000");
 
 socket.on("connect", () => {
@@ -42,13 +42,7 @@ const RoomView = () => {
   const roomId = useSelector((state) => state.newUser.roomId);
   const name = useSelector((state) => state.newUser.name);
   const users = useSelector((state) => state.users.users);
-  const status = useSelector((state) => state.trivia.gameStatus);
-  const [pleaseWait, setPleaseWait] = useState(false);
-  const openStartGamePopup = useSelector(
-    (state) => state.trivia.openStartGamePopup
-  );
-  const score = useSelector((state) => state.newUser.score);
-
+  const gameStatusFE = useSelector((state) => state.trivia.gameStatus);
   useEffect(() => {
     // on loading page if no room or name, send back to join page
     if (roomId === "" || name === "") {
@@ -89,7 +83,10 @@ const RoomView = () => {
       if (gameStatus === "in progress") {
         dispatch(setGameStatus("in progress"));
       } else if (gameStatus === "game results") {
-        dispatch(setGameStatus("results"));
+        dispatch(setGameStatus("game results"));
+      } else if (gameStatus === "ready") {
+        console.log("ready? ", { gameStatus });
+        dispatch(setGameStatus("ready"));
       }
     });
 
@@ -106,12 +103,6 @@ const RoomView = () => {
       }
     });
   }, []);
-
-  //   if a game is in progress when a new person joins, show 'please wait, a game is in progress'
-
-  socket.on("pleaseWait", () => {
-    setPleaseWait(true);
-  });
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -167,8 +158,7 @@ const RoomView = () => {
         </Grid>
         <Grid item xs={4}>
           <Item sx={styles.sx.TriviaBox}>
-            {!pleaseWait && <TriviaBox socket={socket} />}
-            {pleaseWait && <p>please wait! a game is in progress </p>}
+            <TriviaBox socket={socket} />
           </Item>
         </Grid>
       </Grid>

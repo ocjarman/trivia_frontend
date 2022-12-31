@@ -7,7 +7,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { setOpenStartGamePopup, setPlayerIsAlone } from "../store/triviaSlice";
+import { setOpenStartGamePopup } from "../../store/triviaSlice";
 import StartGameTimer from "./StartGameTimer";
 
 export default function StartGamePopup() {
@@ -30,9 +30,7 @@ export default function StartGamePopup() {
           {"Game will begin in..."}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            <StartGameTimer />
-          </DialogContentText>
+          <StartGameTimer />
         </DialogContent>
       </>
 
