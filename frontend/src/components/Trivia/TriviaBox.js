@@ -16,6 +16,7 @@ const TriviaBox = ({ socket }) => {
   const gameStatus = useSelector((state) => state.trivia.gameStatus);
   const questions = useSelector((state) => state.trivia.questions);
   const open = useSelector((state) => state.trivia.openStartGamePopup);
+  const playerIsAlone = useSelector((state) => state.trivia.playerIsAlone);
   const loadingQuestions = useSelector(
     (state) => state.trivia.loadingQuestions
   );
@@ -36,14 +37,16 @@ const TriviaBox = ({ socket }) => {
 
   return (
     <>
-      {gameStatus === "ready" && (
+      {gameStatus === "ready" && !playerIsAlone ? (
         <>
           <h3>Welcome to Trivia! </h3>
           <Button variant="outlined" onClick={handleClickOpen}>
             Play Trivia!
           </Button>
         </>
-      )}
+      ) : null}
+
+      {playerIsAlone && "invite a friend to play trivia with!"}
       {open && <StartGamePopup />}
       {!loadingQuestions && !open && gameStatus === "in progress" ? (
         <AllQuestions socket={socket} />

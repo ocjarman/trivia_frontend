@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import { setUsers } from "../store/usersSlice";
 import io from "socket.io-client";
 import { addMessage } from "../store/messagesSlice";
-import RoomInfo from "./RoomInfo";
 import Messages from "./ChatBox/Messages";
 import MessageInput from "./ChatBox/MessageInput";
 import UsersInRoom from "./UsersInRoom";
@@ -74,6 +73,9 @@ const RoomView = () => {
     // whenever roomData emits on backend, frontend  users state will be updated
     socket.on("roomData", ({ users }) => {
       dispatch(setUsers(users));
+      if (users.length > 1) {
+        dispatch(setPlayerIsAlone(false));
+      }
     });
 
     socket.on("gameStarted", ({ questions }) => {
