@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-
+import styles from "../Room.styles";
 const MessageInput = ({ setMessage, sendMessage, message }) => {
   const handleClearInput = (e) => {
     e.preventDefault();
@@ -9,7 +9,11 @@ const MessageInput = ({ setMessage, sendMessage, message }) => {
   };
 
   return (
-    <form className="form" onSubmit={handleClearInput}>
+    <form
+      className="form"
+      onSubmit={handleClearInput}
+      style={styles.sx.MessageInput}
+    >
       <TextField
         type="text"
         placeholder="Type a message..."

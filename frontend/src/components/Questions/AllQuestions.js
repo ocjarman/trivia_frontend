@@ -16,9 +16,9 @@ import Question4 from "./Question4";
 import Question5 from "./Question5";
 import SubmitAnswers from "./Question5";
 import { setGameStatus } from "../../store/triviaSlice";
-import { setScore } from "../../store/newUserSlice";
+import { useState } from "react";
+import { useEffect } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
-
 const steps = ["0", "1", "2", "3", "4"];
 
 function getStepContent(step) {
@@ -43,43 +43,42 @@ function getStepContent(step) {
 const theme = createTheme();
 
 // moves us from one component to the next in the checkout process
-export default function AllQuestions() {
+export default function AllQuestions({ socket }) {
   const [activeStep, setActiveStep] = React.useState(0);
   const dispatch = useDispatch();
   const selected = useSelector((state) => state.trivia.selectedAnswer);
   const questions = useSelector((state) => state.trivia.questions);
-  const score = useSelector((state) => state.newUser.score);
-
-  const questionsAndAnswers = [];
-  questions.forEach((question) =>
-    questionsAndAnswers.push({
-      id: question.id,
-      correct_answer: question.correct_answer,
-    })
-  );
+  const gameResultsFE = useSelector((state) => state.trivia.gameResults);
+  const roomId = useSelector((state) => state.newUser.roomId);
+  const name = useSelector((state) => state.newUser.name);
+  const [score, setScore] = useState(0);
+  const [results, setResults] = useState([]);
 
   const handleNext = () => {
+    const nextStep = activeStep + 1;
     if (selected === questions[activeStep].correct_answer) {
-      dispatch(setScore(score + 1));
-    } else {
-      dispatch(setScore(score + 0));
+      const oldScore = score;
+      const newScore = score + 1;
+      setScore(newScore);
+      if (nextStep === 5) {
+        socket.emit("gameResultsSent", { name, roomId, score: newScore });
+      }
     }
-
-    setActiveStep(activeStep + 1);
+    if (nextStep === 5 && selected !== questions[activeStep].correct_answer) {
+      socket.emit("gameResultsSent", { name, roomId, score: score });
+    }
+    setActiveStep(nextStep);
   };
 
-  const submitAllAnswers = async (event) => {
-    event.preventDefault();
-    try {
-      handleNext();
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  useEffect(() => {
+    socket.on("allScores", ({ allScores }) => {
+      setResults(allScores);
+    });
+  }, []);
 
   const resetGame = () => {
-    dispatch(setGameStatus(""));
-    dispatch(setScore(0));
+    dispatch(setGameStatus("ready"));
+    socket.emit("restartGame");
   };
 
   return (
@@ -94,7 +93,7 @@ export default function AllQuestions() {
           }}
         >
           <Typography component="h1" variant="h4" align="center">
-            Trivia
+            Coding Trivia
           </Typography>
           <Typography component="h5" variant="h6" align="center">
             Score: {score} / 5
@@ -122,85 +121,60 @@ export default function AllQuestions() {
             <React.Fragment>
               <Typography variant="h5" gutterBottom>
                 You scored {score} / 5
-              </Typography>
-              <Typography variant="subtitle1">
-                {/* You answered {score} / 5 questions correctly. Results here by
-                user! */}
+                {results.map((result, i) => (
+                  <p key={i}>
+                    {result.name}: {result.score} points
+                  </p>
+                ))}
               </Typography>
 
-              <Button onClick={resetGame}>
-                Start Over (this link needs to restart)
-              </Button>
+              <Button onClick={resetGame}>Play again!</Button>
             </React.Fragment>
           ) : (
-            <React.Fragment>
-              <Box
-                sx={{
-                  width: "auto",
-                  height: "auto",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  justifyItems: "center",
-                  alignItems: "center",
-                }}
-              >
-                {getStepContent(activeStep)}
-                {activeStep < steps.length - 1 && (
-                  <>
-                    <CountdownCircleTimer
-                      isPlaying
-                      duration={10}
-                      colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
-                      colorsTime={[7, 5, 2, 0]}
-                      size={50}
-                      onComplete={() => {
-                        // do your stuff here
-                        handleNext();
-                        return { shouldRepeat: true, delay: 0.5 }; // repeat animation in 1.5 seconds
-                      }}
-                    >
-                      {({ remainingTime }) => remainingTime}
-                    </CountdownCircleTimer>
-                    <Button
-                      variant="contained"
-                      onClick={handleNext}
-                      sx={{
-                        mt: 3,
-                        ml: 1,
-                      }}
-                    >
-                      Next
-                    </Button>
-                  </>
-                )}
-                {activeStep >= steps.length - 1 && (
-                  <>
-                    <CountdownCircleTimer
-                      isPlaying
-                      duration={10}
-                      colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
-                      colorsTime={[7, 5, 2, 0]}
-                      size={50}
-                      onComplete={() => {
-                        // do your stuff here
-                        handleNext();
-                        return { shouldRepeat: true, delay: 0.5 }; // repeat animation in 1.5 seconds
-                      }}
-                    >
-                      {({ remainingTime }) => remainingTime}
-                    </CountdownCircleTimer>
-                    <Button
-                      variant="contained"
-                      onClick={submitAllAnswers}
-                      sx={{ mt: 3, ml: 1 }}
-                    >
-                      Finish!
-                    </Button>
-                  </>
-                )}
-              </Box>
-            </React.Fragment>
+            <Box
+              sx={{
+                width: "auto",
+                height: "auto",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                justifyItems: "center",
+                alignItems: "center",
+              }}
+            >
+              {getStepContent(activeStep)}
+              {activeStep < steps.length - 1 && (
+                <CountdownCircleTimer
+                  isPlaying
+                  duration={3}
+                  colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
+                  colorsTime={[7, 5, 2, 0]}
+                  size={50}
+                  onComplete={() => {
+                    // do your stuff here
+                    handleNext();
+                    return { shouldRepeat: true, delay: 0.5 }; // repeat animation in 1.5 seconds
+                  }}
+                >
+                  {({ remainingTime }) => remainingTime}
+                </CountdownCircleTimer>
+              )}
+              {activeStep >= steps.length - 1 && (
+                <CountdownCircleTimer
+                  isPlaying
+                  duration={3}
+                  colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
+                  colorsTime={[7, 5, 2, 0]}
+                  size={50}
+                  onComplete={() => {
+                    handleNext();
+                    return { shouldRepeat: false, delay: 0.5 }; // repeat animation in 1.5 seconds
+                  }}
+                >
+                  {({ remainingTime }) => remainingTime}
+                </CountdownCircleTimer>
+              )}
+            </Box>
           )}
         </Paper>
       </Container>

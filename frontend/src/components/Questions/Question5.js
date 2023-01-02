@@ -4,39 +4,20 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import AnswerChoices from "./AnswerChoices";
 import { setSelectedAnswer } from "../../store/triviaSlice";
+import styles from "./Questions.styles";
 
 const Question5 = () => {
   const question = useSelector((state) => state.trivia.questions[4]);
   const selected = useSelector((state) => state.trivia.selectedAnswer);
-  const score = useSelector((state) => state.newUser.score);
-  console.log(score);
   const dispatch = useDispatch();
 
   const handleInput = (e) => {
     dispatch(setSelectedAnswer(e.target.value));
   };
 
-  // const handleScore = () => {
-  //   if (selected === question.correct_answer) {
-  //     dispatch(setScore(score + 1));
-  //   } else {
-  //     dispatch(setScore(score + 0));
-  //   }
-  // };
-
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          justifyItems: "center",
-          alignContent: "center",
-          alignItems: "center",
-          width: "300px",
-        }}
-      >
+      <div style={styles.sx.QuestionContainer}>
         <p>
           <b>Category:</b> {question.category}
         </p>
@@ -47,21 +28,17 @@ const Question5 = () => {
       </div>
       <div style={{ margin: "1%", display: "flex" }}>
         {question.incorrect_answers.map((answer) => (
-          <>
-            <AnswerChoices answer={answer} handleInput={handleInput} />
-          </>
+          <AnswerChoices
+            answer={answer}
+            handleInput={handleInput}
+            key={answer}
+          />
         ))}
 
         {selected === question.correct_answer ? (
           <Button
             variant="contained"
-            style={{
-              width: "20%",
-              fontSize: "10px",
-              backgroundColor: "cadetBlue",
-              margin: "2%",
-              border: "2px solid black",
-            }}
+            style={styles.sx.SelectedAnswer}
             value={question.correct_answer}
             onClick={handleInput}
           >
@@ -70,12 +47,7 @@ const Question5 = () => {
         ) : (
           <Button
             variant="contained"
-            style={{
-              width: "20%",
-              fontSize: "10px",
-              backgroundColor: "cadetBlue",
-              margin: "2%",
-            }}
+            style={styles.sx.NonselectedAnswer}
             value={question.correct_answer}
             onClick={handleInput}
           >

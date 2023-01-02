@@ -6,8 +6,8 @@ import { setUsers } from "../store/usersSlice";
 import io from "socket.io-client";
 import { addMessage } from "../store/messagesSlice";
 import RoomInfo from "./RoomInfo";
-import Messages from "./Messages";
-import MessageInput from "./MessageInput";
+import Messages from "./ChatBox/Messages";
+import MessageInput from "./ChatBox/MessageInput";
 import UsersInRoom from "./UsersInRoom";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -16,10 +16,15 @@ import { styled } from "@mui/material/styles";
 import { deleteUser } from "../store/usersSlice";
 import { useNavigate } from "react-router-dom";
 import styles from "./Room.styles";
-import TriviaBox from "./TriviaBox";
-import { setPlayerNotAlone, setQuestions } from "../store/triviaSlice";
+import TriviaBox from "./Trivia/TriviaBox";
+import {
+  setGameStatus,
+  setPlayerIsAlone,
+  setQuestions,
+} from "../store/triviaSlice";
 import { setOpenStartGamePopup } from "../store/triviaSlice";
-import StartGameTimer from "./StartGameTimer";
+import RoomAppBar from "./RoomAppBar";
+
 const socket = io.connect("http://localhost:4000");
 
 socket.on("connect", () => {
@@ -33,15 +38,12 @@ const RoomView = () => {
 
   setRoomId(roomIdFromParams);
   const navigate = useNavigate();
-  const gameStatus = useSelector((state) => state.trivia.gameStatus);
   const [message, setMessage] = useState("");
   const allMessages = useSelector((state) => state.messages.messages);
   const roomId = useSelector((state) => state.newUser.roomId);
   const name = useSelector((state) => state.newUser.name);
   const users = useSelector((state) => state.users.users);
-  const openStartGamePopup = useSelector(
-    (state) => state.trivia.openStartGamePopup
-  );
+  const gameStatusFE = useSelector((state) => state.trivia.gameStatus);
   useEffect(() => {
     // on loading page if no room or name, send back to join page
     if (roomId === "" || name === "") {
@@ -78,19 +80,30 @@ const RoomView = () => {
       dispatch(setQuestions(questions));
     });
 
+    socket.on("gameStatus", ({ gameStatus }) => {
+      if (gameStatus === "in progress") {
+        dispatch(setGameStatus("in progress"));
+      } else if (gameStatus === "game results") {
+        dispatch(setGameStatus("game results"));
+      } else if (gameStatus === "ready") {
+        console.log("ready? ", { gameStatus });
+        dispatch(setGameStatus("ready"));
+      }
+    });
+
     socket.on("otherPlayerStartedGame", ({ questions }) => {
       // find way to get alert dialog to popup for other users
       //set start warning and questions
-      dispatch(setPlayerNotAlone(true));
-      dispatch(setOpenStartGamePopup(true));
       dispatch(setQuestions(questions));
+      dispatch(setOpenStartGamePopup(true));
+      dispatch(setGameStatus("in progress"));
+      if (users.length > 1) {
+        dispatch(setPlayerIsAlone(true));
+      } else {
+        dispatch(setPlayerIsAlone(false));
+      }
     });
   }, []);
-
-  //------if someone clicks 'play trivia', the game will start for all users across devices
-  if (openStartGamePopup) {
-    socket.emit("startGame");
-  }
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -98,7 +111,6 @@ const RoomView = () => {
       //if theres a message from a user, send it to backend, then reset to empty on frontend
       // msg from client to server
       socket.emit("send_message", message);
-      console.log(message);
       setMessage("");
     }
   };
@@ -123,34 +135,29 @@ const RoomView = () => {
 
   return (
     <Box sx={styles.sx.RoomContainer}>
-      <Grid container spacing={2}>
+      <RoomAppBar handleExit={handleExit} roomId={roomId} name={name} />
+      <Box display="flex" justifyContent="center" alignItems="center">
         <Grid item xs={3}>
-          <Item>
-            <RoomInfo roomId={roomId} />
-          </Item>
-          <Item>
-            <a href="/">
-              <button onClick={handleExit}>Leave</button>
-            </a>
-          </Item>
-          <Item>
-            <UsersInRoom users={users} />
+          <Item style={styles.sx.UsersContainer}>
+            <UsersInRoom users={users} roomId={roomId} />
           </Item>
           <Item sx={styles.sx.ChatBox}>
             <Messages messages={allMessages} name={name} />
           </Item>
+
           <MessageInput
             message={message}
             setMessage={setMessage}
             sendMessage={sendMessage}
           />
         </Grid>
-        <Grid item xs={4}>
+
+        <Grid item xs={5}>
           <Item sx={styles.sx.TriviaBox}>
-            <TriviaBox />
+            <TriviaBox socket={socket} />
           </Item>
         </Grid>
-      </Grid>
+      </Box>
     </Box>
   );
 };

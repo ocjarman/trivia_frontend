@@ -1,13 +1,7 @@
 import React from "react";
 
 const RoomInfo = ({ roomId }) => {
-  return (
-    <div>
-      <div>
-        <h3>Room Id: {roomId}</h3>
-      </div>
-    </div>
-  );
+  return <h3>Room Id: {roomId}</h3>;
 };
 
 export default RoomInfo;
