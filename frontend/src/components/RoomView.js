@@ -125,6 +125,13 @@ const RoomView = () => {
     socket.off();
     // handle delete user on frontend
     dispatch(deleteUser(user));
+    checkUsers();
+  };
+
+  const checkUsers = () => {
+    if (users.length <= 1) {
+      dispatch(setPlayerIsAlone(true));
+    }
   };
 
   const Item = styled(Paper)(({ theme }) => ({

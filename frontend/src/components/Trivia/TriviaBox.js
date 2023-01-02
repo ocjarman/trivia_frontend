@@ -9,6 +9,7 @@ import {
   setPlayerIsAlone,
 } from "../../store/triviaSlice";
 import StartGamePopup from "./StartGamePopup";
+import { useEffect } from "react";
 
 const TriviaBox = ({ socket }) => {
   const dispatch = useDispatch();
@@ -28,12 +29,18 @@ const TriviaBox = ({ socket }) => {
     dispatch(setOpenStartGamePopup(true));
     dispatch(setGameStatus("in progress"));
     socket.emit("startGame");
-    if (users.length > 1) {
-      dispatch(setPlayerIsAlone(false));
-    } else {
-      dispatch(setPlayerIsAlone(true));
-    }
   };
+
+  useEffect(() => {
+    // whenever roomData emits on backend, frontend  users state will be updated
+    socket.on("roomData", ({ users }) => {
+      if (users.length > 1) {
+        dispatch(setPlayerIsAlone(false));
+      } else {
+        dispatch(setPlayerIsAlone(true));
+      }
+    });
+  });
 
   return (
     <>
