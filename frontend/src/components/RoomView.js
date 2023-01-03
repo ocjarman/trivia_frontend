@@ -78,8 +78,8 @@ const RoomView = () => {
       }
     });
 
-    socket.on("gameStarted", ({ questions }) => {
-      dispatch(setQuestions(questions));
+    socket.on("gameStarted", ({ randomizedQuestions }) => {
+      dispatch(setQuestions(randomizedQuestions));
     });
 
     socket.on("gameStatus", ({ gameStatus }) => {
@@ -93,10 +93,10 @@ const RoomView = () => {
       }
     });
 
-    socket.on("otherPlayerStartedGame", ({ questions }) => {
+    socket.on("otherPlayerStartedGame", ({ randomizedQuestions }) => {
       // find way to get alert dialog to popup for other users
       //set start warning and questions
-      dispatch(setQuestions(questions));
+      dispatch(setQuestions(randomizedQuestions));
       dispatch(setOpenStartGamePopup(true));
       dispatch(setGameStatus("in progress"));
       if (users.length > 1) {
@@ -135,7 +135,7 @@ const RoomView = () => {
   };
 
   const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: "aliceBlue",
+    backgroundColor: "#EFEFEF",
     ...theme.typography.body2,
     padding: theme.spacing(1),
     textAlign: "center",

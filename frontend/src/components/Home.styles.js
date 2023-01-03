@@ -12,10 +12,11 @@ const styles = {
     LoginContainer: {
       display: "flex",
       flexDirection: "column",
-      padding: "10vw",
-      boxShadow: "10px 5px 5px teal",
-      border: "1px solid black",
+      padding: "5vw",
+      boxShadow: "5px 5px 5px #5A4AE3",
+      border: "1px solid white",
       borderRadius: "5px",
+      backgroundColor: "#EFEFEF",
     },
     FormContainer: {
       display: "flex",

@@ -93,7 +93,7 @@ export default function AllQuestions({ socket }) {
           }}
         >
           <Typography component="h1" variant="h4" align="center">
-            Coding Trivia
+            Trivia
           </Typography>
           <Typography component="h5" variant="h6" align="center">
             Score: {score} / 5
@@ -128,7 +128,16 @@ export default function AllQuestions({ socket }) {
                 ))}
               </Typography>
 
-              <Button onClick={resetGame}>Play again!</Button>
+              <Button
+                onClick={resetGame}
+                style={{
+                  backgroundColor: "#5A4AE3",
+                  width: "200px",
+                  color: "#EFEFEF",
+                }}
+              >
+                Play again!
+              </Button>
             </React.Fragment>
           ) : (
             <Box
@@ -146,8 +155,8 @@ export default function AllQuestions({ socket }) {
               {activeStep < steps.length - 1 && (
                 <CountdownCircleTimer
                   isPlaying
-                  duration={3}
-                  colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
+                  duration={5}
+                  colors={["##5A4AE3", "#685AE4", "#857BE1", "#BBB5F5"]}
                   colorsTime={[7, 5, 2, 0]}
                   size={50}
                   onComplete={() => {
@@ -163,7 +172,7 @@ export default function AllQuestions({ socket }) {
                 <CountdownCircleTimer
                   isPlaying
                   duration={3}
-                  colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
+                  colors={["##5A4AE3", "#685AE4", "#857BE1", "#BBB5F5"]}
                   colorsTime={[7, 5, 2, 0]}
                   size={50}
                   onComplete={() => {

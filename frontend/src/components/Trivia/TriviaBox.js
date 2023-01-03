@@ -45,12 +45,19 @@ const TriviaBox = ({ socket }) => {
   return (
     <>
       {gameStatus === "ready" && !playerIsAlone ? (
-        <>
-          <h3>Welcome to Trivia! </h3>
-          <Button variant="outlined" onClick={handleClickOpen}>
+        <div>
+          <Button
+            variant="outlined"
+            onClick={handleClickOpen}
+            sx={{
+              backgroundColor: "#5A4AE3",
+              color: "#EFEFEF",
+              width: "200px",
+            }}
+          >
             Play Trivia!
           </Button>
-        </>
+        </div>
       ) : null}
 
       {playerIsAlone && "invite a friend to play trivia with!"}

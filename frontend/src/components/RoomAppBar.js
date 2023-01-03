@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 
 import IconButton from "@mui/material/IconButton";
+import logoIcon from "../static/images/logo3.png";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
@@ -15,28 +16,43 @@ const RoomAppBar = ({ handleExit, roomId, name }) => {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar component="nav">
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            sx={{ mr: 2, display: { sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-          >
-            Stack In The Box
-          </Typography>
+        <Toolbar
+          style={{
+            backgroundColor: "#5A4AE3",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          {" "}
+          <img src={logoIcon} alt={""} width="100px" />
+          {roomId !== undefined || name !== undefined ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Button sx={{ color: "#EFEFEF", fontSize: "150%" }}>
+                Room Id: {roomId}
+              </Button>
+              <Button sx={{ color: "#EFEFEF", fontSize: "150%" }}>
+                {name}
+              </Button>
+            </div>
+          ) : null}
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {roomId !== undefined || name !== undefined ? (
               <>
-                <Button sx={{ color: "#fff" }}>Room Id: {roomId}</Button>
-                <Button sx={{ color: "#fff" }}>{name}</Button>
-                <Button href={"/"} sx={{ color: "#fff" }} onClick={handleExit}>
+                <Button
+                  href={"/"}
+                  sx={{
+                    color: "#5A4AE3",
+                    fontSize: "100%",
+                    backgroundColor: "#EFEFEF",
+                  }}
+                  variant="contained"
+                  onClick={handleExit}
+                >
                   Leave Room
                 </Button>
               </>
