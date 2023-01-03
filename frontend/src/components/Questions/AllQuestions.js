@@ -48,7 +48,6 @@ export default function AllQuestions({ socket }) {
   const dispatch = useDispatch();
   const selected = useSelector((state) => state.trivia.selectedAnswer);
   const questions = useSelector((state) => state.trivia.questions);
-  const gameResultsFE = useSelector((state) => state.trivia.gameResults);
   const roomId = useSelector((state) => state.newUser.roomId);
   const name = useSelector((state) => state.newUser.name);
   const [score, setScore] = useState(0);
@@ -95,9 +94,6 @@ export default function AllQuestions({ socket }) {
           <Typography component="h1" variant="h4" align="center">
             Trivia
           </Typography>
-          <Typography component="h5" variant="h6" align="center">
-            Score: {score} / 5
-          </Typography>
 
           <Stepper
             activeStep={activeStep}
@@ -118,12 +114,12 @@ export default function AllQuestions({ socket }) {
             ))}
           </Stepper>
           {activeStep === steps.length ? (
-            <React.Fragment>
+            <div>
               <Typography variant="h5" gutterBottom>
                 You scored {score} / 5
                 {results.map((result, i) => (
                   <p key={i}>
-                    {result.name}: {result.score} points
+                    {result.name}: {result.score} point(s)
                   </p>
                 ))}
               </Typography>
@@ -138,7 +134,7 @@ export default function AllQuestions({ socket }) {
               >
                 Play again!
               </Button>
-            </React.Fragment>
+            </div>
           ) : (
             <Box
               sx={{

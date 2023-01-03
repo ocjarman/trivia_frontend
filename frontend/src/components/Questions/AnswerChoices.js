@@ -11,11 +11,12 @@ const AnswerChoices = ({ answer, handleInput }) => {
         <Button
           variant="contained"
           style={{
-            width: "20%",
+            width: "auto",
             fontSize: "10px",
             backgroundColor: "white",
             margin: "2%",
             color: "#5A4AE3",
+            padding: "5px",
             border: "2px solid #5A4AE3",
           }}
           onClick={handleInput}
@@ -27,11 +28,12 @@ const AnswerChoices = ({ answer, handleInput }) => {
         <Button
           variant="contained"
           style={{
-            width: "20%",
+            width: "auto",
             fontSize: "10px",
             backgroundColor: "#5A4AE3",
             margin: "2%",
             color: "white",
+            padding: "5px",
           }}
           value={answer}
           onClick={handleInput}
