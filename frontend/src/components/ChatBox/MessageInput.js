@@ -23,6 +23,7 @@ const MessageInput = ({ setMessage, sendMessage, message }) => {
       <Button
         className="sendButton"
         variant="contained"
+        style={{ backgroundColor: "#5A4AE3" }}
         type="submit"
         onClick={(e) => sendMessage(e)}
       >

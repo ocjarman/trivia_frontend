@@ -15,7 +15,7 @@ const styles = {
     },
     ChatBubbleSent: {
       display: "flex",
-      backgroundColor: "teal",
+      backgroundColor: "#5A4AE3",
       color: "white",
       borderRadius: "20px 20px 3px 20px",
       textAlign: "right",
@@ -25,8 +25,8 @@ const styles = {
       marginRight: "0",
     },
     ChatBubbleReceive: {
-      backgroundColor: "#303030",
-      color: "white",
+      backgroundColor: "#FEFEFE",
+      color: "#5A4AE3",
       borderRadius: "20px 20px 20px 3px",
       textAlign: "left",
       padding: "2%",

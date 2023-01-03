@@ -7,6 +7,8 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import styles from "./Home.styles";
 import RoomAppBar from "./RoomAppBar";
+import logoImage from "../static/images/logo2.png";
+
 const Home = () => {
   const roomId = useSelector((state) => state.newUser.roomId);
   const navigate = useNavigate();
@@ -27,10 +29,7 @@ const Home = () => {
     <div style={styles.sx.HomeContainer}>
       <RoomAppBar />
       <div style={styles.sx.LoginContainer}>
-        <Typography variant="h3" gutterBottom>
-          Join a room!
-          {/* <img id="front-page-logo" alt="logo" src="{static/logo.png}" /> */}
-        </Typography>
+        <img src={logoImage} alt={""} width="400px" />
 
         <form onSubmit={navigateToRoom} style={styles.sx.FormContainer}>
           <TextField
@@ -48,7 +47,11 @@ const Home = () => {
             onChange={handleRoom}
           />
 
-          <Button type="submit" variant="contained">
+          <Button
+            type="submit"
+            variant="contained"
+            style={{ backgroundColor: "#5A4AE3" }}
+          >
             Join Room
           </Button>
         </form>

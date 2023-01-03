@@ -135,7 +135,7 @@ const RoomView = () => {
   };
 
   const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: "aliceBlue",
+    backgroundColor: "#EFEFEF",
     ...theme.typography.body2,
     padding: theme.spacing(1),
     textAlign: "center",

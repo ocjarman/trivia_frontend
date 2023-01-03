@@ -12,14 +12,14 @@ const styles = {
     SelectedAnswer: {
       width: "20%",
       fontSize: "10px",
-      backgroundColor: "cadetBlue",
+      backgroundColor: "#5A4AE3",
       margin: "2%",
       border: "2px solid black",
     },
     NonselectedAnswer: {
       width: "20%",
       fontSize: "10px",
-      backgroundColor: "cadetBlue",
+      backgroundColor: "#5A4AE3",
       margin: "2%",
     },
   },

@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 
 const AnswerChoices = ({ answer, handleInput }) => {
   const selected = useSelector((state) => state.trivia.selectedAnswer);
+
   return (
     <>
       {selected === answer ? (
@@ -12,9 +13,10 @@ const AnswerChoices = ({ answer, handleInput }) => {
           style={{
             width: "20%",
             fontSize: "10px",
-            backgroundColor: "cadetBlue",
+            backgroundColor: "white",
             margin: "2%",
-            border: "2px solid black",
+            color: "#5A4AE3",
+            border: "2px solid #5A4AE3",
           }}
           onClick={handleInput}
           value={answer}
@@ -27,8 +29,9 @@ const AnswerChoices = ({ answer, handleInput }) => {
           style={{
             width: "20%",
             fontSize: "10px",
-            backgroundColor: "cadetBlue",
+            backgroundColor: "#5A4AE3",
             margin: "2%",
+            color: "white",
           }}
           value={answer}
           onClick={handleInput}
