@@ -73,7 +73,7 @@ export default function AllQuestions({ socket }) {
     socket.on("allScores", ({ allScores }) => {
       setResults(allScores);
     });
-  }, []);
+  });
 
   const resetGame = () => {
     dispatch(setGameStatus("ready"));

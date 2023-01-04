@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { setName, setRoomId } from "../store/newUserSlice";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
 import styles from "./Home.styles";
 import RoomAppBar from "./RoomAppBar";
 import logoImage from "../static/images/logo2.png";

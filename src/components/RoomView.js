@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setRoomId } from "../store/newUserSlice";
 import { useParams } from "react-router-dom";
@@ -62,7 +62,7 @@ const RoomView = () => {
         socket.off();
       };
     }
-  }, []);
+  });
 
   useEffect(() => {
     // on entering a room, add the admin message to the message state welcoming the user
@@ -106,7 +106,7 @@ const RoomView = () => {
         dispatch(setPlayerIsAlone(false));
       }
     });
-  }, []);
+  });
 
   const sendMessage = (e) => {
     e.preventDefault();

@@ -13,7 +13,6 @@ import { useEffect } from "react";
 
 const TriviaBox = ({ socket }) => {
   const dispatch = useDispatch();
-  const users = useSelector((state) => state.users.users);
   const gameStatus = useSelector((state) => state.trivia.gameStatus);
   const questions = useSelector((state) => state.trivia.questions);
   const open = useSelector((state) => state.trivia.openStartGamePopup);
