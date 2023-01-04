@@ -53,6 +53,7 @@ const RoomView = () => {
     // if roomId and name are not empty, send name/roomId data to server to join roomId
     // Whenever users will access this page, join event will be called from the backend.
     if (roomId !== "" && name !== "") {
+      console.log("emitting join room");
       socket.emit("join_room", { name, roomId }, (error) => {
         if (error) {
           alert(error);
@@ -62,14 +63,17 @@ const RoomView = () => {
         socket.off();
       };
     }
-  });
+  }, []);
 
   useEffect(() => {
     // on entering a room, add the admin message to the message state welcoming the user
     // listening to message from the server with socket.on
+    console.log("creating message listener");
     socket.on("message", (message) => {
+      console.log(message);
       dispatch(addMessage(message));
     });
+    console.log(allMessages);
 
     // whenever roomData emits on backend, frontend  users state will be updated
     socket.on("roomData", ({ users }) => {
@@ -106,7 +110,7 @@ const RoomView = () => {
         dispatch(setPlayerIsAlone(false));
       }
     });
-  });
+  }, []);
 
   const sendMessage = (e) => {
     e.preventDefault();
