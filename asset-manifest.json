@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/ocjarman/trivia_frontend/static/css/main.abd64e84.css",
-    "main.js": "/ocjarman/trivia_frontend/static/js/main.d5a4d843.js",
-    "static/media/logo2.png": "/ocjarman/trivia_frontend/static/media/logo2.d985b4324c22e58a0b47.png",
-    "static/media/logo3.png": "/ocjarman/trivia_frontend/static/media/logo3.8895e30eaea18c3948cb.png",
-    "index.html": "/ocjarman/trivia_frontend/index.html",
-    "main.abd64e84.css.map": "/ocjarman/trivia_frontend/static/css/main.abd64e84.css.map",
-    "main.d5a4d843.js.map": "/ocjarman/trivia_frontend/static/js/main.d5a4d843.js.map"
+    "main.css": "/static/css/main.abd64e84.css",
+    "main.js": "/static/js/main.f63e7cbc.js",
+    "static/media/logo2.png": "/static/media/logo2.d985b4324c22e58a0b47.png",
+    "static/media/logo3.png": "/static/media/logo3.8895e30eaea18c3948cb.png",
+    "index.html": "/index.html",
+    "main.abd64e84.css.map": "/static/css/main.abd64e84.css.map",
+    "main.f63e7cbc.js.map": "/static/js/main.f63e7cbc.js.map"
   },
   "entrypoints": [
     "static/css/main.abd64e84.css",
-    "static/js/main.d5a4d843.js"
+    "static/js/main.f63e7cbc.js"
   ]
 }
