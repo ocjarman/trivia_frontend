@@ -18,11 +18,12 @@ import {
   setGameStatus,
   setShowQuestions,
   setResults,
-  resetResults,
 } from "../../store/triviaSlice";
 import { useState } from "react";
 import { useEffect } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import styles from "../Questions/Questions.styles";
+
 const steps = ["0", "1", "2", "3", "4"];
 
 function getStepContent(step) {
@@ -92,30 +93,12 @@ export default function AllQuestions({ socket }) {
   return (
     <ThemeProvider theme={theme}>
       <Container component="main">
-        <Paper
-          variant="outlined"
-          sx={{
-            padding: "5%",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
+        <Paper variant="outlined" sx={styles.sx.QuestionPaper}>
           <Typography component="h1" variant="h4" align="center">
             Trivia
           </Typography>
 
-          <Stepper
-            activeStep={activeStep}
-            sx={{
-              pt: 3,
-              pb: 5,
-              display: "flex",
-              flexDirection: "row",
-              width: "auto",
-              padding: "20px",
-              margin: "20px",
-            }}
-          >
+          <Stepper activeStep={activeStep} sx={styles.sx.Stepper}>
             {steps.map((label) => (
               <Step key={label}>
                 <StepLabel></StepLabel>
@@ -133,29 +116,12 @@ export default function AllQuestions({ socket }) {
                 ))}
               </Typography>
 
-              <Button
-                onClick={resetGame}
-                style={{
-                  backgroundColor: "#5A4AE3",
-                  width: "200px",
-                  color: "#EFEFEF",
-                }}
-              >
+              <Button onClick={resetGame} style={styles.sx.ResetButton}>
                 Play again!
               </Button>
             </div>
           ) : (
-            <Box
-              sx={{
-                width: "auto",
-                height: "auto",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                justifyItems: "center",
-                alignItems: "center",
-              }}
-            >
+            <Box sx={styles.sx.StepBox}>
               {getStepContent(activeStep)}
               {activeStep < steps.length - 1 && (
                 <CountdownCircleTimer
