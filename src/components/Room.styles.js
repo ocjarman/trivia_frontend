@@ -39,6 +39,17 @@ const styles = {
       marginRight: "20%",
       marginTop: "2%",
     },
+    ToolBar: {
+      backgroundColor: "#5A4AE3",
+      display: "flex",
+      justifyContent: "space-between",
+    },
+    ToolBarButton: { color: "#EFEFEF", fontSize: "150%" },
+    LeaveButton: {
+      color: "#5A4AE3",
+      fontSize: "100%",
+      backgroundColor: "#EFEFEF",
+    },
   },
 };
 

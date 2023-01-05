@@ -7,19 +7,14 @@ import logoIcon from "../static/images/logo3.png";
 
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
+import styles from "./Room.styles";
 
 const RoomAppBar = ({ handleExit, roomId, name }) => {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar component="nav">
-        <Toolbar
-          style={{
-            backgroundColor: "#5A4AE3",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
+        <Toolbar style={styles.sx.ToolBar}>
           {" "}
           <img src={logoIcon} alt={""} width="100px" />
           {roomId !== undefined || name !== undefined ? (
@@ -29,12 +24,8 @@ const RoomAppBar = ({ handleExit, roomId, name }) => {
                 justifyContent: "center",
               }}
             >
-              <Button sx={{ color: "#EFEFEF", fontSize: "150%" }}>
-                Room Id: {roomId}
-              </Button>
-              <Button sx={{ color: "#EFEFEF", fontSize: "150%" }}>
-                {name}
-              </Button>
+              <Button sx={styles.sx.ToolBarButton}>Room Id: {roomId}</Button>
+              <Button sx={styles.sx.ToolBarButton}>{name}</Button>
             </div>
           ) : null}
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
@@ -42,11 +33,7 @@ const RoomAppBar = ({ handleExit, roomId, name }) => {
               <>
                 <Button
                   href={"/"}
-                  sx={{
-                    color: "#5A4AE3",
-                    fontSize: "100%",
-                    backgroundColor: "#EFEFEF",
-                  }}
+                  sx={styles.sx.LeaveButton}
                   variant="contained"
                   onClick={handleExit}
                 >
