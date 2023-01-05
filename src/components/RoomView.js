@@ -43,6 +43,8 @@ const RoomView = () => {
   const allMessages = useSelector((state) => state.messages.messages);
   const roomId = useSelector((state) => state.newUser.roomId);
   const name = useSelector((state) => state.newUser.name);
+  const results = useSelector((state) => state.trivia.results);
+  const gameStatus = useSelector((state) => state.trivia.gameStatus);
   const users = useSelector((state) => state.users.users);
 
   useEffect(() => {
@@ -204,6 +206,17 @@ const RoomView = () => {
           <Item style={styles.sx.UsersContainer}>
             <UsersInRoom users={users} roomId={roomId} />
           </Item>
+          {results.length > 0 && (
+            <Item sx={styles.sx.UsersContainer}>
+              <h3>Previous Game Scores:</h3>
+              {results?.map((result, i) => (
+                <p key={i}>
+                  {result.name}: {result.score} point(s)
+                </p>
+              ))}
+            </Item>
+          )}
+
           <Item sx={styles.sx.ChatBox}>
             <Messages messages={allMessages} name={name} />
           </Item>

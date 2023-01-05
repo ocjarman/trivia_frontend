@@ -14,7 +14,11 @@ import Question2 from "./Question2";
 import Question3 from "./Question3";
 import Question4 from "./Question4";
 import Question5 from "./Question5";
-import { setGameStatus, setShowQuestions } from "../../store/triviaSlice";
+import {
+  setGameStatus,
+  setShowQuestions,
+  setResults,
+} from "../../store/triviaSlice";
 import { useState } from "react";
 import { useEffect } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
@@ -45,11 +49,12 @@ export default function AllQuestions({ socket }) {
   const dispatch = useDispatch();
   const selected = useSelector((state) => state.trivia.selectedAnswer);
   const questions = useSelector((state) => state.trivia.questions);
+  const results = useSelector((state) => state.trivia.results);
   const roomId = useSelector((state) => state.newUser.roomId);
   const name = useSelector((state) => state.newUser.name);
   const [score, setScore] = useState(0);
-  const [results, setResults] = useState([]);
   const gameStatus = useSelector((state) => state.trivia.gameStatus);
+
   const handleNext = () => {
     const nextStep = activeStep + 1;
     if (selected === questions[activeStep].correct_answer) {
@@ -69,17 +74,20 @@ export default function AllQuestions({ socket }) {
 
   useEffect(() => {
     socket.on("allScores", ({ allScores }) => {
-      setResults(allScores);
+      dispatch(setResults(allScores));
       dispatch(setGameStatus("ready"));
+      console.log("game status ready");
+      console.log(allScores);
     });
   });
 
   const resetGame = () => {
     dispatch(setGameStatus("ready"));
     dispatch(setShowQuestions(false));
-
     socket.emit("restartGame", { name, roomId });
   };
+
+  console.log(results);
 
   return (
     <ThemeProvider theme={theme}>

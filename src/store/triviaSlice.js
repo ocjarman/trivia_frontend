@@ -8,6 +8,7 @@ const initialState = {
   loadingQuestions: true,
   selectedAnswer: "",
   showQuestions: false,
+  results: [],
 };
 
 export const triviaSlice = createSlice({
@@ -35,6 +36,9 @@ export const triviaSlice = createSlice({
     setShowQuestions: (state, action) => {
       state.showQuestions = action.payload;
     },
+    setResults: (state, action) => {
+      state.results = action.payload;
+    },
   },
 });
 
@@ -46,5 +50,6 @@ export const {
   setLoadingQuestions,
   setSelectedAnswer,
   setShowQuestions,
+  setResults,
 } = triviaSlice.actions;
 export default triviaSlice.reducer;

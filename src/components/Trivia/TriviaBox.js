@@ -68,12 +68,6 @@ const TriviaBox = ({ socket }) => {
       {showQuestions && !loadingQuestions ? (
         <AllQuestions socket={socket} />
       ) : null}
-      {/* { &&
-      !open &&
-      gameStatus === "in progress" &&
-      !playerIsAlone ? (
-        <AllQuestions socket={socket} />
-      ) : null} */}
     </>
   );
 };

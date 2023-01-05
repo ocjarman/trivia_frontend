@@ -33,21 +33,6 @@ export default function StartGamePopup() {
           <StartGameTimer />
         </DialogContent>
       </>
-
-      {/* {playerIsAlone && (
-        <>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              You can't play against yourself! Invite a friend!
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} autoFocus>
-              Aww ok...
-            </Button>
-          </DialogActions>
-        </>
-      )} */}
     </Dialog>
   );
 }
