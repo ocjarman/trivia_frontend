@@ -160,8 +160,8 @@ export default function AllQuestions({ socket }) {
               {activeStep < steps.length - 1 && (
                 <CountdownCircleTimer
                   isPlaying
-                  duration={2}
-                  colors={["##5A4AE3", "#685AE4", "#857BE1", "#BBB5F5"]}
+                  duration={10}
+                  colors={["#5A4AE3", "#685AE4", "#857BE1", "#BBB5F5"]}
                   colorsTime={[7, 5, 2, 0]}
                   size={50}
                   onComplete={() => {
@@ -176,8 +176,8 @@ export default function AllQuestions({ socket }) {
               {activeStep >= steps.length - 1 && (
                 <CountdownCircleTimer
                   isPlaying
-                  duration={3}
-                  colors={["##5A4AE3", "#685AE4", "#857BE1", "#BBB5F5"]}
+                  duration={10}
+                  colors={["#5A4AE3", "#685AE4", "#857BE1", "#BBB5F5"]}
                   colorsTime={[7, 5, 2, 0]}
                   size={50}
                   onComplete={() => {
