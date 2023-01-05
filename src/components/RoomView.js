@@ -20,6 +20,7 @@ import {
   setGameStatus,
   setPlayerIsAlone,
   setQuestions,
+  setShowQuestions,
 } from "../store/triviaSlice";
 import { setOpenStartGamePopup } from "../store/triviaSlice";
 import RoomAppBar from "./RoomAppBar";
@@ -68,12 +69,9 @@ const RoomView = () => {
   useEffect(() => {
     // on entering a room, add the admin message to the message state welcoming the user
     // listening to message from the server with socket.on
-    console.log("creating message listener");
     socket.on("message", (message) => {
-      console.log(message);
       dispatch(addMessage(message));
     });
-    console.log(allMessages);
 
     // whenever roomData emits on backend, frontend  users state will be updated
     socket.on("roomData", ({ users }) => {
@@ -90,11 +88,15 @@ const RoomView = () => {
     socket.on("gameStatus", ({ gameStatus }) => {
       if (gameStatus === "in progress") {
         dispatch(setGameStatus("in progress"));
+        console.log(gameStatus);
       } else if (gameStatus === "game results") {
+        dispatch(setShowQuestions(false));
         dispatch(setGameStatus("game results"));
+        console.log(gameStatus);
       } else if (gameStatus === "ready") {
-        console.log("ready? ", { gameStatus });
         dispatch(setGameStatus("ready"));
+        dispatch(setShowQuestions(false));
+        console.log(gameStatus);
       }
     });
 

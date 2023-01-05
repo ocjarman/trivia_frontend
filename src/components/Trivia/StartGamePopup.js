@@ -34,7 +34,7 @@ export default function StartGamePopup() {
         </DialogContent>
       </>
 
-      {playerIsAlone && (
+      {/* {playerIsAlone && (
         <>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
@@ -47,7 +47,7 @@ export default function StartGamePopup() {
             </Button>
           </DialogActions>
         </>
-      )}
+      )} */}
     </Dialog>
   );
 }
