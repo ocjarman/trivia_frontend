@@ -10,7 +10,7 @@ import {
 } from "../../store/triviaSlice";
 import StartGamePopup from "./StartGamePopup";
 import { useEffect } from "react";
-
+import styles from "../Trivia/Trivia.styles";
 const TriviaBox = ({ socket }) => {
   const dispatch = useDispatch();
   const gameStatus = useSelector((state) => state.trivia.gameStatus);
@@ -50,11 +50,7 @@ const TriviaBox = ({ socket }) => {
           <Button
             variant="outlined"
             onClick={handleClickOpen}
-            sx={{
-              backgroundColor: "#5A4AE3",
-              color: "#EFEFEF",
-              width: "200px",
-            }}
+            sx={styles.sx.PopupButton}
           >
             Play Trivia!
           </Button>
