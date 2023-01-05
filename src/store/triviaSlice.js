@@ -39,6 +39,9 @@ export const triviaSlice = createSlice({
     setResults: (state, action) => {
       state.results = action.payload;
     },
+    resetResults: (state, action) => {
+      state.results = [];
+    },
   },
 });
 
@@ -51,5 +54,6 @@ export const {
   setSelectedAnswer,
   setShowQuestions,
   setResults,
+  resetResults,
 } = triviaSlice.actions;
 export default triviaSlice.reducer;

@@ -18,6 +18,7 @@ import {
   setGameStatus,
   setShowQuestions,
   setResults,
+  resetResults,
 } from "../../store/triviaSlice";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -73,21 +74,20 @@ export default function AllQuestions({ socket }) {
   };
 
   useEffect(() => {
-    socket.on("allScores", ({ allScores }) => {
-      dispatch(setResults(allScores));
-      dispatch(setGameStatus("ready"));
-      console.log("game status ready");
+    socket.on("allScores", (allScores) => {
+      console.log("in all scores");
       console.log(allScores);
+      dispatch(setResults(allScores));
+      // dispatch(setShowQuestions(false));
+      dispatch(setGameStatus("ready"));
     });
-  });
+  }, []);
 
   const resetGame = () => {
-    dispatch(setGameStatus("ready"));
     dispatch(setShowQuestions(false));
-    socket.emit("restartGame", { name, roomId });
   };
 
-  console.log(results);
+  console.log({ results });
 
   return (
     <ThemeProvider theme={theme}>
@@ -126,7 +126,7 @@ export default function AllQuestions({ socket }) {
             <div>
               <Typography variant="h5" gutterBottom>
                 You scored {score} / 5
-                {results.map((result, i) => (
+                {results?.map((result, i) => (
                   <p key={i}>
                     {result.name}: {result.score} point(s)
                   </p>

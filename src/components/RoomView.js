@@ -21,12 +21,14 @@ import {
   setPlayerIsAlone,
   setQuestions,
   setShowQuestions,
+  setResults,
 } from "../store/triviaSlice";
 import { setOpenStartGamePopup } from "../store/triviaSlice";
 import RoomAppBar from "./RoomAppBar";
+import Results from "./Results";
 
-// const socket = io.connect("http://localhost:4000");
-const socket = io.connect("https://guarded-bayou-56057.herokuapp.com/");
+const socket = io.connect("http://localhost:4000");
+// const socket = io.connect("https://guarded-bayou-56057.herokuapp.com/");
 
 socket.on("connect", () => {
   console.log("connected");
@@ -91,7 +93,7 @@ const RoomView = () => {
         //set start warning and questions
         dispatch(setQuestions(randomizedQuestions));
         dispatch(setOpenStartGamePopup(true));
-        dispatch(setGameStatus("in progress"));
+        // dispatch(setGameStatus("in progress"));
         if (users.length > 1) {
           dispatch(setPlayerIsAlone(true));
         } else {
@@ -100,68 +102,6 @@ const RoomView = () => {
       });
     }
   }, []);
-
-  // if roomId and name are not empty, send name/roomId data to server to join roomId
-  // Whenever users will access this page, join event will be called from the backend.
-  //   if (roomId !== "" && name !== "") {
-  //     console.log("emitting join room");
-  //     socket.emit("join_room", { name, roomId }, (error) => {
-  //       if (error) {
-  //         alert(error);
-  //       }
-  //     });
-  //     return () => {
-  //       socket.off();
-  //       // dispatch(deleteUser(user));
-  //     };
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  // on entering a room, add the admin message to the message state welcoming the user
-  // listening to message from the server with socket.on
-  // console.log("message listener");
-  // socket.on("message", (message) => {
-  //   console.log(message);
-  //   dispatch(addMessage(message));
-  // });
-  // // whenever roomData emits on backend, frontend  users state will be updated
-  // socket.on("roomData", ({ users }) => {
-  //   dispatch(setUsers(users));
-  //   if (users.length > 1) {
-  //     dispatch(setPlayerIsAlone(false));
-  //   }
-  // });
-  // socket.on("gameStarted", ({ randomizedQuestions }) => {
-  //   dispatch(setQuestions(randomizedQuestions));
-  // });
-  // socket.on("gameStatus", ({ gameStatus }) => {
-  //   if (gameStatus === "in progress") {
-  //     dispatch(setGameStatus("in progress"));
-  //     console.log(gameStatus);
-  //   } else if (gameStatus === "game results") {
-  //     dispatch(setShowQuestions(false));
-  //     dispatch(setGameStatus("game results"));
-  //     console.log(gameStatus);
-  //   } else if (gameStatus === "ready") {
-  //     dispatch(setGameStatus("ready"));
-  //     dispatch(setShowQuestions(false));
-  //     console.log(gameStatus);
-  //   }
-  // });
-  // socket.on("otherPlayerStartedGame", ({ randomizedQuestions }) => {
-  //   // find way to get alert dialog to popup for other users
-  //   //set start warning and questions
-  //   dispatch(setQuestions(randomizedQuestions));
-  //   dispatch(setOpenStartGamePopup(true));
-  //   dispatch(setGameStatus("in progress"));
-  //   if (users.length > 1) {
-  //     dispatch(setPlayerIsAlone(true));
-  //   } else {
-  //     dispatch(setPlayerIsAlone(false));
-  //   }
-  // });
-  // }, []);
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -206,14 +146,19 @@ const RoomView = () => {
           <Item style={styles.sx.UsersContainer}>
             <UsersInRoom users={users} roomId={roomId} />
           </Item>
-          {results.length > 0 && (
+
+          {results.length > 0 ? (
+            <Item sx={styles.sx.UsersContainer}>
+              <h3>Game Score:</h3>
+              {results?.map((result) => {
+                return <Results result={result} />;
+              })}
+            </Item>
+          ) : (
             <Item sx={styles.sx.UsersContainer}>
               <h3>Previous Game Scores:</h3>
-              {results?.map((result, i) => (
-                <p key={i}>
-                  {result.name}: {result.score} point(s)
-                </p>
-              ))}
+
+              <p>no games played yet!</p>
             </Item>
           )}
 
