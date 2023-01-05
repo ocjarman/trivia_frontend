@@ -25,8 +25,8 @@ import {
 import { setOpenStartGamePopup } from "../store/triviaSlice";
 import RoomAppBar from "./RoomAppBar";
 
-const socket = io.connect("http://localhost:4000");
-// const socket = io.connect("https://guarded-bayou-56057.herokuapp.com/");
+// const socket = io.connect("http://localhost:4000");
+const socket = io.connect("https://guarded-bayou-56057.herokuapp.com/");
 
 socket.on("connect", () => {
   console.log("connected");
@@ -49,70 +49,117 @@ const RoomView = () => {
     // on loading page if no room or name, send back to join page
     if (roomId === "" || name === "") {
       navigate("/");
-    }
+    } else {
+      socket.emit("join_room", { name, roomId });
 
-    // if roomId and name are not empty, send name/roomId data to server to join roomId
-    // Whenever users will access this page, join event will be called from the backend.
-    if (roomId !== "" && name !== "") {
-      console.log("emitting join room");
-      socket.emit("join_room", { name, roomId }, (error) => {
-        if (error) {
-          alert(error);
+      console.log("message listener");
+      socket.on("message", (message) => {
+        console.log(message);
+        dispatch(addMessage(message));
+      });
+
+      socket.on("roomData", ({ users }) => {
+        dispatch(setUsers(users));
+        if (users.length > 1) {
+          dispatch(setPlayerIsAlone(false));
         }
       });
-      return () => {
-        socket.off();
-      };
+
+      socket.on("gameStarted", ({ randomizedQuestions }) => {
+        dispatch(setQuestions(randomizedQuestions));
+      });
+
+      socket.on("gameStatus", ({ gameStatus }) => {
+        if (gameStatus === "in progress") {
+          dispatch(setGameStatus("in progress"));
+          console.log(gameStatus);
+        } else if (gameStatus === "game results") {
+          dispatch(setShowQuestions(false));
+          dispatch(setGameStatus("game results"));
+          console.log(gameStatus);
+        } else if (gameStatus === "ready") {
+          dispatch(setGameStatus("ready"));
+          dispatch(setShowQuestions(false));
+          console.log(gameStatus);
+        }
+      });
+
+      socket.on("otherPlayerStartedGame", ({ randomizedQuestions }) => {
+        // find way to get alert dialog to popup for other users
+        //set start warning and questions
+        dispatch(setQuestions(randomizedQuestions));
+        dispatch(setOpenStartGamePopup(true));
+        dispatch(setGameStatus("in progress"));
+        if (users.length > 1) {
+          dispatch(setPlayerIsAlone(true));
+        } else {
+          dispatch(setPlayerIsAlone(false));
+        }
+      });
     }
   }, []);
 
-  useEffect(() => {
-    // on entering a room, add the admin message to the message state welcoming the user
-    // listening to message from the server with socket.on
-    socket.on("message", (message) => {
-      dispatch(addMessage(message));
-    });
+  // if roomId and name are not empty, send name/roomId data to server to join roomId
+  // Whenever users will access this page, join event will be called from the backend.
+  //   if (roomId !== "" && name !== "") {
+  //     console.log("emitting join room");
+  //     socket.emit("join_room", { name, roomId }, (error) => {
+  //       if (error) {
+  //         alert(error);
+  //       }
+  //     });
+  //     return () => {
+  //       socket.off();
+  //       // dispatch(deleteUser(user));
+  //     };
+  //   }
+  // }, []);
 
-    // whenever roomData emits on backend, frontend  users state will be updated
-    socket.on("roomData", ({ users }) => {
-      dispatch(setUsers(users));
-      if (users.length > 1) {
-        dispatch(setPlayerIsAlone(false));
-      }
-    });
-
-    socket.on("gameStarted", ({ randomizedQuestions }) => {
-      dispatch(setQuestions(randomizedQuestions));
-    });
-
-    socket.on("gameStatus", ({ gameStatus }) => {
-      if (gameStatus === "in progress") {
-        dispatch(setGameStatus("in progress"));
-        console.log(gameStatus);
-      } else if (gameStatus === "game results") {
-        dispatch(setShowQuestions(false));
-        dispatch(setGameStatus("game results"));
-        console.log(gameStatus);
-      } else if (gameStatus === "ready") {
-        dispatch(setGameStatus("ready"));
-        dispatch(setShowQuestions(false));
-        console.log(gameStatus);
-      }
-    });
-
-    socket.on("otherPlayerStartedGame", ({ randomizedQuestions }) => {
-      // find way to get alert dialog to popup for other users
-      //set start warning and questions
-      dispatch(setQuestions(randomizedQuestions));
-      dispatch(setOpenStartGamePopup(true));
-      dispatch(setGameStatus("in progress"));
-      if (users.length > 1) {
-        dispatch(setPlayerIsAlone(true));
-      } else {
-        dispatch(setPlayerIsAlone(false));
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  // on entering a room, add the admin message to the message state welcoming the user
+  // listening to message from the server with socket.on
+  // console.log("message listener");
+  // socket.on("message", (message) => {
+  //   console.log(message);
+  //   dispatch(addMessage(message));
+  // });
+  // // whenever roomData emits on backend, frontend  users state will be updated
+  // socket.on("roomData", ({ users }) => {
+  //   dispatch(setUsers(users));
+  //   if (users.length > 1) {
+  //     dispatch(setPlayerIsAlone(false));
+  //   }
+  // });
+  // socket.on("gameStarted", ({ randomizedQuestions }) => {
+  //   dispatch(setQuestions(randomizedQuestions));
+  // });
+  // socket.on("gameStatus", ({ gameStatus }) => {
+  //   if (gameStatus === "in progress") {
+  //     dispatch(setGameStatus("in progress"));
+  //     console.log(gameStatus);
+  //   } else if (gameStatus === "game results") {
+  //     dispatch(setShowQuestions(false));
+  //     dispatch(setGameStatus("game results"));
+  //     console.log(gameStatus);
+  //   } else if (gameStatus === "ready") {
+  //     dispatch(setGameStatus("ready"));
+  //     dispatch(setShowQuestions(false));
+  //     console.log(gameStatus);
+  //   }
+  // });
+  // socket.on("otherPlayerStartedGame", ({ randomizedQuestions }) => {
+  //   // find way to get alert dialog to popup for other users
+  //   //set start warning and questions
+  //   dispatch(setQuestions(randomizedQuestions));
+  //   dispatch(setOpenStartGamePopup(true));
+  //   dispatch(setGameStatus("in progress"));
+  //   if (users.length > 1) {
+  //     dispatch(setPlayerIsAlone(true));
+  //   } else {
+  //     dispatch(setPlayerIsAlone(false));
+  //   }
+  // });
+  // }, []);
 
   const sendMessage = (e) => {
     e.preventDefault();
