@@ -7,8 +7,8 @@ const initialState = {
   playerIsAlone: true,
   loadingQuestions: true,
   selectedAnswer: "",
-  pleaseWait: false,
   showQuestions: false,
+  results: [],
 };
 
 export const triviaSlice = createSlice({
@@ -33,11 +33,11 @@ export const triviaSlice = createSlice({
     setSelectedAnswer: (state, action) => {
       state.selectedAnswer = action.payload;
     },
-    setPleaseWait: (state, action) => {
-      state.pleaseWait = action.payload;
-    },
     setShowQuestions: (state, action) => {
-      state.pleaseWait = action.payload;
+      state.showQuestions = action.payload;
+    },
+    setResults: (state, action) => {
+      state.results = action.payload;
     },
   },
 });
@@ -49,7 +49,7 @@ export const {
   setPlayerIsAlone,
   setLoadingQuestions,
   setSelectedAnswer,
-  setPleaseWait,
   setShowQuestions,
+  setResults,
 } = triviaSlice.actions;
 export default triviaSlice.reducer;

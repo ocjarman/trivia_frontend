@@ -14,8 +14,11 @@ import Question2 from "./Question2";
 import Question3 from "./Question3";
 import Question4 from "./Question4";
 import Question5 from "./Question5";
-import SubmitAnswers from "./Question5";
-import { setGameStatus } from "../../store/triviaSlice";
+import {
+  setGameStatus,
+  setShowQuestions,
+  setResults,
+} from "../../store/triviaSlice";
 import { useState } from "react";
 import { useEffect } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
@@ -33,8 +36,6 @@ function getStepContent(step) {
       return <Question4 />;
     case 4:
       return <Question5 />;
-    case 5:
-      return <SubmitAnswers />;
     default:
       throw new Error("Unknown step");
   }
@@ -48,10 +49,11 @@ export default function AllQuestions({ socket }) {
   const dispatch = useDispatch();
   const selected = useSelector((state) => state.trivia.selectedAnswer);
   const questions = useSelector((state) => state.trivia.questions);
+  const results = useSelector((state) => state.trivia.results);
   const roomId = useSelector((state) => state.newUser.roomId);
   const name = useSelector((state) => state.newUser.name);
   const [score, setScore] = useState(0);
-  const [results, setResults] = useState([]);
+  const gameStatus = useSelector((state) => state.trivia.gameStatus);
 
   const handleNext = () => {
     const nextStep = activeStep + 1;
@@ -61,6 +63,7 @@ export default function AllQuestions({ socket }) {
       setScore(newScore);
       if (nextStep === 5) {
         socket.emit("gameResultsSent", { name, roomId, score: newScore });
+        console.log("game results sending");
       }
     }
     if (nextStep === 5 && selected !== questions[activeStep].correct_answer) {
@@ -71,14 +74,20 @@ export default function AllQuestions({ socket }) {
 
   useEffect(() => {
     socket.on("allScores", ({ allScores }) => {
-      setResults(allScores);
+      dispatch(setResults(allScores));
+      dispatch(setGameStatus("ready"));
+      console.log("game status ready");
+      console.log(allScores);
     });
   });
 
   const resetGame = () => {
     dispatch(setGameStatus("ready"));
-    socket.emit("restartGame");
+    dispatch(setShowQuestions(false));
+    socket.emit("restartGame", { name, roomId });
   };
+
+  console.log(results);
 
   return (
     <ThemeProvider theme={theme}>
@@ -151,7 +160,7 @@ export default function AllQuestions({ socket }) {
               {activeStep < steps.length - 1 && (
                 <CountdownCircleTimer
                   isPlaying
-                  duration={5}
+                  duration={2}
                   colors={["##5A4AE3", "#685AE4", "#857BE1", "#BBB5F5"]}
                   colorsTime={[7, 5, 2, 0]}
                   size={50}
