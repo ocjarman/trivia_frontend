@@ -47,7 +47,7 @@ export default function AllQuestions({ socket }) {
   const dispatch = useDispatch();
   const selected = useSelector((state) => state.trivia.selectedAnswer);
   const questions = useSelector((state) => state.trivia.questions);
-  const results = useSelector((state) => state.trivia.results);
+  const currentResults = useSelector((state) => state.trivia.currentResults);
   const roomId = useSelector((state) => state.newUser.roomId);
   const name = useSelector((state) => state.newUser.name);
   const [score, setScore] = useState(0);
@@ -71,10 +71,8 @@ export default function AllQuestions({ socket }) {
   };
 
   const resetGame = () => {
-    dispatch(setShowQuestions(false));
+    socket.emit("resetGame");
   };
-
-  console.log({ results });
 
   return (
     <ThemeProvider theme={theme}>
@@ -95,7 +93,7 @@ export default function AllQuestions({ socket }) {
             <div>
               <Typography variant="h5" gutterBottom>
                 You scored {score} / 5
-                {results?.map((result, i) => (
+                {currentResults?.map((result, i) => (
                   <p key={i}>
                     {result.name}: {result.score} point(s)
                   </p>

@@ -19,9 +19,11 @@ import TriviaBox from "./Trivia/TriviaBox";
 import {
   setQuestions,
   setShowQuestions,
-  setResults,
+  setPreviousResults,
+  setCurrentResults,
   showPlayButton,
   setLoadingQuestions,
+  resetResults,
 } from "../store/triviaSlice";
 import { setOpenStartGamePopup } from "../store/triviaSlice";
 import RoomAppBar from "./RoomAppBar";
@@ -45,7 +47,8 @@ const RoomView = () => {
   const allMessages = useSelector((state) => state.messages.messages);
   const roomId = useSelector((state) => state.newUser.roomId);
   const name = useSelector((state) => state.newUser.name);
-  const results = useSelector((state) => state.trivia.results);
+  const currentResults = useSelector((state) => state.trivia.currentResults);
+  const previousResults = useSelector((state) => state.trivia.previousResults);
   const users = useSelector((state) => state.users.users);
 
   useEffect(() => {
@@ -67,9 +70,11 @@ const RoomView = () => {
 
       socket.on(
         "gameStatus",
-        ({ gameStatus, randomizedQuestions, results }) => {
+        ({ gameStatus, randomizedQuestions, newResults, previousResults }) => {
           if (gameStatus === "ready") {
             dispatch(showPlayButton(true));
+            dispatch(setShowQuestions(false));
+            dispatch(setPreviousResults(previousResults));
             console.log("status should be ready but is..", gameStatus);
           } else if (gameStatus === "started") {
             //hide play button
@@ -90,14 +95,21 @@ const RoomView = () => {
           } else if (gameStatus === "results") {
             // show scores
             // hide questions
+            console.log("before", { previousResults });
+            console.log("before", { currentResults });
             console.log("status should be results but is..", gameStatus);
+            // dispatch(setPreviousResults(currentResults));
+            dispatch(setCurrentResults(newResults));
             dispatch(setShowQuestions(false));
-            dispatch(setResults(results));
+            dispatch(showPlayButton(true));
           }
         }
       );
     }
   }, []);
+
+  console.log("after", { previousResults });
+  console.log("after", { currentResults });
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -115,7 +127,6 @@ const RoomView = () => {
       (user) => user.name === name && user.roomId === roomId
     );
     socket.off();
-    // handle delete user on frontend
     dispatch(deleteUser(user));
   };
 
@@ -136,20 +147,27 @@ const RoomView = () => {
             <UsersInRoom users={users} roomId={roomId} />
           </Item>
 
-          {results?.length > 0 ? (
+          {currentResults?.length > 0 ? (
             <Item sx={styles.sx.UsersContainer}>
-              <h3>Game Score:</h3>
-              {results?.map((result, i) => {
+              <h3>Most Recent Game Score:</h3>
+              {currentResults?.map((result, i) => {
                 return <Results result={result} key={i} />;
               })}
             </Item>
           ) : (
             <Item sx={styles.sx.UsersContainer}>
-              <h3>Previous Game Scores:</h3>
-
-              <p>no games played yet!</p>
+              <h3>no games played yet!</h3>{" "}
             </Item>
           )}
+
+          {previousResults?.length > 0 ? (
+            <Item sx={styles.sx.UsersContainer}>
+              <h3>Previous Game Scores:</h3>
+              {previousResults?.map((result, i) => {
+                return <Results result={result} key={i} />;
+              })}
+            </Item>
+          ) : null}
 
           <Item sx={styles.sx.ChatBox}>
             <Messages messages={allMessages} name={name} />
