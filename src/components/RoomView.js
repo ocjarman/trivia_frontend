@@ -17,11 +17,11 @@ import { useNavigate } from "react-router-dom";
 import styles from "./Room.styles";
 import TriviaBox from "./Trivia/TriviaBox";
 import {
-  setGameStatus,
-  setPlayerIsAlone,
   setQuestions,
   setShowQuestions,
   setResults,
+  showPlayButton,
+  setLoadingQuestions,
 } from "../store/triviaSlice";
 import { setOpenStartGamePopup } from "../store/triviaSlice";
 import RoomAppBar from "./RoomAppBar";
@@ -46,7 +46,6 @@ const RoomView = () => {
   const roomId = useSelector((state) => state.newUser.roomId);
   const name = useSelector((state) => state.newUser.name);
   const results = useSelector((state) => state.trivia.results);
-  const gameStatus = useSelector((state) => state.trivia.gameStatus);
   const users = useSelector((state) => state.users.users);
 
   useEffect(() => {
@@ -64,42 +63,39 @@ const RoomView = () => {
 
       socket.on("roomData", ({ users }) => {
         dispatch(setUsers(users));
-        if (users.length > 1) {
-          dispatch(setPlayerIsAlone(false));
-        }
       });
 
-      socket.on("gameStarted", ({ randomizedQuestions }) => {
-        dispatch(setQuestions(randomizedQuestions));
-      });
-
-      socket.on("gameStatus", ({ gameStatus }) => {
-        if (gameStatus === "in progress") {
-          dispatch(setGameStatus("in progress"));
-          console.log(gameStatus);
-        } else if (gameStatus === "game results") {
-          dispatch(setShowQuestions(false));
-          dispatch(setGameStatus("game results"));
-          console.log(gameStatus);
-        } else if (gameStatus === "ready") {
-          dispatch(setGameStatus("ready"));
-          dispatch(setShowQuestions(false));
-          console.log(gameStatus);
+      socket.on(
+        "gameStatus",
+        ({ gameStatus, randomizedQuestions, results }) => {
+          if (gameStatus === "ready") {
+            dispatch(showPlayButton(true));
+            console.log("status should be ready but is..", gameStatus);
+          } else if (gameStatus === "started") {
+            //hide play button
+            //show game will start in 10 min popup
+            // set questions
+            console.log("status should be started but is..", gameStatus);
+            dispatch(showPlayButton(false));
+            dispatch(setLoadingQuestions(true));
+            dispatch(setOpenStartGamePopup(true));
+            dispatch(setQuestions(randomizedQuestions));
+            dispatch(setLoadingQuestions(false));
+          } else if (gameStatus === "in progress") {
+            //show trivia questions
+            // hide countdown popup
+            console.log("status should be in progress but is..", gameStatus);
+            dispatch(setOpenStartGamePopup(false));
+            dispatch(setShowQuestions(true));
+          } else if (gameStatus === "results") {
+            // show scores
+            // hide questions
+            console.log("status should be results but is..", gameStatus);
+            dispatch(setShowQuestions(false));
+            dispatch(setResults(results));
+          }
         }
-      });
-
-      socket.on("otherPlayerStartedGame", ({ randomizedQuestions }) => {
-        // find way to get alert dialog to popup for other users
-        //set start warning and questions
-        dispatch(setQuestions(randomizedQuestions));
-        dispatch(setOpenStartGamePopup(true));
-        // dispatch(setGameStatus("in progress"));
-        if (users.length > 1) {
-          dispatch(setPlayerIsAlone(true));
-        } else {
-          dispatch(setPlayerIsAlone(false));
-        }
-      });
+      );
     }
   }, []);
 
@@ -121,13 +117,6 @@ const RoomView = () => {
     socket.off();
     // handle delete user on frontend
     dispatch(deleteUser(user));
-    checkUsers();
-  };
-
-  const checkUsers = () => {
-    if (users.length <= 1) {
-      dispatch(setPlayerIsAlone(true));
-    }
   };
 
   const Item = styled(Paper)(({ theme }) => ({
@@ -147,11 +136,11 @@ const RoomView = () => {
             <UsersInRoom users={users} roomId={roomId} />
           </Item>
 
-          {results.length > 0 ? (
+          {results?.length > 0 ? (
             <Item sx={styles.sx.UsersContainer}>
               <h3>Game Score:</h3>
-              {results?.map((result) => {
-                return <Results result={result} />;
+              {results?.map((result, i) => {
+                return <Results result={result} key={i} />;
               })}
             </Item>
           ) : (

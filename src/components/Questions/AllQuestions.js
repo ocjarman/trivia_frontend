@@ -14,11 +14,7 @@ import Question2 from "./Question2";
 import Question3 from "./Question3";
 import Question4 from "./Question4";
 import Question5 from "./Question5";
-import {
-  setGameStatus,
-  setShowQuestions,
-  setResults,
-} from "../../store/triviaSlice";
+import { setShowQuestions, setResults } from "../../store/triviaSlice";
 import { useState } from "react";
 import { useEffect } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
@@ -55,7 +51,6 @@ export default function AllQuestions({ socket }) {
   const roomId = useSelector((state) => state.newUser.roomId);
   const name = useSelector((state) => state.newUser.name);
   const [score, setScore] = useState(0);
-  const gameStatus = useSelector((state) => state.trivia.gameStatus);
 
   const handleNext = () => {
     const nextStep = activeStep + 1;
@@ -64,25 +59,16 @@ export default function AllQuestions({ socket }) {
       const newScore = score + 1;
       setScore(newScore);
       if (nextStep === 5) {
-        socket.emit("gameResultsSent", { name, roomId, score: newScore });
+        socket.emit("sendingGameResults", { name, roomId, score: newScore });
         console.log("game results sending");
       }
     }
     if (nextStep === 5 && selected !== questions[activeStep].correct_answer) {
-      socket.emit("gameResultsSent", { name, roomId, score: score });
+      socket.emit("sendingGameResults", { name, roomId, score: score });
+      console.log("game results sending");
     }
     setActiveStep(nextStep);
   };
-
-  useEffect(() => {
-    socket.on("allScores", (allScores) => {
-      console.log("in all scores");
-      console.log(allScores);
-      dispatch(setResults(allScores));
-      // dispatch(setShowQuestions(false));
-      dispatch(setGameStatus("ready"));
-    });
-  }, []);
 
   const resetGame = () => {
     dispatch(setShowQuestions(false));
@@ -126,7 +112,7 @@ export default function AllQuestions({ socket }) {
               {activeStep < steps.length - 1 && (
                 <CountdownCircleTimer
                   isPlaying
-                  duration={10}
+                  duration={3}
                   colors={["#5A4AE3", "#685AE4", "#857BE1", "#BBB5F5"]}
                   colorsTime={[7, 5, 2, 0]}
                   size={50}
@@ -142,7 +128,7 @@ export default function AllQuestions({ socket }) {
               {activeStep >= steps.length - 1 && (
                 <CountdownCircleTimer
                   isPlaying
-                  duration={10}
+                  duration={3}
                   colors={["#5A4AE3", "#685AE4", "#857BE1", "#BBB5F5"]}
                   colorsTime={[7, 5, 2, 0]}
                   size={50}

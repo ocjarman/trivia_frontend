@@ -2,21 +2,20 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   questions: [],
-  gameStatus: "ready",
   openStartGamePopup: false,
-  playerIsAlone: true,
   loadingQuestions: true,
   selectedAnswer: "",
   showQuestions: false,
   results: [],
+  showPlayButton: true,
 };
 
 export const triviaSlice = createSlice({
   name: "trivia",
   initialState,
   reducers: {
-    setGameStatus: (state, action) => {
-      state.gameStatus = action.payload;
+    showPlayButton: (state, action) => {
+      state.showPlayButton = action.payload;
     },
     setQuestions: (state, action) => {
       state.questions = action.payload;
@@ -24,9 +23,7 @@ export const triviaSlice = createSlice({
     setOpenStartGamePopup: (state, action) => {
       state.openStartGamePopup = action.payload;
     },
-    setPlayerIsAlone: (state, action) => {
-      state.playerIsAlone = action.payload;
-    },
+
     setLoadingQuestions: (state, action) => {
       state.loadingQuestions = action.payload;
     },
@@ -47,13 +44,12 @@ export const triviaSlice = createSlice({
 
 export const {
   setQuestions,
-  setGameStatus,
   setOpenStartGamePopup,
-  setPlayerIsAlone,
   setLoadingQuestions,
   setSelectedAnswer,
   setShowQuestions,
   setResults,
+  showPlayButton,
   resetResults,
 } = triviaSlice.actions;
 export default triviaSlice.reducer;
