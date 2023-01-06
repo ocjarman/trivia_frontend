@@ -3,7 +3,6 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useSelector } from "react-redux";
-
 import StartGameTimer from "./StartGameTimer";
 
 export default function StartGamePopup() {

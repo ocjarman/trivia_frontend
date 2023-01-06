@@ -10,7 +10,7 @@ const StartGameTimer = () => {
       colorsTime={[7, 5, 2, 0]}
       onComplete={() => {
         console.log("complete");
-        return { shouldRepeat: false, delay: 0.5 }; // repeat animation in 1.5 seconds
+        return { shouldRepeat: false, delay: 0 }; // repeat animation in 1.5 seconds
       }}
     >
       {({ remainingTime }) => remainingTime}

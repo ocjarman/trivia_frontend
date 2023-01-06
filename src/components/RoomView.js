@@ -60,7 +60,6 @@ const RoomView = () => {
 
       console.log("message listener");
       socket.on("message", (message) => {
-        console.log(message);
         dispatch(addMessage(message));
       });
 
@@ -79,26 +78,21 @@ const RoomView = () => {
           } else if (gameStatus === "started") {
             //hide play button
             //show game will start in 10 min popup
-            // set questions
-            console.log("status should be started but is..", gameStatus);
+            //set questions
             dispatch(showPlayButton(false));
             dispatch(setLoadingQuestions(true));
             dispatch(setOpenStartGamePopup(true));
             dispatch(setQuestions(randomizedQuestions));
             dispatch(setLoadingQuestions(false));
           } else if (gameStatus === "in progress") {
-            //show trivia questions
+            // show trivia questions
             // hide countdown popup
-            console.log("status should be in progress but is..", gameStatus);
             dispatch(setOpenStartGamePopup(false));
             dispatch(setShowQuestions(true));
           } else if (gameStatus === "results") {
-            // show scores
             // hide questions
-            console.log("before", { previousResults });
-            console.log("before", { currentResults });
-            console.log("status should be results but is..", gameStatus);
-            // dispatch(setPreviousResults(currentResults));
+            // show scores
+            // show replay
             dispatch(setCurrentResults(newResults));
             dispatch(setShowQuestions(false));
             dispatch(showPlayButton(true));

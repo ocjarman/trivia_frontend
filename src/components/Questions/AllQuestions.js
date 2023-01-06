@@ -14,11 +14,10 @@ import Question2 from "./Question2";
 import Question3 from "./Question3";
 import Question4 from "./Question4";
 import Question5 from "./Question5";
-import { setShowQuestions, setResults } from "../../store/triviaSlice";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import styles from "../Questions/Questions.styles";
+import { setActiveStep } from "../../store/triviaSlice";
 
 const steps = ["0", "1", "2", "3", "4"];
 
@@ -43,7 +42,7 @@ const theme = createTheme();
 
 // moves us from one component to the next in the checkout process
 export default function AllQuestions({ socket }) {
-  const [activeStep, setActiveStep] = React.useState(0);
+  const activeStep = useSelector((state) => state.trivia.activeStep);
   const dispatch = useDispatch();
   const selected = useSelector((state) => state.trivia.selectedAnswer);
   const questions = useSelector((state) => state.trivia.questions);
@@ -67,12 +66,19 @@ export default function AllQuestions({ socket }) {
       socket.emit("sendingGameResults", { name, roomId, score: score });
       console.log("game results sending");
     }
-    setActiveStep(nextStep);
+    dispatch(setActiveStep(nextStep));
+    socket.emit("needNextQuestion");
   };
 
   const resetGame = () => {
     socket.emit("resetGame");
   };
+
+  useEffect(() => {
+    socket.on("sendingNextQuestion", () => {
+      handleNext();
+    });
+  });
 
   return (
     <ThemeProvider theme={theme}>
@@ -117,7 +123,7 @@ export default function AllQuestions({ socket }) {
                   onComplete={() => {
                     // do your stuff here
                     handleNext();
-                    return { shouldRepeat: true, delay: 0.5 }; // repeat animation in 1.5 seconds
+                    return { shouldRepeat: true, delay: 0 }; // repeat animation in 1.5 seconds
                   }}
                 >
                   {({ remainingTime }) => remainingTime}
@@ -132,7 +138,7 @@ export default function AllQuestions({ socket }) {
                   size={50}
                   onComplete={() => {
                     handleNext();
-                    return { shouldRepeat: false, delay: 0.5 }; // repeat animation in 1.5 seconds
+                    return { shouldRepeat: false, delay: 0 }; // repeat animation in 1.5 seconds
                   }}
                 >
                   {({ remainingTime }) => remainingTime}
