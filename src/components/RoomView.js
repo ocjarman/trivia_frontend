@@ -69,7 +69,7 @@ const RoomView = () => {
 
       socket.on(
         "gameStatus",
-        ({ gameStatus, randomizedQuestions, newResults, previousResults }) => {
+        ({ gameStatus, randomizedQuestions, allGameScores }) => {
           if (gameStatus === "ready") {
             dispatch(showPlayButton(true));
             dispatch(setShowQuestions(false));
@@ -93,7 +93,9 @@ const RoomView = () => {
             // hide questions
             // show scores
             // show replay
-            dispatch(setCurrentResults(newResults));
+            console.log(gameStatus);
+            console.log(allGameScores);
+            dispatch(setCurrentResults(allGameScores));
             dispatch(setShowQuestions(false));
             dispatch(showPlayButton(true));
           }
@@ -101,9 +103,6 @@ const RoomView = () => {
       );
     }
   }, []);
-
-  console.log("after", { previousResults });
-  console.log("after", { currentResults });
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -153,15 +152,6 @@ const RoomView = () => {
               <h3>no games played yet!</h3>{" "}
             </Item>
           )}
-
-          {previousResults?.length > 0 ? (
-            <Item sx={styles.sx.UsersContainer}>
-              <h3>Previous Game Scores:</h3>
-              {previousResults?.map((result, i) => {
-                return <Results result={result} key={i} />;
-              })}
-            </Item>
-          ) : null}
 
           <Item sx={styles.sx.ChatBox}>
             <Messages messages={allMessages} name={name} />

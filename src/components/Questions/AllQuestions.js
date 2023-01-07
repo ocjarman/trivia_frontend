@@ -17,22 +17,23 @@ import Question5 from "./Question5";
 import { useState, useEffect } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import styles from "../Questions/Questions.styles";
-import { setActiveStep } from "../../store/triviaSlice";
+import { setActiveStep, setCurrentResults } from "../../store/triviaSlice";
+import { current } from "immer";
 
 const steps = ["0", "1", "2", "3", "4"];
 
-function getStepContent(step) {
+function getStepContent(step, socket) {
   switch (step) {
     case 0:
-      return <Question1 />;
+      return <Question1 socket={socket} />;
     case 1:
-      return <Question2 />;
+      return <Question2 socket={socket} />;
     case 2:
-      return <Question3 />;
+      return <Question3 socket={socket} />;
     case 3:
-      return <Question4 />;
+      return <Question4 socket={socket} />;
     case 4:
-      return <Question5 />;
+      return <Question5 socket={socket} />;
     default:
       throw new Error("Unknown step");
   }
@@ -44,42 +45,24 @@ const theme = createTheme();
 export default function AllQuestions({ socket }) {
   const activeStep = useSelector((state) => state.trivia.activeStep);
   const dispatch = useDispatch();
-  const selected = useSelector((state) => state.trivia.selectedAnswer);
-  const questions = useSelector((state) => state.trivia.questions);
   const currentResults = useSelector((state) => state.trivia.currentResults);
-  const roomId = useSelector((state) => state.newUser.roomId);
-  const name = useSelector((state) => state.newUser.name);
-  const [score, setScore] = useState(0);
+  const [loading, setLoading] = useState("false");
 
-  const handleNext = () => {
+  socket.on("navigatingToNextQ", () => {
     const nextStep = activeStep + 1;
-    if (selected === questions[activeStep].correct_answer) {
-      const oldScore = score;
-      const newScore = score + 1;
-      setScore(newScore);
-      if (nextStep === 5) {
-        socket.emit("sendingGameResults", { name, roomId, score: newScore });
-        console.log("game results sending");
-      }
+    if (nextStep <= 5) {
+      dispatch(setActiveStep(nextStep));
     }
-    if (nextStep === 5 && selected !== questions[activeStep].correct_answer) {
-      socket.emit("sendingGameResults", { name, roomId, score: score });
-      console.log("game results sending");
+    if (nextStep >= 5) {
+      socket.emit("clearInterval");
     }
-    dispatch(setActiveStep(nextStep));
-    socket.emit("needNextQuestion");
-  };
+  });
+
+  console.log(currentResults);
 
   const resetGame = () => {
     socket.emit("resetGame");
   };
-
-  useEffect(() => {
-    socket.on("sendingNextQuestion", () => {
-      handleNext();
-    });
-  });
-
   return (
     <ThemeProvider theme={theme}>
       <Container component="main">
@@ -98,7 +81,6 @@ export default function AllQuestions({ socket }) {
           {activeStep === steps.length ? (
             <div>
               <Typography variant="h5" gutterBottom>
-                You scored {score} / 5
                 {currentResults?.map((result, i) => (
                   <p key={i}>
                     {result.name}: {result.score} point(s)
@@ -112,7 +94,7 @@ export default function AllQuestions({ socket }) {
             </div>
           ) : (
             <Box sx={styles.sx.StepBox}>
-              {getStepContent(activeStep)}
+              {getStepContent(activeStep, socket)}
               {activeStep < steps.length - 1 && (
                 <CountdownCircleTimer
                   isPlaying
@@ -121,8 +103,6 @@ export default function AllQuestions({ socket }) {
                   colorsTime={[7, 5, 2, 0]}
                   size={50}
                   onComplete={() => {
-                    // do your stuff here
-                    handleNext();
                     return { shouldRepeat: true, delay: 0 }; // repeat animation in 1.5 seconds
                   }}
                 >
@@ -137,7 +117,6 @@ export default function AllQuestions({ socket }) {
                   colorsTime={[7, 5, 2, 0]}
                   size={50}
                   onComplete={() => {
-                    handleNext();
                     return { shouldRepeat: false, delay: 0 }; // repeat animation in 1.5 seconds
                   }}
                 >
