@@ -42,6 +42,15 @@ You don't have to ever use `eject`. The curated feature set is suitable for smal
 ## Known Issues
 
 When typing into the chatbox DURING the trivia game, the timer component re-renders. Since time is being controlled on the backend, the question will still move on the same pace as other users. It is a UI issue with the MUI circle timer component.
+
+If a user joins mid-game, the timer component restarts for users playing the game, but questions move on regardless.
+
+To dos:
+- create a 'waiting room' for users who join while game is in progress
+- change backend to hold leaderboard scores in psql database
+- edit that a user cannot get the same question in the same game (random choice currently allows repeats)
+- validate that user must have unique name to join room
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
