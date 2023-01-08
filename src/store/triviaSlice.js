@@ -6,7 +6,6 @@ const initialState = {
   loadingQuestions: true,
   selectedAnswer: "",
   showQuestions: false,
-  previousResults: [],
   currentResults: [],
   showPlayButton: true,
   activeStep: 0,
@@ -38,14 +37,17 @@ export const triviaSlice = createSlice({
     setActiveStep: (state, action) => {
       state.activeStep = action.payload;
     },
-    setPreviousResults: (state, action) => {
-      state.previousResults = action.payload;
-    },
     setCurrentResults: (state, action) => {
       state.currentResults = action.payload;
     },
     resetResults: (state, action) => {
       state.currentResults = [];
+    },
+    resetQuestions: (state, action) => {
+      state.questions = [];
+    },
+    resetActiveStep: (state, action) => {
+      state.activeStep = 0;
     },
   },
 });
@@ -60,6 +62,8 @@ export const {
   setCurrentResults,
   showPlayButton,
   resetResults,
+  resetQuestions,
+  resetActiveStep,
   setActiveStep,
 } = triviaSlice.actions;
 export default triviaSlice.reducer;

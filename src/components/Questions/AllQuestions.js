@@ -17,8 +17,7 @@ import Question5 from "./Question5";
 import { useState, useEffect } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import styles from "../Questions/Questions.styles";
-import { setActiveStep, setCurrentResults } from "../../store/triviaSlice";
-import { current } from "immer";
+import { setActiveStep, setShowQuestions } from "../../store/triviaSlice";
 
 const steps = ["0", "1", "2", "3", "4"];
 
@@ -53,16 +52,15 @@ export default function AllQuestions({ socket }) {
     if (nextStep <= 5) {
       dispatch(setActiveStep(nextStep));
     }
-    if (nextStep >= 5) {
-      socket.emit("clearInterval");
-    }
   });
 
-  console.log(currentResults);
+  console.log({ currentResults });
 
   const resetGame = () => {
+    dispatch(setShowQuestions(false));
     socket.emit("resetGame");
   };
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main">
@@ -83,7 +81,7 @@ export default function AllQuestions({ socket }) {
               <Typography variant="h5" gutterBottom>
                 {currentResults?.map((result, i) => (
                   <p key={i}>
-                    {result.name}: {result.score} point(s)
+                    {result.user}: {result.score} point(s)
                   </p>
                 ))}
               </Typography>

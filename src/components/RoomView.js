@@ -19,11 +19,13 @@ import TriviaBox from "./Trivia/TriviaBox";
 import {
   setQuestions,
   setShowQuestions,
-  setPreviousResults,
   setCurrentResults,
   showPlayButton,
   setLoadingQuestions,
   resetResults,
+  resetQuestions,
+  resetActiveStep,
+  setActiveStep,
 } from "../store/triviaSlice";
 import { setOpenStartGamePopup } from "../store/triviaSlice";
 import RoomAppBar from "./RoomAppBar";
@@ -48,7 +50,7 @@ const RoomView = () => {
   const roomId = useSelector((state) => state.newUser.roomId);
   const name = useSelector((state) => state.newUser.name);
   const currentResults = useSelector((state) => state.trivia.currentResults);
-  const previousResults = useSelector((state) => state.trivia.previousResults);
+  const questions = useSelector((state) => state.trivia.questions);
   const users = useSelector((state) => state.users.users);
 
   useEffect(() => {
@@ -72,9 +74,9 @@ const RoomView = () => {
         ({ gameStatus, randomizedQuestions, allGameScores }) => {
           if (gameStatus === "ready") {
             dispatch(showPlayButton(true));
-            dispatch(setShowQuestions(false));
-            dispatch(setPreviousResults(previousResults));
-            console.log("status should be ready but is..", gameStatus);
+            dispatch(resetResults());
+            dispatch(resetQuestions());
+            dispatch(setActiveStep(0));
           } else if (gameStatus === "started") {
             //hide play button
             //show game will start in 10 min popup
@@ -96,13 +98,17 @@ const RoomView = () => {
             console.log(gameStatus);
             console.log(allGameScores);
             dispatch(setCurrentResults(allGameScores));
-            dispatch(setShowQuestions(false));
-            dispatch(showPlayButton(true));
+
+            // dispatch(setShowQuestions(false));
+            // dispatch(showPlayButton(true));
           }
         }
       );
     }
   }, []);
+
+  console.log("questions", questions);
+  console.log("currentResults", currentResults);
 
   const sendMessage = (e) => {
     e.preventDefault();
