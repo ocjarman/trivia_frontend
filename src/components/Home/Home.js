@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import styles from "./Home.styles";
 import RoomAppBar from "../RoomView/RoomAppBar";
-import logoImage from "../../static/images/logo2.png";
+import logoImage from "../../static/images/logo4.png";
 
 const Home = () => {
   const roomId = useSelector((state) => state.newUser.roomId);
@@ -28,7 +28,7 @@ const Home = () => {
     <div style={styles.sx.HomeContainer}>
       <RoomAppBar />
       <div style={styles.sx.LoginContainer}>
-        <img src={logoImage} alt={""} width="400px" />
+        <img src={logoImage} alt={""} width="50%" />
 
         <form onSubmit={navigateToRoom} style={styles.sx.FormContainer}>
           <TextField
