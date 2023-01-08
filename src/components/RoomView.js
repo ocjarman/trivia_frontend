@@ -75,6 +75,7 @@ const RoomView = () => {
           if (gameStatus === "ready") {
             dispatch(showPlayButton(true));
             dispatch(resetResults());
+            dispatch(setShowQuestions(false));
             dispatch(resetQuestions());
             dispatch(setActiveStep(0));
           } else if (gameStatus === "started") {
@@ -147,17 +148,13 @@ const RoomView = () => {
           </Item>
 
           {currentResults?.length > 0 ? (
-            <Item sx={styles.sx.UsersContainer}>
-              <h3>Most Recent Game Score:</h3>
+            <Item sx={styles.sx.ScoreContainer}>
+              <h3>Game Score:</h3>
               {currentResults?.map((result, i) => {
                 return <Results result={result} key={i} />;
               })}
             </Item>
-          ) : (
-            <Item sx={styles.sx.UsersContainer}>
-              <h3>no games played yet!</h3>{" "}
-            </Item>
-          )}
+          ) : null}
 
           <Item sx={styles.sx.ChatBox}>
             <Messages messages={allMessages} name={name} />

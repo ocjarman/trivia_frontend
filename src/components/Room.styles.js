@@ -30,6 +30,16 @@ const styles = {
       overflowX: "auto",
       margin: "20%",
     },
+    ScoreContainer: {
+      width: "100%",
+      display: "flex",
+      flexDirection: "column",
+      height: "200px",
+      overflowX: "auto",
+      margin: "20%",
+      backgroundColor: "#5A4AE3",
+      color: "white",
+    },
     MessageInput: {
       display: "flex",
       justifyContent: "center",
