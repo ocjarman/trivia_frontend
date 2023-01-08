@@ -54,8 +54,6 @@ export default function AllQuestions({ socket }) {
     }
   });
 
-  console.log({ currentResults });
-
   const resetGame = () => {
     dispatch(setShowQuestions(false));
     socket.emit("resetGame");
