@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setRoomId } from "../store/newUserSlice";
+import { setRoomId } from "../../store/newUserSlice";
 import { useParams } from "react-router-dom";
-import { setUsers } from "../store/usersSlice";
+import { setUsers } from "../../store/usersSlice";
 import io from "socket.io-client";
-import { addMessage } from "../store/messagesSlice";
-import Messages from "./ChatBox/Messages";
-import MessageInput from "./ChatBox/MessageInput";
+import { addMessage } from "../../store/messagesSlice";
+import Messages from "../ChatBox/Messages";
+import MessageInput from "../ChatBox/MessageInput";
 import UsersInRoom from "./UsersInRoom";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
-import { deleteUser } from "../store/usersSlice";
+import { deleteUser } from "../../store/usersSlice";
 import { useNavigate } from "react-router-dom";
 import styles from "./Room.styles";
-import TriviaBox from "./Trivia/TriviaBox";
+import TriviaBox from "../Trivia/TriviaBox";
 import {
   setQuestions,
   setShowQuestions,
@@ -26,10 +26,10 @@ import {
   resetQuestions,
   resetActiveStep,
   setActiveStep,
-} from "../store/triviaSlice";
-import { setOpenStartGamePopup } from "../store/triviaSlice";
+} from "../../store/triviaSlice";
+import { setOpenStartGamePopup } from "../../store/triviaSlice";
 import RoomAppBar from "./RoomAppBar";
-import Results from "./Results";
+import Results from "../Trivia/Results";
 
 const socket = io.connect("http://localhost:4000");
 // const socket = io.connect("https://guarded-bayou-56057.herokuapp.com/");
@@ -60,7 +60,6 @@ const RoomView = () => {
     } else {
       socket.emit("join_room", { name, roomId });
 
-      console.log("message listener");
       socket.on("message", (message) => {
         dispatch(addMessage(message));
       });
@@ -93,23 +92,13 @@ const RoomView = () => {
             dispatch(setOpenStartGamePopup(false));
             dispatch(setShowQuestions(true));
           } else if (gameStatus === "results") {
-            // hide questions
-            // show scores
-            // show replay
-            console.log(gameStatus);
-            console.log(allGameScores);
+            // set results
             dispatch(setCurrentResults(allGameScores));
-
-            // dispatch(setShowQuestions(false));
-            // dispatch(showPlayButton(true));
           }
         }
       );
     }
   }, []);
-
-  console.log("questions", questions);
-  console.log("currentResults", currentResults);
 
   const sendMessage = (e) => {
     e.preventDefault();

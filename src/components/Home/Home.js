@@ -1,12 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setName, setRoomId } from "../store/newUserSlice";
+import { setName, setRoomId } from "../../store/newUserSlice";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import styles from "./Home.styles";
-import RoomAppBar from "./RoomAppBar";
-import logoImage from "../static/images/logo2.png";
+import RoomAppBar from "../RoomView/RoomAppBar";
+import logoImage from "../../static/images/logo2.png";
 
 const Home = () => {
   const roomId = useSelector((state) => state.newUser.roomId);

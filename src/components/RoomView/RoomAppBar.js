@@ -3,7 +3,7 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 
-import logoIcon from "../static/images/logo3.png";
+import logoIcon from "../../static/images/logo3.png";
 
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
