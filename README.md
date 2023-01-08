@@ -46,6 +46,7 @@ When typing into the chatbox DURING the trivia game, the timer component re-rend
 If a user joins mid-game, the timer component restarts for users playing the game, but questions move on regardless.
 
 To dos:
+- dig into and fix circle timer component
 - create a 'waiting room' for users who join while game is in progress
 - change backend to hold leaderboard scores in psql database
 - edit that a user cannot get the same question in the same game (random choice currently allows repeats)

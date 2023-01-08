@@ -31,8 +31,8 @@ import { setOpenStartGamePopup } from "../../store/triviaSlice";
 import RoomAppBar from "./RoomAppBar";
 import Results from "../Trivia/Results";
 
-const socket = io.connect("http://localhost:4000");
-// const socket = io.connect("https://guarded-bayou-56057.herokuapp.com/");
+// const socket = io.connect("http://localhost:4000");
+const socket = io.connect("https://guarded-bayou-56057.herokuapp.com/");
 
 socket.on("connect", () => {
   console.log("connected");
