@@ -2,21 +2,21 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   questions: [],
-  gameStatus: "ready",
   openStartGamePopup: false,
-  playerIsAlone: true,
   loadingQuestions: true,
   selectedAnswer: "",
   showQuestions: false,
-  results: [],
+  currentResults: [],
+  showPlayButton: true,
+  activeStep: 0,
 };
 
 export const triviaSlice = createSlice({
   name: "trivia",
   initialState,
   reducers: {
-    setGameStatus: (state, action) => {
-      state.gameStatus = action.payload;
+    showPlayButton: (state, action) => {
+      state.showPlayButton = action.payload;
     },
     setQuestions: (state, action) => {
       state.questions = action.payload;
@@ -24,9 +24,7 @@ export const triviaSlice = createSlice({
     setOpenStartGamePopup: (state, action) => {
       state.openStartGamePopup = action.payload;
     },
-    setPlayerIsAlone: (state, action) => {
-      state.playerIsAlone = action.payload;
-    },
+
     setLoadingQuestions: (state, action) => {
       state.loadingQuestions = action.payload;
     },
@@ -36,24 +34,36 @@ export const triviaSlice = createSlice({
     setShowQuestions: (state, action) => {
       state.showQuestions = action.payload;
     },
-    setResults: (state, action) => {
-      state.results = action.payload;
+    setActiveStep: (state, action) => {
+      state.activeStep = action.payload;
+    },
+    setCurrentResults: (state, action) => {
+      state.currentResults = action.payload;
     },
     resetResults: (state, action) => {
-      state.results = [];
+      state.currentResults = [];
+    },
+    resetQuestions: (state, action) => {
+      state.questions = [];
+    },
+    resetActiveStep: (state, action) => {
+      state.activeStep = 0;
     },
   },
 });
 
 export const {
   setQuestions,
-  setGameStatus,
   setOpenStartGamePopup,
-  setPlayerIsAlone,
   setLoadingQuestions,
   setSelectedAnswer,
   setShowQuestions,
-  setResults,
+  setPreviousResults,
+  setCurrentResults,
+  showPlayButton,
   resetResults,
+  resetQuestions,
+  resetActiveStep,
+  setActiveStep,
 } = triviaSlice.actions;
 export default triviaSlice.reducer;

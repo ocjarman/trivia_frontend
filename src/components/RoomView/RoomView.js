@@ -1,31 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setRoomId } from "../store/newUserSlice";
+import { setRoomId } from "../../store/newUserSlice";
 import { useParams } from "react-router-dom";
-import { setUsers } from "../store/usersSlice";
+import { setUsers } from "../../store/usersSlice";
 import io from "socket.io-client";
-import { addMessage } from "../store/messagesSlice";
-import Messages from "./ChatBox/Messages";
-import MessageInput from "./ChatBox/MessageInput";
+import { addMessage } from "../../store/messagesSlice";
+import Messages from "../ChatBox/Messages";
+import MessageInput from "../ChatBox/MessageInput";
 import UsersInRoom from "./UsersInRoom";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
-import { deleteUser } from "../store/usersSlice";
+import { deleteUser } from "../../store/usersSlice";
 import { useNavigate } from "react-router-dom";
 import styles from "./Room.styles";
-import TriviaBox from "./Trivia/TriviaBox";
+import TriviaBox from "../Trivia/TriviaBox";
 import {
-  setGameStatus,
-  setPlayerIsAlone,
   setQuestions,
   setShowQuestions,
-  setResults,
-} from "../store/triviaSlice";
-import { setOpenStartGamePopup } from "../store/triviaSlice";
+  setCurrentResults,
+  showPlayButton,
+  setLoadingQuestions,
+  resetResults,
+  resetQuestions,
+  resetActiveStep,
+  setActiveStep,
+} from "../../store/triviaSlice";
+import { setOpenStartGamePopup } from "../../store/triviaSlice";
 import RoomAppBar from "./RoomAppBar";
-import Results from "./Results";
+import Results from "../Trivia/Results";
 
 const socket = io.connect("http://localhost:4000");
 // const socket = io.connect("https://guarded-bayou-56057.herokuapp.com/");
@@ -45,8 +49,8 @@ const RoomView = () => {
   const allMessages = useSelector((state) => state.messages.messages);
   const roomId = useSelector((state) => state.newUser.roomId);
   const name = useSelector((state) => state.newUser.name);
-  const results = useSelector((state) => state.trivia.results);
-  const gameStatus = useSelector((state) => state.trivia.gameStatus);
+  const currentResults = useSelector((state) => state.trivia.currentResults);
+  const questions = useSelector((state) => state.trivia.questions);
   const users = useSelector((state) => state.users.users);
 
   useEffect(() => {
@@ -56,50 +60,43 @@ const RoomView = () => {
     } else {
       socket.emit("join_room", { name, roomId });
 
-      console.log("message listener");
       socket.on("message", (message) => {
-        console.log(message);
         dispatch(addMessage(message));
       });
 
       socket.on("roomData", ({ users }) => {
         dispatch(setUsers(users));
-        if (users.length > 1) {
-          dispatch(setPlayerIsAlone(false));
-        }
       });
 
-      socket.on("gameStarted", ({ randomizedQuestions }) => {
-        dispatch(setQuestions(randomizedQuestions));
-      });
-
-      socket.on("gameStatus", ({ gameStatus }) => {
-        if (gameStatus === "in progress") {
-          dispatch(setGameStatus("in progress"));
-          console.log(gameStatus);
-        } else if (gameStatus === "game results") {
-          dispatch(setShowQuestions(false));
-          dispatch(setGameStatus("game results"));
-          console.log(gameStatus);
-        } else if (gameStatus === "ready") {
-          dispatch(setGameStatus("ready"));
-          dispatch(setShowQuestions(false));
-          console.log(gameStatus);
+      socket.on(
+        "gameStatus",
+        ({ gameStatus, randomizedQuestions, allGameScores }) => {
+          if (gameStatus === "ready") {
+            dispatch(showPlayButton(true));
+            dispatch(resetResults());
+            dispatch(setShowQuestions(false));
+            dispatch(resetQuestions());
+            dispatch(setActiveStep(0));
+          } else if (gameStatus === "started") {
+            //hide play button
+            //show game will start in 10 min popup
+            //set questions
+            dispatch(showPlayButton(false));
+            dispatch(setLoadingQuestions(true));
+            dispatch(setOpenStartGamePopup(true));
+            dispatch(setQuestions(randomizedQuestions));
+            dispatch(setLoadingQuestions(false));
+          } else if (gameStatus === "in progress") {
+            // show trivia questions
+            // hide countdown popup
+            dispatch(setOpenStartGamePopup(false));
+            dispatch(setShowQuestions(true));
+          } else if (gameStatus === "results") {
+            // set results
+            dispatch(setCurrentResults(allGameScores));
+          }
         }
-      });
-
-      socket.on("otherPlayerStartedGame", ({ randomizedQuestions }) => {
-        // find way to get alert dialog to popup for other users
-        //set start warning and questions
-        dispatch(setQuestions(randomizedQuestions));
-        dispatch(setOpenStartGamePopup(true));
-        // dispatch(setGameStatus("in progress"));
-        if (users.length > 1) {
-          dispatch(setPlayerIsAlone(true));
-        } else {
-          dispatch(setPlayerIsAlone(false));
-        }
-      });
+      );
     }
   }, []);
 
@@ -119,15 +116,7 @@ const RoomView = () => {
       (user) => user.name === name && user.roomId === roomId
     );
     socket.off();
-    // handle delete user on frontend
     dispatch(deleteUser(user));
-    checkUsers();
-  };
-
-  const checkUsers = () => {
-    if (users.length <= 1) {
-      dispatch(setPlayerIsAlone(true));
-    }
   };
 
   const Item = styled(Paper)(({ theme }) => ({
@@ -147,20 +136,14 @@ const RoomView = () => {
             <UsersInRoom users={users} roomId={roomId} />
           </Item>
 
-          {results.length > 0 ? (
-            <Item sx={styles.sx.UsersContainer}>
+          {currentResults?.length > 0 ? (
+            <Item sx={styles.sx.ScoreContainer}>
               <h3>Game Score:</h3>
-              {results?.map((result) => {
-                return <Results result={result} />;
+              {currentResults?.map((result, i) => {
+                return <Results result={result} key={i} />;
               })}
             </Item>
-          ) : (
-            <Item sx={styles.sx.UsersContainer}>
-              <h3>Previous Game Scores:</h3>
-
-              <p>no games played yet!</p>
-            </Item>
-          )}
+          ) : null}
 
           <Item sx={styles.sx.ChatBox}>
             <Messages messages={allMessages} name={name} />

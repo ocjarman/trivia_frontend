@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import styles from "../Room.styles";
+import styles from "../RoomView/Room.styles";
 const MessageInput = ({ setMessage, sendMessage, message }) => {
   const handleClearInput = (e) => {
     e.preventDefault();

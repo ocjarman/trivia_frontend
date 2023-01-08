@@ -31,7 +31,7 @@ const styles = {
       textAlign: "left",
       padding: "2%",
       height: "auto",
-      maxWidth: "75%",
+      width: "auto",
       marginLeft: "0",
     },
     ChatBubbleName: {

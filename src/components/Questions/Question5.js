@@ -6,13 +6,17 @@ import AnswerChoices from "./AnswerChoices";
 import { setSelectedAnswer } from "../../store/triviaSlice";
 import styles from "./Questions.styles";
 
-const Question5 = () => {
+const Question5 = ({ socket }) => {
   const question = useSelector((state) => state.trivia.questions[4]);
   // const selected = useSelector((state) => state.trivia.selectedAnswer);
   const dispatch = useDispatch();
 
   const handleInput = (e) => {
     dispatch(setSelectedAnswer(e.target.value));
+    socket.emit("sendAnswer", {
+      selectedAnswer: e.target.value,
+      questionId: question.id,
+    });
   };
 
   return (
