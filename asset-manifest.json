@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/trivia_frontend/static/css/main.abd64e84.css",
-    "main.js": "/trivia_frontend/static/js/main.1edd506b.js",
+    "main.js": "/trivia_frontend/static/js/main.ca518547.js",
     "static/media/logo2.png": "/trivia_frontend/static/media/logo2.d985b4324c22e58a0b47.png",
     "static/media/logo3.png": "/trivia_frontend/static/media/logo3.8895e30eaea18c3948cb.png",
     "index.html": "/trivia_frontend/index.html",
     "main.abd64e84.css.map": "/trivia_frontend/static/css/main.abd64e84.css.map",
-    "main.1edd506b.js.map": "/trivia_frontend/static/js/main.1edd506b.js.map"
+    "main.ca518547.js.map": "/trivia_frontend/static/js/main.ca518547.js.map"
   },
   "entrypoints": [
     "static/css/main.abd64e84.css",
-    "static/js/main.1edd506b.js"
+    "static/js/main.ca518547.js"
   ]
 }
