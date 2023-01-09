@@ -45,6 +45,7 @@ export default function AllQuestions({ socket }) {
   const activeStep = useSelector((state) => state.trivia.activeStep);
   const dispatch = useDispatch();
   const currentResults = useSelector((state) => state.trivia.currentResults);
+  const isDesktop = useSelector((state) => state.users.isDesktop);
   const [loading, setLoading] = useState("false");
 
   socket.on("navigatingToNextQ", () => {

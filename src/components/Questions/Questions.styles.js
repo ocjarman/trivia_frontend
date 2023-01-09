@@ -31,6 +31,15 @@ const styles = {
       display: "flex",
       flexDirection: "column",
     },
+    AnswerContainer: {
+      margin: "1%",
+      display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "center",
+      justifyItems: "center",
+      alignContent: "center",
+      alignItems: "center",
+    },
     Stepper: {
       pt: 3,
       pb: 5,
