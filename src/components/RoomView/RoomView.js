@@ -153,60 +153,60 @@ const RoomView = () => {
   return (
     <Box sx={styles.sx.RoomContainer}>
       <RoomAppBar handleExit={handleExit} roomId={roomId} name={name} />
-      <Box display="flex" justifyContent="center" alignItems="center">
-        <Grid item xs={3}>
-          {showUsers && (
-            <Item style={styles.sx.UsersContainer}>
-              <UsersInRoom users={users} roomId={roomId} />
-            </Item>
-          )}
+      {/* <Box display="flex" justifyContent="center" alignItems="center"> */}
+      <Grid item xs={3}>
+        {showUsers && (
+          <Item style={styles.sx.UsersContainer}>
+            <UsersInRoom users={users} roomId={roomId} />
+          </Item>
+        )}
 
-          {isDesktop ? (
-            <Item sx={styles.sx.TriviaBox}>
-              <TriviaBox socket={socket} />
-            </Item>
-          ) : (
-            <Item sx={styles.sx.MobileTriviaBox}>
-              <TriviaBox socket={socket} />
-            </Item>
-          )}
+        {isDesktop ? (
+          <Item sx={styles.sx.TriviaBox}>
+            <TriviaBox socket={socket} />
+          </Item>
+        ) : (
+          <Item sx={styles.sx.MobileTriviaBox}>
+            <TriviaBox socket={socket} />
+          </Item>
+        )}
 
-          {currentResults?.length > 0 ? (
-            <Item sx={styles.sx.ScoreContainer}>
-              <h3>Game Score:</h3>
-              {currentResults?.map((result, i) => {
-                return <Results result={result} key={i} />;
-              })}
+        {currentResults?.length > 0 ? (
+          <Item sx={styles.sx.ScoreContainer}>
+            <h3>Game Score:</h3>
+            {currentResults?.map((result, i) => {
+              return <Results result={result} key={i} />;
+            })}
+          </Item>
+        ) : null}
+
+        {isDesktop && showChat && (
+          <>
+            <Item sx={styles.sx.ChatBox}>
+              <Messages messages={allMessages} name={name} />
             </Item>
-          ) : null}
+            <MessageInput
+              message={message}
+              setMessage={setMessage}
+              sendMessage={sendMessage}
+            />
+          </>
+        )}
 
-          {isDesktop && showChat && (
-            <>
-              <Item sx={styles.sx.ChatBox}>
-                <Messages messages={allMessages} name={name} />
-              </Item>
-              <MessageInput
-                message={message}
-                setMessage={setMessage}
-                sendMessage={sendMessage}
-              />
-            </>
-          )}
-
-          {!isDesktop && showChat && (
-            <>
-              <Item sx={styles.sx.MobileChatBox}>
-                <Messages messages={allMessages} name={name} />
-              </Item>
-              <MessageInput
-                message={message}
-                setMessage={setMessage}
-                sendMessage={sendMessage}
-              />
-            </>
-          )}
-        </Grid>
-      </Box>
+        {!isDesktop && showChat && (
+          <>
+            <Item sx={styles.sx.MobileChatBox}>
+              <Messages messages={allMessages} name={name} />
+            </Item>
+            <MessageInput
+              message={message}
+              setMessage={setMessage}
+              sendMessage={sendMessage}
+            />
+          </>
+        )}
+      </Grid>
+      {/* </Box> */}
     </Box>
   );
 };

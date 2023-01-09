@@ -52,11 +52,10 @@ To dos:
 - edit that a user cannot get the same question in the same game (random choice currently allows repeats)
 - validate that user must have unique name to join room
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Trivia Questions
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Trivia Questions grabbed from: https://opentdb.com/api_config.php
 
 ### Code Splitting
 

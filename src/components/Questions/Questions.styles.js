@@ -33,7 +33,6 @@ const styles = {
       width: "auto",
       height: "auto",
       margin: "auto",
-      marginTop: "10vh",
     },
     AnswerContainer: {
       margin: "1%",

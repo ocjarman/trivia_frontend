@@ -9,7 +9,6 @@ const styles = {
       justifyContent: "center",
       justifyItems: "center",
       flexDirection: "column",
-      // display: "flex",
     },
     ChatBox: {
       marginTop: "2vh",
@@ -90,7 +89,6 @@ const styles = {
     },
     LeaveMobile: {
       color: "#5A4AE3",
-      // fontSize: "100%",
       width: "20%",
       backgroundColor: "#EFEFEF",
     },
