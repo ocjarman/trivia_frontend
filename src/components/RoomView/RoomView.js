@@ -195,7 +195,7 @@ const RoomView = () => {
 
           {!isDesktop && showChat && (
             <>
-              <Item sx={styles.sx.ChatBox}>
+              <Item sx={styles.sx.MobileChatBox}>
                 <Messages messages={allMessages} name={name} />
               </Item>
               <MessageInput

@@ -6,6 +6,7 @@ import AllQuestions from "../Questions/AllQuestions";
 import StartGamePopup from "./StartGamePopup";
 import styles from "../Trivia/Trivia.styles";
 const TriviaBox = ({ socket }) => {
+  const isDesktop = useSelector((state) => state.users.isDesktop);
   const openStartGamePopup = useSelector(
     (state) => state.trivia.openStartGamePopup
   );
@@ -20,23 +21,40 @@ const TriviaBox = ({ socket }) => {
 
   return (
     <>
-      {!showQuestions ? (
-        <div>
-          <Button
-            variant="outlined"
-            onClick={handleClickOpen}
-            sx={styles.sx.PopupButton}
-          >
-            Play Trivia!
-          </Button>
+      {isDesktop && (
+        <div styles={styles.sx.TriviaBox}>
+          {!showQuestions && (
+            <Button
+              variant="outlined"
+              onClick={handleClickOpen}
+              sx={styles.sx.PopupButton}
+            >
+              Play Trivia!
+            </Button>
+          )}
+          {openStartGamePopup && <StartGamePopup />}
+          {showQuestions && !loadingQuestions && (
+            <AllQuestions socket={socket} />
+          )}
         </div>
-      ) : null}
-
-      {openStartGamePopup && <StartGamePopup />}
-
-      {showQuestions && !loadingQuestions ? (
-        <AllQuestions socket={socket} />
-      ) : null}
+      )}
+      {!isDesktop && (
+        <div styles={styles.sx.MobileTriviaBox}>
+          {!showQuestions && (
+            <Button
+              variant="outlined"
+              onClick={handleClickOpen}
+              sx={styles.sx.PopupButton}
+            >
+              Play Trivia!
+            </Button>
+          )}
+          {openStartGamePopup && <StartGamePopup />}
+          {showQuestions && !loadingQuestions && (
+            <AllQuestions socket={socket} />
+          )}
+        </div>
+      )}
     </>
   );
 };

@@ -7,7 +7,7 @@ const styles = {
       justifyItems: "center",
       alignContent: "center",
       alignItems: "center",
-      width: "300px",
+      width: "auto",
     },
     SelectedAnswer: {
       width: "auto",
@@ -30,6 +30,10 @@ const styles = {
       padding: "5%",
       display: "flex",
       flexDirection: "column",
+      width: "auto",
+      height: "auto",
+      margin: "auto",
+      marginTop: "10vh",
     },
     AnswerContainer: {
       margin: "1%",

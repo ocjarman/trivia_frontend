@@ -17,10 +17,9 @@ import { useEffect } from "react";
 import { setDesktop } from "../../store/usersSlice";
 
 const RoomAppBar = ({ handleExit, roomId, name }) => {
-  const showChat = useSelector((state) => state.messages.showChat);
-  const showUsers = useSelector((state) => state.users.showUsers);
   const isDesktop = useSelector((state) => state.users.isDesktop);
   const dispatch = useDispatch();
+
   const toggleUsers = () => {
     dispatch(setShowUsers((val) => !val));
   };
@@ -147,7 +146,7 @@ const RoomAppBar = ({ handleExit, roomId, name }) => {
                   onClick={toggleUsers}
                 />
                 <Button
-                  href={"/"}
+                  href={"/room"}
                   sx={styles.sx.LeaveMobile}
                   variant="contained"
                   onClick={handleExit}
