@@ -90,7 +90,7 @@ const RoomAppBar = ({ handleExit, roomId, name }) => {
               <>
                 {/* <ExitToAppIcon onClick={handleExit} /> */}
                 <Button
-                  href={"/"}
+                  href={"/room"}
                   sx={styles.sx.LeaveButton}
                   variant="contained"
                   onClick={handleExit}
