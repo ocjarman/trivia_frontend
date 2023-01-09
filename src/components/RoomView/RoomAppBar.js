@@ -90,7 +90,7 @@ const RoomAppBar = ({ handleExit, roomId, name }) => {
               <>
                 {/* <ExitToAppIcon onClick={handleExit} /> */}
                 <Button
-                  href={"/room"}
+                  href={"/trivia_frontend"}
                   sx={styles.sx.LeaveButton}
                   variant="contained"
                   onClick={handleExit}
@@ -146,7 +146,7 @@ const RoomAppBar = ({ handleExit, roomId, name }) => {
                   onClick={toggleUsers}
                 />
                 <Button
-                  href={"/room"}
+                  href={"/trivia_frontend"}
                   sx={styles.sx.LeaveMobile}
                   variant="contained"
                   onClick={handleExit}
