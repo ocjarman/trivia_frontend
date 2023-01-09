@@ -16,6 +16,8 @@ import { deleteUser } from "../../store/usersSlice";
 import { useNavigate } from "react-router-dom";
 import styles from "./Room.styles";
 import TriviaBox from "../Trivia/TriviaBox";
+import { Button } from "@mui/material";
+import { setShowUsers, setDesktop } from "../../store/usersSlice";
 import {
   setQuestions,
   setShowQuestions,
@@ -24,7 +26,6 @@ import {
   setLoadingQuestions,
   resetResults,
   resetQuestions,
-  resetActiveStep,
   setActiveStep,
 } from "../../store/triviaSlice";
 import { setOpenStartGamePopup } from "../../store/triviaSlice";
@@ -49,9 +50,12 @@ const RoomView = () => {
   const allMessages = useSelector((state) => state.messages.messages);
   const roomId = useSelector((state) => state.newUser.roomId);
   const name = useSelector((state) => state.newUser.name);
+  const showChat = useSelector((state) => state.messages.showChat);
+  const showUsers = useSelector((state) => state.users.showUsers);
   const currentResults = useSelector((state) => state.trivia.currentResults);
   const questions = useSelector((state) => state.trivia.questions);
   const users = useSelector((state) => state.users.users);
+  const isDesktop = useSelector((state) => state.users.isD);
 
   useEffect(() => {
     // on loading page if no room or name, send back to join page
@@ -119,6 +123,25 @@ const RoomView = () => {
     dispatch(deleteUser(user));
   };
 
+  useEffect(() => {
+    console.log(window.innerWidth);
+    if (window.innerWidth > 1450) {
+      dispatch(setDesktop(true));
+    } else {
+      dispatch(setDesktop(false));
+    }
+
+    const updateMedia = () => {
+      if (window.innerWidth > 1450) {
+        dispatch(setDesktop(true));
+      } else {
+        dispatch(setDesktop(false));
+      }
+    };
+    window.addEventListener("resize", updateMedia);
+    return () => window.removeEventListener("resize", updateMedia);
+  }, []);
+
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: "#EFEFEF",
     ...theme.typography.body2,
@@ -130,38 +153,60 @@ const RoomView = () => {
   return (
     <Box sx={styles.sx.RoomContainer}>
       <RoomAppBar handleExit={handleExit} roomId={roomId} name={name} />
-      <Box display="flex" justifyContent="center" alignItems="center">
-        <Grid item xs={3}>
+      {/* <Box display="flex" justifyContent="center" alignItems="center"> */}
+      <Grid item xs={3}>
+        {showUsers && (
           <Item style={styles.sx.UsersContainer}>
             <UsersInRoom users={users} roomId={roomId} />
           </Item>
+        )}
 
-          {currentResults?.length > 0 ? (
-            <Item sx={styles.sx.ScoreContainer}>
-              <h3>Game Score:</h3>
-              {currentResults?.map((result, i) => {
-                return <Results result={result} key={i} />;
-              })}
-            </Item>
-          ) : null}
-
-          <Item sx={styles.sx.ChatBox}>
-            <Messages messages={allMessages} name={name} />
-          </Item>
-
-          <MessageInput
-            message={message}
-            setMessage={setMessage}
-            sendMessage={sendMessage}
-          />
-        </Grid>
-
-        <Grid item xs={5}>
+        {isDesktop ? (
           <Item sx={styles.sx.TriviaBox}>
             <TriviaBox socket={socket} />
           </Item>
-        </Grid>
-      </Box>
+        ) : (
+          <Item sx={styles.sx.MobileTriviaBox}>
+            <TriviaBox socket={socket} />
+          </Item>
+        )}
+
+        {currentResults?.length > 0 ? (
+          <Item sx={styles.sx.ScoreContainer}>
+            <h3>Game Score:</h3>
+            {currentResults?.map((result, i) => {
+              return <Results result={result} key={i} />;
+            })}
+          </Item>
+        ) : null}
+
+        {isDesktop && showChat && (
+          <>
+            <Item sx={styles.sx.ChatBox}>
+              <Messages messages={allMessages} name={name} />
+            </Item>
+            <MessageInput
+              message={message}
+              setMessage={setMessage}
+              sendMessage={sendMessage}
+            />
+          </>
+        )}
+
+        {!isDesktop && showChat && (
+          <>
+            <Item sx={styles.sx.MobileChatBox}>
+              <Messages messages={allMessages} name={name} />
+            </Item>
+            <MessageInput
+              message={message}
+              setMessage={setMessage}
+              sendMessage={sendMessage}
+            />
+          </>
+        )}
+      </Grid>
+      {/* </Box> */}
     </Box>
   );
 };

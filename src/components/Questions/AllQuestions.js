@@ -45,6 +45,7 @@ export default function AllQuestions({ socket }) {
   const activeStep = useSelector((state) => state.trivia.activeStep);
   const dispatch = useDispatch();
   const currentResults = useSelector((state) => state.trivia.currentResults);
+  const isDesktop = useSelector((state) => state.users.isDesktop);
   const [loading, setLoading] = useState("false");
 
   socket.on("navigatingToNextQ", () => {
@@ -63,68 +64,135 @@ export default function AllQuestions({ socket }) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main">
-        <Paper variant="outlined" sx={styles.sx.QuestionPaper}>
-          <Typography component="h1" variant="h4" align="center">
-            Trivia
-          </Typography>
+      {isDesktop && (
+        <Container component="main">
+          <Paper variant="outlined" sx={styles.sx.QuestionPaper}>
+            <Typography component="h1" variant="h4" align="center">
+              Trivia
+            </Typography>
 
-          <Stepper activeStep={activeStep} sx={styles.sx.Stepper}>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel></StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          {activeStep === steps.length ? (
-            <div>
-              <Typography variant="h5" gutterBottom>
-                {currentResults?.map((result, i) => (
-                  <p key={i}>
-                    {result.user}: {result.score} point(s)
-                  </p>
-                ))}
-              </Typography>
+            <Stepper activeStep={activeStep} sx={styles.sx.Stepper}>
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel></StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+            {activeStep === steps.length ? (
+              <div>
+                <Typography variant="h5" gutterBottom>
+                  {currentResults?.map((result, i) => (
+                    <p key={i}>
+                      {result.user}: {result.score} point(s)
+                    </p>
+                  ))}
+                </Typography>
 
-              <Button onClick={resetGame} style={styles.sx.ResetButton}>
-                Play again!
-              </Button>
-            </div>
-          ) : (
-            <Box sx={styles.sx.StepBox}>
-              {getStepContent(activeStep, socket)}
-              {activeStep < steps.length - 1 && (
-                <CountdownCircleTimer
-                  isPlaying
-                  duration={10}
-                  colors={["#5A4AE3", "#685AE4", "#857BE1", "#BBB5F5"]}
-                  colorsTime={[7, 5, 2, 0]}
-                  size={50}
-                  onComplete={() => {
-                    return { shouldRepeat: true, delay: 0 }; // repeat animation in 1.5 seconds
-                  }}
-                >
-                  {({ remainingTime }) => remainingTime}
-                </CountdownCircleTimer>
-              )}
-              {activeStep >= steps.length - 1 && (
-                <CountdownCircleTimer
-                  isPlaying
-                  duration={10}
-                  colors={["#5A4AE3", "#685AE4", "#857BE1", "#BBB5F5"]}
-                  colorsTime={[7, 5, 2, 0]}
-                  size={50}
-                  onComplete={() => {
-                    return { shouldRepeat: false, delay: 0 }; // repeat animation in 1.5 seconds
-                  }}
-                >
-                  {({ remainingTime }) => remainingTime}
-                </CountdownCircleTimer>
-              )}
-            </Box>
-          )}
-        </Paper>
-      </Container>
+                <Button onClick={resetGame} style={styles.sx.ResetButton}>
+                  Play again!
+                </Button>
+              </div>
+            ) : (
+              <Box sx={styles.sx.StepBox}>
+                {getStepContent(activeStep, socket)}
+                {activeStep < steps.length - 1 && (
+                  <CountdownCircleTimer
+                    isPlaying
+                    duration={10}
+                    colors={["#5A4AE3", "#685AE4", "#857BE1", "#BBB5F5"]}
+                    colorsTime={[7, 5, 2, 0]}
+                    size={50}
+                    onComplete={() => {
+                      return { shouldRepeat: true, delay: 0 }; // repeat animation in 1.5 seconds
+                    }}
+                  >
+                    {({ remainingTime }) => remainingTime}
+                  </CountdownCircleTimer>
+                )}
+                {activeStep >= steps.length - 1 && (
+                  <CountdownCircleTimer
+                    isPlaying
+                    duration={10}
+                    colors={["#5A4AE3", "#685AE4", "#857BE1", "#BBB5F5"]}
+                    colorsTime={[7, 5, 2, 0]}
+                    size={50}
+                    onComplete={() => {
+                      return { shouldRepeat: false, delay: 0 }; // repeat animation in 1.5 seconds
+                    }}
+                  >
+                    {({ remainingTime }) => remainingTime}
+                  </CountdownCircleTimer>
+                )}
+              </Box>
+            )}
+          </Paper>
+        </Container>
+      )}
+
+      {!isDesktop && (
+        <Container component="main" styles={styles.sx.MobileContainer}>
+          <Paper variant="outlined" sx={styles.sx.QuestionPaper}>
+            <Typography component="h1" variant="h4" align="center">
+              Trivia
+            </Typography>
+
+            <Stepper activeStep={activeStep} sx={styles.sx.Stepper}>
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel></StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+            {activeStep === steps.length ? (
+              <div>
+                <Typography variant="h5" gutterBottom>
+                  {currentResults?.map((result, i) => (
+                    <p key={i}>
+                      {result.user}: {result.score} point(s)
+                    </p>
+                  ))}
+                </Typography>
+
+                <Button onClick={resetGame} style={styles.sx.ResetButton}>
+                  Play again!
+                </Button>
+              </div>
+            ) : (
+              <Box sx={styles.sx.StepBox}>
+                {getStepContent(activeStep, socket)}
+                {activeStep < steps.length - 1 && (
+                  <CountdownCircleTimer
+                    isPlaying
+                    duration={10}
+                    colors={["#5A4AE3", "#685AE4", "#857BE1", "#BBB5F5"]}
+                    colorsTime={[7, 5, 2, 0]}
+                    size={50}
+                    onComplete={() => {
+                      return { shouldRepeat: true, delay: 0 }; // repeat animation in 1.5 seconds
+                    }}
+                  >
+                    {({ remainingTime }) => remainingTime}
+                  </CountdownCircleTimer>
+                )}
+                {activeStep >= steps.length - 1 && (
+                  <CountdownCircleTimer
+                    isPlaying
+                    duration={10}
+                    colors={["#5A4AE3", "#685AE4", "#857BE1", "#BBB5F5"]}
+                    colorsTime={[7, 5, 2, 0]}
+                    size={50}
+                    onComplete={() => {
+                      return { shouldRepeat: false, delay: 0 }; // repeat animation in 1.5 seconds
+                    }}
+                  >
+                    {({ remainingTime }) => remainingTime}
+                  </CountdownCircleTimer>
+                )}
+              </Box>
+            )}
+          </Paper>
+        </Container>
+      )}
     </ThemeProvider>
   );
 }

@@ -18,21 +18,14 @@ const Question1 = ({ socket }) => {
     });
   };
 
-  // useEffect(() => {
-
-  // }, [])
-
   return (
     <>
       <div style={styles.sx.QuestionContainer}>
-        <p>
-          <b>Category:</b> {question.category}
-        </p>
         <p style={{ width: "200px" }}>
           <b>{question.question}</b>
         </p>
       </div>
-      <div style={{ margin: "1%", display: "flex" }}>
+      <div style={styles.sx.AnswerContainer}>
         {question.answerChoices.map((answer) => (
           <AnswerChoices
             answer={answer}
