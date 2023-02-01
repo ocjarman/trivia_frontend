@@ -9,7 +9,6 @@ const StartGameTimer = () => {
   const isDesktop = useSelector((state) => state.users.isDesktop);
 
   useEffect(() => {
-    console.log(window.innerWidth);
     if (window.innerWidth > 1450) {
       dispatch(setDesktop(true));
     } else {

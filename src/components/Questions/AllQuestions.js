@@ -14,7 +14,7 @@ import Question2 from "./Question2";
 import Question3 from "./Question3";
 import Question4 from "./Question4";
 import Question5 from "./Question5";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import styles from "../Questions/Questions.styles";
 import { setActiveStep, setShowQuestions } from "../../store/triviaSlice";
@@ -54,8 +54,6 @@ export default function AllQuestions({ socket }) {
       dispatch(setActiveStep(nextStep));
     }
   });
-
-  console.log({ currentResults });
 
   const resetGame = () => {
     dispatch(setShowQuestions(false));

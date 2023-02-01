@@ -28,7 +28,6 @@ const RoomAppBar = ({ handleExit, roomId, name }) => {
   };
 
   useEffect(() => {
-    console.log(window.innerWidth);
     if (window.innerWidth > 1450) {
       dispatch(setDesktop(true));
     } else {
