@@ -124,7 +124,6 @@ const RoomView = () => {
   };
 
   useEffect(() => {
-    console.log(window.innerWidth);
     if (window.innerWidth > 1450) {
       dispatch(setDesktop(true));
     } else {
@@ -153,7 +152,6 @@ const RoomView = () => {
   return (
     <Box sx={styles.sx.RoomContainer}>
       <RoomAppBar handleExit={handleExit} roomId={roomId} name={name} />
-      {/* <Box display="flex" justifyContent="center" alignItems="center"> */}
       <Grid item xs={3}>
         {showUsers && (
           <Item style={styles.sx.UsersContainer}>
