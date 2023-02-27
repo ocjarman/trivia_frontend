@@ -3,6 +3,7 @@ import usersReducer from "./usersSlice";
 import messageReducer from "./messagesSlice";
 import newUserReducer from "./newUserSlice";
 import triviaReducer from "./triviaSlice";
+import { useDispatch } from "react-redux";
 
 const store = configureStore({
   reducer: {
@@ -13,4 +14,7 @@ const store = configureStore({
   },
 });
 
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch: () => AppDispatch = useDispatch;
 export default store;
