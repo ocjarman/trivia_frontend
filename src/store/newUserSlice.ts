@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+interface initialStateType {
+  name: string,
+  roomId: string
+}
+
+const initialState: initialStateType = {
   name: "",
   roomId: "",
 };

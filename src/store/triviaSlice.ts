@@ -1,6 +1,31 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+
+interface questionType {
+    id: number,
+    category: string,
+    type: string,
+    difficulty: string,
+    question: string,
+    correct_answer: string,
+    answerChoices: string[]
+} 
+interface resultsType {
+    // results type here
+} 
+
+interface initialStateType {
+  questions: questionType[],
+  openStartGamePopup: boolean,
+  loadingQuestions: boolean,
+  selectedAnswer: string,
+  showQuestions: boolean,
+  currentResults: resultsType[],
+  showPlayButton: boolean,
+  activeStep: number,
+}
+
+const initialState: initialStateType = {
   questions: [],
   openStartGamePopup: false,
   loadingQuestions: true,
@@ -58,7 +83,6 @@ export const {
   setLoadingQuestions,
   setSelectedAnswer,
   setShowQuestions,
-  setPreviousResults,
   setCurrentResults,
   showPlayButton,
   resetResults,

@@ -1,6 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+interface userType  {
+  id: string,
+  name: string,
+  roomId: string,
+}
+
+interface initialStateType {
+  users: userType[],
+  isDesktop: boolean,
+  showUsers: boolean,
+}
+
+const initialState: initialStateType = {
   users: [],
   isDesktop: false,
   showUsers: false,

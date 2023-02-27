@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+
+interface initialStateType {
+  messages: string[],
+  showChat: boolean
+}
+const initialState: initialStateType = {
   messages: [],
   showChat: false,
 };
