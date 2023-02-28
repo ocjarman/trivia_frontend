@@ -6,6 +6,7 @@
   align-content: center;
   align-items: center;
   width: auto;
+  font-size: 1rem;
 }
 
 .selectedAnswer {
@@ -50,8 +51,6 @@
 }
 
 .stepper {
-  /* pt: 3;
-  pb: 5; */
   display: flex;
   flex-direction: row;
   width: auto;
@@ -61,8 +60,11 @@
 
 .resetButton {
   background-color: #5a4ae3;
-  width: 200px;
+  width: auto;
   color: #efefef;
+  border: none;
+  border-radius: 5%;
+  padding: 5%;
 }
 
 .stepBox {

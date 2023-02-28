@@ -1,10 +1,11 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Button } from "@mui/material";
 import AllQuestions from "../Questions/AllQuestions";
 
 import StartGamePopup from "./StartGamePopup";
-import styles from "../Trivia/Trivia.styles";
+import "./trivia.css";
+
 const TriviaBox = ({ socket }) => {
   const isDesktop = useSelector((state) => state.users.isDesktop);
   const openStartGamePopup = useSelector(
@@ -22,15 +23,15 @@ const TriviaBox = ({ socket }) => {
   return (
     <>
       {isDesktop && (
-        <div styles={styles.sx.TriviaBox}>
+        <div className="triviaBox">
           {!showQuestions && (
-            <Button
+            <button
               variant="outlined"
               onClick={handleClickOpen}
-              sx={styles.sx.PopupButton}
+              className="popupButton"
             >
               Play Trivia!
-            </Button>
+            </button>
           )}
           {openStartGamePopup && <StartGamePopup />}
           {showQuestions && !loadingQuestions && (
@@ -39,15 +40,15 @@ const TriviaBox = ({ socket }) => {
         </div>
       )}
       {!isDesktop && (
-        <div styles={styles.sx.MobileTriviaBox}>
+        <div className="mobileTriviaBox">
           {!showQuestions && (
-            <Button
+            <button
               variant="outlined"
               onClick={handleClickOpen}
-              sx={styles.sx.PopupButton}
+              className="popupButton"
             >
               Play Trivia!
-            </Button>
+            </button>
           )}
           {openStartGamePopup && <StartGamePopup />}
           {showQuestions && !loadingQuestions && (

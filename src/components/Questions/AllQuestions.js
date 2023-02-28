@@ -84,9 +84,9 @@ export default function AllQuestions({ socket }) {
                   ))}
                 </Typography>
 
-                <Button onClick={resetGame} className="resetButton">
+                <button onClick={resetGame} className="resetButton">
                   Play again!
-                </Button>
+                </button>
               </div>
             ) : (
               <Box className="stepBox">
@@ -149,9 +149,9 @@ export default function AllQuestions({ socket }) {
                   ))}
                 </Typography>
 
-                <Button onClick={resetGame} className="resetButton">
+                <button onClick={resetGame} className="resetButton">
                   Play again!
-                </Button>
+                </button>
               </div>
             ) : (
               <Box className="stepBox">

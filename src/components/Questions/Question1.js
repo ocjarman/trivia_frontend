@@ -7,7 +7,6 @@ import "./questions.css";
 
 const Question1 = ({ socket }) => {
   const question = useSelector((state) => state.trivia.questions[0]);
-  const selectedAnswer = useSelector((state) => state.trivia.selectedAnswer);
   const dispatch = useDispatch();
 
   const handleInput = (e) => {

@@ -1,0 +1,20 @@
+.playAgainButton {
+  margin: 5%;
+  padding: 2%;
+}
+.popupButton {
+  background-color: #5a4ae3;
+  color: #efefef;
+  width: auto;
+  padding: 5%;
+  border: none;
+  border-radius: 5px;
+}
+
+.mobileTriviaBox {
+  height: auto;
+  width: auto;
+  display: flex;
+  margin-top: 10%;
+  flex-direction: column;
+}
