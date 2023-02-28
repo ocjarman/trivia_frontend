@@ -1,0 +1,80 @@
+.questionContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+  align-items: center;
+  width: auto;
+}
+
+.selectedAnswer {
+  width: auto;
+  font-size: 10px;
+  background-color: "white";
+  margin: 2%;
+  color: #5a4ae3;
+  padding: 10px;
+  border: 2px solid #5a4ae3;
+  border-radius: 5px;
+}
+
+.nonselectedAnswer {
+  width: auto;
+  font-size: 10px;
+  background-color: #5a4ae3;
+  margin: 2%;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+}
+
+.questionPaper {
+  padding: 5%;
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  height: auto;
+  margin: auto;
+}
+
+.answerContainer {
+  margin: 1%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+  align-items: center;
+}
+
+.stepper {
+  /* pt: 3;
+  pb: 5; */
+  display: flex;
+  flex-direction: row;
+  width: auto;
+  padding: 20px;
+  margin: 20px;
+}
+
+.resetButton {
+  background-color: #5a4ae3;
+  width: 200px;
+  color: #efefef;
+}
+
+.stepBox {
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+}
+
+.questionWidth {
+  width: 200px;
+}
