@@ -1,0 +1,68 @@
+.messageInputForm {
+  display: flex;
+  justify-content: center;
+  width: auto;
+  margin-top: 2%;
+}
+
+.sendMessageButton {
+  background-color: #5a4ae3;
+}
+
+.msgByUser {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+}
+
+.adminText {
+  text-align: center;
+  color: darkGray;
+}
+
+.gameManager {
+  text-align: center;
+  color: red;
+}
+
+.adminTime {
+  text-align: center;
+  color: darkGray;
+  font-size: 10px;
+}
+
+.chatBubbleSent {
+  display: flex;
+  background-color: #5a4ae3;
+  color: white;
+  border-radius: 20px 20px 3px 20px;
+  text-align: right;
+  padding: 2%;
+  height: auto;
+  width: auto;
+  margin-right: 0;
+}
+
+.chatBubbleReceive {
+  background-color: #fefefe;
+  color: #5a4ae3;
+  border-radius: 20px 20px 20px 3px;
+  text-align: left;
+  padding: 2%;
+  height: auto;
+  width: auto;
+  margin-left: 0;
+}
+
+.chatBubbleName {
+  color: gray;
+  font-size: 10px;
+  text-align: left;
+  margin-left: 3%;
+}
+
+.sentByFriend {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}

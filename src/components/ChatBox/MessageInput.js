@@ -1,7 +1,8 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import styles from "../RoomView/Room.styles";
+import "./chatbox.css";
+
 const MessageInput = ({ setMessage, sendMessage, message }) => {
   const handleClearInput = (e) => {
     e.preventDefault();
@@ -9,11 +10,7 @@ const MessageInput = ({ setMessage, sendMessage, message }) => {
   };
 
   return (
-    <form
-      className="form"
-      onSubmit={handleClearInput}
-      style={styles.sx.MessageInput}
-    >
+    <form className="messageInputForm" onSubmit={handleClearInput}>
       <TextField
         type="text"
         placeholder="Type a message..."
@@ -21,9 +18,8 @@ const MessageInput = ({ setMessage, sendMessage, message }) => {
         onChange={({ target: { value } }) => setMessage(value)}
       />
       <Button
-        className="sendButton"
+        className="sendMessageButton"
         variant="contained"
-        style={{ backgroundColor: "#5A4AE3" }}
         type="submit"
         onClick={(e) => sendMessage(e)}
       >

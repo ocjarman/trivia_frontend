@@ -69,12 +69,7 @@ const styles = {
       backgroundColor: "#5A4AE3",
       color: "white",
     },
-    MessageInput: {
-      display: "flex",
-      justifyContent: "center",
-      width: "auto",
-      marginTop: "2%",
-    },
+
     ToolBar: {
       backgroundColor: "#5A4AE3",
       display: "flex",
