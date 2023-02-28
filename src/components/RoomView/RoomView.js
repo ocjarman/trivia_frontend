@@ -14,10 +14,9 @@ import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import { deleteUser } from "../../store/usersSlice";
 import { useNavigate } from "react-router-dom";
-import styles from "./Room.styles";
+import "./roomView.css";
 import TriviaBox from "../Trivia/TriviaBox";
-import { Button } from "@mui/material";
-import { setShowUsers, setDesktop } from "../../store/usersSlice";
+import { setDesktop } from "../../store/usersSlice";
 import {
   setQuestions,
   setShowQuestions,
@@ -53,7 +52,6 @@ const RoomView = () => {
   const showChat = useSelector((state) => state.messages.showChat);
   const showUsers = useSelector((state) => state.users.showUsers);
   const currentResults = useSelector((state) => state.trivia.currentResults);
-  const questions = useSelector((state) => state.trivia.questions);
   const users = useSelector((state) => state.users.users);
   const isDesktop = useSelector((state) => state.users.isD);
 
@@ -150,27 +148,27 @@ const RoomView = () => {
   }));
 
   return (
-    <Box sx={styles.sx.RoomContainer}>
+    <Box className="roomContainer">
       <RoomAppBar handleExit={handleExit} roomId={roomId} name={name} />
       <Grid item xs={3}>
         {showUsers && (
-          <Item style={styles.sx.UsersContainer}>
+          <Item className="usersContainer">
             <UsersInRoom users={users} roomId={roomId} />
           </Item>
         )}
 
         {isDesktop ? (
-          <Item sx={styles.sx.TriviaBox}>
+          <Item className="triviaBox">
             <TriviaBox socket={socket} />
           </Item>
         ) : (
-          <Item sx={styles.sx.MobileTriviaBox}>
+          <Item className="mobileTriviaBox">
             <TriviaBox socket={socket} />
           </Item>
         )}
 
         {currentResults?.length > 0 ? (
-          <Item sx={styles.sx.ScoreContainer}>
+          <Item className="scoreContainer">
             <h3>Game Score:</h3>
             {currentResults?.map((result, i) => {
               return <Results result={result} key={i} />;
@@ -180,7 +178,7 @@ const RoomView = () => {
 
         {isDesktop && showChat && (
           <>
-            <Item sx={styles.sx.ChatBox}>
+            <Item className="chatBox">
               <Messages messages={allMessages} name={name} />
             </Item>
             <MessageInput
@@ -193,7 +191,7 @@ const RoomView = () => {
 
         {!isDesktop && showChat && (
           <>
-            <Item sx={styles.sx.MobileChatBox}>
+            <Item className="mobileChatBox">
               <Messages messages={allMessages} name={name} />
             </Item>
             <MessageInput
@@ -204,7 +202,6 @@ const RoomView = () => {
           </>
         )}
       </Grid>
-      {/* </Box> */}
     </Box>
   );
 };

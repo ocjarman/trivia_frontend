@@ -1,0 +1,119 @@
+.roomContainer {
+  margin-top: 20%;
+  padding: 2%;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  flex-direction: column;
+}
+.chatBox {
+  margin-top: 2vh;
+  height: 30vh;
+  overflow-x: auto;
+  width: auto;
+}
+.mobileChatBox {
+  margin-top: 2vh;
+  height: 30vh;
+  overflow-x: auto;
+  width: auto;
+}
+.triviaBox {
+  height: auto;
+  width: auto;
+  margin-top: 5vh;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.mobileTriviaBox {
+  height: auto;
+  width: auto;
+  display: flex;
+  margin-top: 10%;
+  flex-direction: column;
+}
+.usersContainer {
+  display: flex;
+  flex-direction: column;
+  height: 20vh;
+  overflow-x: auto;
+  margin-top: 15%;
+}
+.eachUser {
+  border: 1px solid #5a4ae3;
+  border-radius: 5px;
+  padding: 3%;
+  margin: 2%;
+  height: auto;
+}
+.scoreContainer {
+  height: auto;
+  width: auto;
+  margin-top: 5vh;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #5a4ae3;
+  color: white;
+}
+.popupButton {
+  margin: auto;
+  width: auto;
+  background-color: #5a4ae3;
+  color: white;
+}
+
+.toolBar {
+  background-color: #5a4ae3;
+  display: flex;
+  justify-content: space-between;
+}
+.toolBarButton {
+  color: #efefef;
+  font-size: 150%;
+}
+.leaveButton {
+  color: #5a4ae3;
+  font-size: 100%;
+  width: 50%;
+  background-color: #efefef;
+}
+.leaveMobile {
+  background-color: #5a4ae3;
+  width: 50%;
+  color: #efefef;
+  border: none;
+}
+
+.fortyFont {
+  font-size: 40px;
+}
+
+.mobileToolBar {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  flex-direction: column;
+  align-items: center;
+  font-size: 50%;
+  width: auto;
+  margin: auto;
+}
+
+.mobileContainer {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  flex-direction: row;
+  align-items: center;
+  font-size: 50%;
+  width: auto;
+  gap: 10;
+}
