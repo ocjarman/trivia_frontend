@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setName, setRoomId } from "../../store/newUserSlice";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import styles from "./Home.styles";
+import "./home.css";
 import RoomAppBar from "../RoomView/RoomAppBar";
 import logoImage from "../../static/images/logo4.png";
 
@@ -25,12 +25,12 @@ const Home = () => {
   };
 
   return (
-    <div style={styles.sx.HomeContainer}>
+    <div className="homeContainer">
       <RoomAppBar />
-      <div style={styles.sx.LoginContainer}>
+      <div className="loginContainer">
         <img src={logoImage} alt={""} width="50%" />
 
-        <form onSubmit={navigateToRoom} style={styles.sx.FormContainer}>
+        <form onSubmit={navigateToRoom} className="formContainer">
           <TextField
             id="outlined-basic"
             label="username"
