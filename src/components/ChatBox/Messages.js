@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import SingleMessage from "./SingleMessage";
+import "./chatbox.css";
 
 const Messages = ({ messages, name }) => {
   // for auto scroll feature: From the code snippets above, lastMessageRef
@@ -14,7 +15,7 @@ const Messages = ({ messages, name }) => {
   });
   return (
     <>
-      <div style={{ padding: "1%" }}>
+      <div className="messagePadding">
         {messages?.map((message, i) => (
           <SingleMessage key={i} message={message} name={name} />
         ))}

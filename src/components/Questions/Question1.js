@@ -3,11 +3,10 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import AnswerChoices from "./AnswerChoices";
 import { setSelectedAnswer } from "../../store/triviaSlice";
-import styles from "./Questions.styles";
+import "./questions.css";
 
 const Question1 = ({ socket }) => {
   const question = useSelector((state) => state.trivia.questions[0]);
-  const selectedAnswer = useSelector((state) => state.trivia.selectedAnswer);
   const dispatch = useDispatch();
 
   const handleInput = (e) => {
@@ -20,12 +19,12 @@ const Question1 = ({ socket }) => {
 
   return (
     <>
-      <div style={styles.sx.QuestionContainer}>
-        <p style={{ width: "200px" }}>
+      <div className="questionContainer">
+        <p className="questionWidth">
           <b>{question.question}</b>
         </p>
       </div>
-      <div style={styles.sx.AnswerContainer}>
+      <div className="answerContainer">
         {question.answerChoices.map((answer) => (
           <AnswerChoices
             answer={answer}

@@ -1,7 +1,7 @@
 import React from "react";
-import { Button } from "@mui/material";
+// import { button } from "@mui/material";
 import { useSelector } from "react-redux";
-import styles from "../Questions/Questions.styles";
+import "./questions.css";
 
 const AnswerChoices = ({ answer, handleInput }) => {
   const selected = useSelector((state) => state.trivia.selectedAnswer);
@@ -9,23 +9,23 @@ const AnswerChoices = ({ answer, handleInput }) => {
   return (
     <>
       {selected === answer ? (
-        <Button
+        <button
           variant="contained"
-          style={styles.sx.SelectedAnswer}
+          className="selectedAnswer"
           onClick={handleInput}
           value={answer}
         >
           {answer}
-        </Button>
+        </button>
       ) : (
-        <Button
+        <button
           variant="contained"
-          style={styles.sx.NonselectedAnswer}
+          className="nonselectedAnswer"
           value={answer}
           onClick={handleInput}
         >
           {answer}
-        </Button>
+        </button>
       )}
     </>
   );

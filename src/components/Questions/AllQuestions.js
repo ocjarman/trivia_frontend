@@ -14,9 +14,8 @@ import Question2 from "./Question2";
 import Question3 from "./Question3";
 import Question4 from "./Question4";
 import Question5 from "./Question5";
-import { useState } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
-import styles from "../Questions/Questions.styles";
+import "./questions.css";
 import { setActiveStep, setShowQuestions } from "../../store/triviaSlice";
 
 const steps = ["0", "1", "2", "3", "4"];
@@ -46,7 +45,6 @@ export default function AllQuestions({ socket }) {
   const dispatch = useDispatch();
   const currentResults = useSelector((state) => state.trivia.currentResults);
   const isDesktop = useSelector((state) => state.users.isDesktop);
-  const [loading, setLoading] = useState("false");
 
   socket.on("navigatingToNextQ", () => {
     const nextStep = activeStep + 1;
@@ -64,12 +62,12 @@ export default function AllQuestions({ socket }) {
     <ThemeProvider theme={theme}>
       {isDesktop && (
         <Container component="main">
-          <Paper variant="outlined" sx={styles.sx.QuestionPaper}>
+          <Paper variant="outlined" className="questionPaper">
             <Typography component="h1" variant="h4" align="center">
               Trivia
             </Typography>
 
-            <Stepper activeStep={activeStep} sx={styles.sx.Stepper}>
+            <Stepper activeStep={activeStep} className="stepper">
               {steps.map((label) => (
                 <Step key={label}>
                   <StepLabel></StepLabel>
@@ -86,12 +84,12 @@ export default function AllQuestions({ socket }) {
                   ))}
                 </Typography>
 
-                <Button onClick={resetGame} style={styles.sx.ResetButton}>
+                <button onClick={resetGame} className="resetButton">
                   Play again!
-                </Button>
+                </button>
               </div>
             ) : (
-              <Box sx={styles.sx.StepBox}>
+              <Box className="stepBox">
                 {getStepContent(activeStep, socket)}
                 {activeStep < steps.length - 1 && (
                   <CountdownCircleTimer
@@ -128,13 +126,13 @@ export default function AllQuestions({ socket }) {
       )}
 
       {!isDesktop && (
-        <Container component="main" styles={styles.sx.MobileContainer}>
-          <Paper variant="outlined" sx={styles.sx.QuestionPaper}>
+        <Container component="main" className="mobileContainer">
+          <Paper variant="outlined" className="questionPaper">
             <Typography component="h1" variant="h4" align="center">
               Trivia
             </Typography>
 
-            <Stepper activeStep={activeStep} sx={styles.sx.Stepper}>
+            <Stepper activeStep={activeStep} className="stepper">
               {steps.map((label) => (
                 <Step key={label}>
                   <StepLabel></StepLabel>
@@ -151,12 +149,12 @@ export default function AllQuestions({ socket }) {
                   ))}
                 </Typography>
 
-                <Button onClick={resetGame} style={styles.sx.ResetButton}>
+                <button onClick={resetGame} className="resetButton">
                   Play again!
-                </Button>
+                </button>
               </div>
             ) : (
-              <Box sx={styles.sx.StepBox}>
+              <Box className="stepBox">
                 {getStepContent(activeStep, socket)}
                 {activeStep < steps.length - 1 && (
                   <CountdownCircleTimer

@@ -1,0 +1,100 @@
+.questionContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+  align-items: center;
+  width: auto;
+  font-size: 1rem;
+}
+
+.selectedAnswer {
+  width: auto;
+  font-size: 10px;
+  background-color: white;
+  margin: 2%;
+  color: #5a4ae3;
+  padding: 10px;
+  border: 2px solid #5a4ae3;
+  border-radius: 5px;
+}
+
+.nonselectedAnswer {
+  width: auto;
+  font-size: 10px;
+  background-color: #5a4ae3;
+  margin: 2%;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+}
+
+.questionPaper {
+  padding: 5%;
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  height: auto;
+  margin: auto;
+}
+
+.answerContainer {
+  margin: 1%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+  align-items: center;
+}
+
+.stepper {
+  display: flex;
+  flex-direction: row;
+  width: auto;
+  padding: 20px;
+  margin: 20px;
+}
+
+.resetButton {
+  background-color: #5a4ae3;
+  width: auto;
+  color: #efefef;
+  border: none;
+  border-radius: 5%;
+  padding: 5%;
+}
+
+.stepBox {
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+}
+
+.questionWidth {
+  width: 200px;
+}
+
+.divInToolbar {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 1vw;
+}
+
+.icon {
+  padding: 10%;
+  font-size: 50px;
+}
+
+.boxInRoom {
+  display: block;
+  /* this had a media query previously */
+}

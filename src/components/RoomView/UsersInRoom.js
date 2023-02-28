@@ -1,5 +1,6 @@
 import React from "react";
-import styles from "./Room.styles";
+import "./roomView.css";
+
 const UsersInRoom = ({ users, roomId }) => {
   return (
     <>
@@ -9,7 +10,7 @@ const UsersInRoom = ({ users, roomId }) => {
             {users.length} player(s) in Room {roomId}
           </h3>
           {users.map((user, i) => (
-            <span key={i} style={styles.sx.EachUser}>
+            <span key={i} className="eachUser">
               {user.name}{" "}
             </span>
           ))}

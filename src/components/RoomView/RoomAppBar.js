@@ -11,7 +11,7 @@ import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineR
 import PeopleOutlineRoundedIcon from "@mui/icons-material/PeopleOutlineRounded";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
-import styles from "./Room.styles";
+import "./roomView.css";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { useEffect } from "react";
 import { setDesktop } from "../../store/usersSlice";
@@ -49,48 +49,33 @@ const RoomAppBar = ({ handleExit, roomId, name }) => {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar component="nav">
-        <Toolbar style={styles.sx.ToolBar}>
+        <Toolbar className="toolBar">
           {" "}
           {isDesktop && <img src={logoIcon} alt={""} width="100px" />}
           {roomId !== undefined && name !== undefined && isDesktop ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "1vw",
-              }}
-            >
+            <div className="divInToolbar">
               <div>
-                <Button sx={styles.sx.ToolBarButton}>Room Id: {roomId}</Button>
-                <Button sx={styles.sx.ToolBarButton}>Welcome, {name}!</Button>
+                <Button className="toolBarButton">Room Id: {roomId}</Button>
+                <Button className="toolBarButton">Welcome, {name}!</Button>
               </div>
               <div>
                 <ChatBubbleOutlineRoundedIcon
-                  style={{
-                    padding: "10%",
-                    fontSize: "50px",
-                  }}
+                  className="icon"
                   onClick={toggleChat}
                 />
                 <PeopleOutlineRoundedIcon
-                  style={{
-                    padding: "10%",
-                    fontSize: "50px",
-                  }}
+                  className="icon"
                   onClick={toggleUsers}
                 />
               </div>
             </div>
           ) : null}
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
+          <Box className="boxInRoom">
             {roomId !== undefined && name !== undefined && isDesktop ? (
               <>
-                {/* <ExitToAppIcon onClick={handleExit} /> */}
                 <Button
                   href={"/trivia_frontend"}
-                  sx={styles.sx.LeaveButton}
+                  className="leaveButton"
                   variant="contained"
                   onClick={handleExit}
                 >
@@ -101,57 +86,28 @@ const RoomAppBar = ({ handleExit, roomId, name }) => {
           </Box>
           {/* MOBILE VIEW BELOW */}
           {roomId !== undefined && name !== undefined && !isDesktop ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignContent: "center",
-                justifyItems: "center",
-                flexDirection: "column",
-                alignItems: "center",
-                fontSize: "50%",
-                width: "auto",
-                margin: "auto",
-              }}
-            >
-              <div>
-                <h6>
-                  Welcome to Room {roomId}, {name}!
-                </h6>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignContent: "center",
-                  justifyItems: "space-between",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  fontSize: "50%",
-                  width: "auto",
-                  gap: 10,
-                }}
-              >
+            <div className="mobileToolBar">
+              <h2>
+                Welcome to Room {roomId}, {name}!
+              </h2>
+              <div className="mobileContainer">
                 <ChatBubbleOutlineRoundedIcon
-                  style={{
-                    fontSize: "40px",
-                  }}
+                  className="fortyFont"
                   onClick={toggleChat}
                 />
                 <PeopleOutlineRoundedIcon
-                  style={{
-                    fontSize: "40px",
-                  }}
+                  className="fortyFont"
                   onClick={toggleUsers}
                 />
-                <Button
-                  href={"/trivia_frontend"}
-                  sx={styles.sx.LeaveMobile}
-                  variant="contained"
-                  onClick={handleExit}
-                >
-                  <ExitToAppIcon />
-                </Button>
+                <a href={"/trivia_frontend"}>
+                  <button
+                    className="leaveMobile"
+                    variant="contained"
+                    onClick={handleExit}
+                  >
+                    <ExitToAppIcon />
+                  </button>
+                </a>
               </div>
             </div>
           ) : null}

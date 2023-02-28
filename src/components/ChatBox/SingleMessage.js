@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./SingleMsg.styles";
+import "./chatbox.css";
 const moment = require("moment");
 
 const SingleMessage = ({ message: { text, user }, name }) => {
@@ -29,31 +29,29 @@ const SingleMessage = ({ message: { text, user }, name }) => {
   return (
     <>
       {sentByUser && (
-        <div style={styles.sx.SentByUser}>
-          <p style={styles.sx.ChatBubbleSent}>{text}</p>
-          <p style={styles.sx.ChatBubbleName}>
-            you - {moment().format("h:mm a")}
-          </p>
+        <div className="msgByUser">
+          <p className="chatBubbleSent">{text}</p>
+          <p className="chatBubbleName">you - {moment().format("h:mm a")}</p>
         </div>
       )}
       {sentByFriend && (
-        <div style={styles.sx.SentByFriend}>
-          <p style={styles.sx.ChatBubbleName}>
+        <div className="sentByFriend">
+          <p className="chatBubbleName">
             {user.name} - {moment().format("h:mm a")}
           </p>
-          <p style={styles.sx.ChatBubbleReceive}>{text}</p>
+          <p className="chatBubbleReceive">{text}</p>
         </div>
       )}
       {isAdmin && (
         <>
-          <p style={styles.sx.AdminText}>{text}</p>
-          <p style={styles.sx.AdminTime}>{moment().format("h:mm a")}</p>
+          <p className="adminText">{text}</p>
+          <p className="adminTime">{moment().format("h:mm a")}</p>
         </>
       )}
       {gameManager && (
         <>
-          <p style={styles.sx.GameManager}>{text}</p>
-          <p style={styles.sx.AdminTime}>{moment().format("h:mm a")}</p>
+          <p className="gameManager">{text}</p>
+          <p className="adminTime">{moment().format("h:mm a")}</p>
         </>
       )}
     </>
