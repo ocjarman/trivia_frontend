@@ -15,7 +15,7 @@ const Messages = ({ messages, name }) => {
   });
   return (
     <>
-      <div style={{ padding: "1%" }}>
+      <div className="messagePadding">
         {messages?.map((message, i) => (
           <SingleMessage key={i} message={message} name={name} />
         ))}

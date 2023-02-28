@@ -46,13 +46,9 @@ const Home = () => {
             onChange={handleRoom}
           />
 
-          <Button
-            type="submit"
-            variant="contained"
-            style={{ backgroundColor: "#5A4AE3" }}
-          >
+          <button type="submit" variant="contained" className="joinRoomButton">
             Join Room
-          </Button>
+          </button>
         </form>
       </div>
     </div>

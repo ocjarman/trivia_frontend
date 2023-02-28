@@ -66,3 +66,7 @@
   align-items: flex-start;
   flex-direction: column;
 }
+
+.messagePadding {
+  padding: 1%;
+}
